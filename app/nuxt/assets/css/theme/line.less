@@ -1,0 +1,39 @@
+.line1 {
+    display: block;
+    // width: 31em;
+    word-break: keep-all;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.line2,
+.line3,
+.line4,
+.line5,
+.line6 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.line2 {
+    -webkit-line-clamp: 2;
+}
+
+.line3 {
+    -webkit-line-clamp: 3;
+}
+
+.line4 {
+    -webkit-line-clamp: 4;
+}
+
+.line5 {
+    -webkit-line-clamp: 5;
+}
+
+.line6 {
+    -webkit-line-clamp: 6;
+}

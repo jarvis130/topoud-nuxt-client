@@ -1,0 +1,40 @@
+.is-affixed {
+    &.sticky-shadow {
+        .inner-wrapper-sticky {
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.17);
+        }
+    }
+    .inner-wrapper-sticky {
+        z-index: 8;
+    }
+}
+.test {
+    border: 1px solid crimson;
+    margin: 10px;
+    padding: 30px;
+    position: relative;
+    &:before {
+        content: 'test';
+        color: crimson;
+        position: absolute;
+        left: 5px;
+        top: -10px;
+        font-size: 12px;
+        background: #f0eff5;
+        padding: 0 5px;
+    }
+}
+
+.flex15 {
+    flex: 1.5;
+}
+.flex2 {
+    flex: 2;
+}
+.flex25 {
+    flex: 2.5;
+}
+
+.flex3 {
+    flex: 3;
+}

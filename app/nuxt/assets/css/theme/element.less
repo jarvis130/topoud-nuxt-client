@@ -1,0 +1,91 @@
+@import '../config.less';
+.el-popper {
+    border-color: #ccc;
+    &[x-placement^='top'] .popper__arrow {
+        border-top-color: #aaa;
+    }
+    &[x-placement^='bottom'] .popper__arrow {
+        border-bottom-color: #aaa;
+    } // overflow: hidden;
+    .panel {
+        margin: -12px;
+        overflow: hidden;
+    }
+}
+.el-button--text {
+    padding: 0;
+    // margin: 0;
+}
+.el-checkbox.mini {
+    .el-checkbox__label {
+        font-size: 12px;
+        padding-left: 2px;
+        margin-top: 1px;
+    }
+    .el-checkbox__inner {
+        width: 12px;
+        height: 12px;
+        &:after {
+            top: 0px;
+            left: 3px;
+        }
+    }
+}
+
+.el-radio-group.mini {
+    .el-radio__label {
+        font-size: 12px;
+        padding-left: 2px;
+        margin-top: 1px;
+    }
+    .el-radio__inner {
+        width: 10px;
+        height: 10px;
+    }
+    .el-radio + .el-radio {
+        margin-left: 10px;
+    }
+    :not(.is-checked) .el-radio__label {
+        color: #999;
+    }
+}
+
+.el-button-group + a > .el-button,
+.el-button + a > .el-button,
+.el-button + .el-button-group,
+.el-button-group + .el-button {
+    margin-left: 10px;
+}
+
+.el-message-box {
+    width: auto;
+}
+
+.el-message {
+    top: auto;
+    bottom: 0px;
+    @media (min-width: @screen-sm) {
+        bottom: 20px;
+    }
+}
+
+.el-message-fade-enter,
+.el-message-fade-leave-active {
+    opacity: 0;
+    -webkit-transform: translate(-50%, 100%);
+    transform: translate(-50%, 100%);
+}
+
+@media (max-width: @screen-sm-max) {
+    .el-input__inner {
+        border: none;
+        .weui-panel &,
+        .weui-cells & {
+            background: #efefef;
+        }
+    }
+    .el-input-group__prepend,
+    .el-input-group__append {
+        border: none;
+    }
+}

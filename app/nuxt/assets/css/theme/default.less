@@ -1,0 +1,57 @@
+// @brand-color: #ff6600;
+@body-background : #f0eff5; // 背景色
+// @brand-color-hover: #ff8533; // Media queries breakpoints
+.body-color() {
+    background: @body-background;
+}
+
+body {
+    .body-color();
+    font-weight: 400;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+a:link,
+a:visited {
+    color: inherit;
+}
+
+input,
+button,
+select,
+textarea {
+    font-family: @weuiFontDefault;
+    outline: none;
+}
+
+.errormsg {
+    color: crimson;
+}
+
+small {
+    color: #999;
+}
+
+@import '~assets/css/weui/weui-extra';
+.loading-fullscreen {
+    position: fixed;
+    left: 100%;
+    height: 100%;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: white;
+    z-index: 11;
+    text-align: center;
+    padding-top: 200px;
+    color: #666;
+    transition: 0.3s;
+    opacity: 1;
+    &.v-leave-to {
+        .fadeOut();
+    }
+}

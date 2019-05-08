@@ -1,0 +1,7 @@
+node_modules
+package-lock.json
+.nuxt
+.nuxt-test
+.vscode
+dump.rdb
+.localip.js

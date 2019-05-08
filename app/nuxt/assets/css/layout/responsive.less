@@ -1,0 +1,82 @@
+/*
+ * @Author: 刘盾Bach (bach109109@qq.com, liudun@zbj.com) 
+ * @Date: 2018-04-11 13:59:51 
+ * @Last Modified by: 刘盾Bach (bach109109@qq.com, liudun@zbj.com)
+ * @Last Modified time: 2018-10-23 10:55:50
+ */
+
+@import '../config';
+// //响应式显示
+.hidden {
+    display: none !important;
+}
+
+.hidden-xxs {
+    @media (max-width: 320px) {
+        display: none !important;
+    }
+}
+
+.hidden-xs {
+    @media (max-width: @screen-xs-max) {
+        display: none !important;
+    }
+}
+
+.visible-xs {
+    @media (min-width: @screen-xs-min) {
+        display: none !important;
+    }
+}
+
+.hidden-sm {
+    @media (max-width: @screen-sm-max) {
+        display: none !important;
+    }
+}
+
+.visible-sm {
+    @media (min-width: @screen-sm-min) {
+        display: none !important;
+    }
+}
+
+.hidden-md {
+    @media (max-width: @screen-md-max) {
+        display: none !important;
+    }
+}
+
+.visible-md {
+    @media (min-width: @screen-md-min) {
+        display: none !important;
+    }
+}
+
+.hidden-lg {
+    @media (max-width: @screen-lg-max) {
+        display: none !important;
+    }
+}
+
+.visible-lg {
+    @media (min-width: @screen-lg-min) {
+        display: none !important;
+    }
+}
+
+.container {
+    @media (min-width: @screen-sm-min) {
+        margin: 0 auto;
+    }
+    @media (min-width: @screen-sm-min) and (max-width: @screen-md-max) {
+        width: @container-sm;
+    }
+    @media (min-width: @screen-md-min) and (max-width: @screen-lg-max) {
+        width: @container-md;
+    }
+    @media (min-width: @screen-lg-min) {
+        width: @container-lg;
+    }
+    .clearfix();
+}

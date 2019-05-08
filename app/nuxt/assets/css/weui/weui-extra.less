@@ -1,0 +1,167 @@
+@import '../config';
+.fadeIn() {
+    animation: fadeIn ease 0.3s forwards;
+}
+
+.fadeOut() {
+    animation: fadeOut ease 0.3s forwards;
+}
+
+.weui-cell_access,
+.access .weui-cell:not(.no-access) {
+    cursor: pointer;
+    @media (min-width: @screen-sm-min) {
+        &:hover {
+            background: #f4f4f4;
+            &:before {
+                content: none;
+            }
+            & + .weui-cell:before {
+                content: none;
+            }
+            .weui-cell_access_white {
+                background: #fafafa;
+            }
+        }
+        &:active {
+            background: #eaeaea;
+        }
+    }
+}
+
+.weui-cell.top {
+    align-items: stretch;
+    .weui-cell__ft::after {
+        top: 12px;
+    }
+}
+
+.weui-cell__ft {
+    font-size: 12px;
+}
+
+.weui-arrow {
+    .setArrow(right, 6px, #c8c8cd, 1px);
+}
+
+// .weui-arrow-white {
+//     .setArrow(right, 6px, white, 2px);
+// }
+.weui-arrow-left {
+    .setArrow(left, 6px, #c8c8cd, 1px);
+}
+
+.weui-tab.fixed {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 99;
+    height: auto;
+}
+
+.weui-tabbar.fixed {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9;
+    height: auto;
+}
+
+a.weui-cells__title {
+    display: inline-block;
+}
+.weui-panel-padding {
+    @media (min-width: @screen-sm-min) {
+        padding: 30px;
+        .weui-cell {
+            padding: 20px;
+            margin-left: -8px;
+        }
+    }
+}
+.weui-panel__bd,
+.weui-cells {
+    .clearfix();
+}
+
+.weui-mask {
+    text-align: center;
+    padding-top: 20%;
+    height: 100%;
+    vertical-align: middle;
+    color: white;
+    &.v-enter,
+    &.v-enter-to {
+        .fadeIn();
+    }
+    &.v-leave-to {
+        .fadeOut();
+    }
+}
+
+.weui-search-bar__box {
+    color: #b2b2b2;
+}
+
+.ios {
+    .weui-actionsheet {
+        &.v-enter,
+        &.v-leave-to {
+            transform: translateY(100%);
+        }
+    }
+}
+
+.android {
+    .weui-actionsheet {
+        &.v-enter,
+        &.v-enter-to {
+            .fadeIn();
+        }
+        &.v-leave-to {
+            .fadeOut();
+        }
+    }
+}
+
+.weui-toast {
+    &.v-enter,
+    &.v-enter-to {
+        .fadeIn();
+    }
+    &.v-leave-to {
+        .fadeOut();
+    }
+}
+
+.weui-icon-checked:before {
+    font-size: 18px !important;
+}
+
+.weui-switch:checked,
+.weui-switch-cp__input:checked ~ .weui-switch-cp__box {
+    .weui-switch-cp.danger & {
+        border-color: crimson;
+        background-color: crimson;
+    }
+    .weui-switch-cp.warn & {
+        border-color: orange;
+        background-color: orange;
+    }
+}
+
+.weui-panel,
+.weui-cells {
+    .weui-panel,
+    .weui-cells {
+        &:before,
+        &:after {
+            content: none;
+        }
+    }
+}
+.weui-cells__title .el-button--text {
+    padding: 0;
+}
