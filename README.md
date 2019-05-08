@@ -7,7 +7,7 @@
 
 -   已封装解决方案工具列表
 
--   -   翻页/滑块/走马灯 https://www.npmjs.com/package/vue-awesome-swiper
+-   -   翻页/滑块/走马灯 https://www.npmjs.com/package/vue-awesome-swiper https://www.swiper.com.cn/
 -   -   自动吸顶 https://www.npmjs.com/package/sticky-sidebar (需配合 ResizeSensor)
 -   -   图片懒加载 https://www.npmjs.com/package/vue-lazyload
 -   -   抓取排序(v-sortable) https://www.npmjs.com/package/sortablejs
