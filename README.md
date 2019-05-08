@@ -1,11 +1,13 @@
 # topoud-nuxt-client
 
-# node -v 8.9.4
+-   一套 vue nuxt web 快速解决方案 官方文档https://zh.nuxtjs.org/
 
-# npm -v 5.6.0
+### node -v 8.9.4
 
-# npm start 启动测试环境
+### npm -v 5.6.0
 
-# npm run build 生产环境打包
+### npm start 启动测试环境
 
-# npm run buildtest 测试环境打包
+### npm run build 生产环境打包
+
+### npm run buildtest 测试环境打包
