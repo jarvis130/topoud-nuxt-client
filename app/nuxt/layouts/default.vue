@@ -55,18 +55,18 @@ export default {
             global.__userChecked = true
             this.$userCheck(_ => 'stop')
         }
-        let { seajs } = require('seajs/dist/sea')
+        // let { seajs } = require('seajs/dist/sea')
         try {
-            seajs.use(
-                'https://s19.cnzz.com/z_stat.php?id=1273192544&web_id=1273192544'
-            )
+            // seajs.use(
+            //     'https://s19.cnzz.com/z_stat.php?id=1273192544&web_id=1273192544'
+            // )
         } catch (e) {}
     },
     head: {
         link: [
             {
                 rel: 'stylesheet',
-                href: 'https://at.alicdn.com/t/font_761749_ec8y6d2an4b.css'
+                href: 'https://at.alicdn.com/t/font_1181053_rwkok7dxq8s.css'
             }
         ]
     }

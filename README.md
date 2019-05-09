@@ -6,7 +6,7 @@
 -   https://element.eleme.cn/ https://weui.io/
 
 -   已封装解决方案工具列表
-
+-   -   网络请求/全局接口配置/拦截器 ./app/nuxt/plugins/axios.js
 -   -   翻页/滑块/走马灯 https://www.npmjs.com/package/vue-awesome-swiper https://www.swiper.com.cn/
 -   -   自动吸顶 https://www.npmjs.com/package/sticky-sidebar (需配合 ResizeSensor)
 -   -   图片懒加载 https://www.npmjs.com/package/vue-lazyload

@@ -2,7 +2,7 @@
  * @Author: 刘盾 Liudun (liudun@beclon.com)(bach109109@qq.com)(liudun@zbj.com)
  * @Date: 2019-02-26 09:25:47
  * @Last Modified by: 刘盾 Liudun (liudun@beclon.com)(bach109109@qq.com)(liudun@zbj.com)
- * @Last Modified time: 2019-05-08 14:41:38
+ * @Last Modified time: 2019-05-08 15:37:31
  * 入口文件
  */
 
@@ -36,9 +36,7 @@ if (config.dev) {
     builder.build().then(_ => {
         let devRoutes = require('../dev-routes')
         console.log(
-            `点击打开局域网链接：http://${ip.address()}:4000${
-                devRoutes.length ? devRoutes[0] : ''
-            }`
+            `点击打开局域网链接：http://${ip.address()}:4000/api/client`
         )
     })
     //

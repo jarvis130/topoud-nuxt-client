@@ -18,7 +18,7 @@
         "cross-env": "^5.2.0",
         "debug": "^2.6.9",
         "draggable": "^4.2.0",
-        "element-ui": "^2.4.4",
+        "element-ui": "2.4.4",
         "entities": "^1.1.2",
         "express": "^4.15.5",
         "express-session": "^1.15.6",

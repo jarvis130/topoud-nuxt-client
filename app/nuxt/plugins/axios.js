@@ -1,8 +1,8 @@
+// import localIp from '../../../.localip'
+// const apiHost = localIp
 import Axios from 'axios'
 import entities from 'entities'
-// import localIp from '../../../.localip'
 Axios.defaults.withCredentials = true
-// const apiHost = localIp
 let baseURL
 switch (process.env.NODE_ENV) {
     case 'production':
@@ -12,7 +12,7 @@ switch (process.env.NODE_ENV) {
         baseURL = `https://test.topoud.com/api`
         break
     default:
-        baseURL = `/`
+        baseURL = `/api`
 }
 const axios = Axios.create({
     baseURL

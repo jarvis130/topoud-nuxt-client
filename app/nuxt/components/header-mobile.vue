@@ -1,3 +1,11 @@
 <template lang="pug">
-.header-mobile 移动头部
+.header-mobile
 </template>
+<style lang="less" scoped>
+// .header-mobile {
+//     text-align: center;
+//     padding: 10px;
+//     color: #666;
+// }
+</style>
+
