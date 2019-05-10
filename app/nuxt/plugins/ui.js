@@ -16,7 +16,8 @@ import {
     Message,
     DatePicker,
     Cascader,
-    Checkbox
+    Checkbox,
+    Upload
     // CheckboxButton,
     // CheckboxGroup,
 } from 'element-ui'
@@ -35,6 +36,7 @@ Vue.use(DatePicker)
 Vue.use(Dialog)
 Vue.use(Checkbox)
 Vue.use(Cascader)
+Vue.use(Upload)
 // Vue.use(CheckboxButton)
 // Vue.use(CheckboxGroup)
 Vue.prototype.$alert = MessageBox.alert

@@ -2,7 +2,7 @@
 .homepage-template-select
     .weui-panel.tips 选择模板之后，可以直接在模板内对板块进行编辑，#[br]替换图片、移动、删除等操作。#[br]选择模板之后，如果更换模板，会清空数据
     .weui-panel.template-items
-        .template-item-container(v-for='item in template.list')
+        .template-item-container(v-for='item in template.list' :ref='`template`+item')
             .template-item(@click='templateSelect(item)' :class='{active: item === template.index}') {{item}}
                 .template-item-mask
                 .template-item-text 通用模板
@@ -30,6 +30,10 @@ export default {
             this.$router.push({ path: './editor' })
         },
         templateSelect(index) {
+            console.log(this.$refs)
+            this.$scrollTo(this.$refs[`template${index}`][0], 300, {
+                offset: -30
+            })
             this.template.index = index
         }
     }

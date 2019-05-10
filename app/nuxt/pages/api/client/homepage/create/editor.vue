@@ -5,14 +5,14 @@
             .topoud-btn.text +添加更多模块
     .sotable-items(v-sortable='{animation:150,handle:`.i-sort`,onUpdate: sortCallBack}')
         .sotable-item(v-for='item in templates' :key='item.id')
-            swiperModule( v-if='item.type === 123' :item='item')
-            textModule( v-if='item.type === 36346' :item='item')
-            imageModule( v-if='item.type === 63463' :item='item')
+            swiperModule( v-if='item.type === 123' :item='item' :status='status' @remove='moduleRemove' @toTop='moduleTotop')
+            textModule(   v-if='item.type === 36346' :item='item' :status='status' @remove='moduleRemove' @toTop='moduleTotop')
+            imageModule(  v-if='item.type === 63463' :item='item' :status='status'  @remove='moduleRemove' @toTop='moduleTotop')
     .button-update
         .weui-flex
-            .weui-flex__item
-                .topoud-btn.plain {{status.editing ? '预览' : '继续编辑'}}
             .weui-flex__item(@click='status.editing = !status.editing')
+                .topoud-btn.plain {{status.editing ? '预览' : '继续编辑'}}
+            .weui-flex__item
                 .topoud-btn(:class='{disabled: !status.editing}') 保存
 </template>
 <script>
@@ -37,6 +37,8 @@ export default {
         Vue.use(textareaAutoSize)
     },
     methods: {
+        moduleTotop() {},
+        moduleRemove() {},
         sortCallBack({ newIndex, oldIndex }) {
             let item = this.templates[oldIndex]
             this.templates.splice(oldIndex, 1)
@@ -53,8 +55,18 @@ export default {
             templates: [
                 { type: 123 },
                 { type: 36346, title: '企业介绍' },
-                { type: 63463, title: '荣誉介绍' },
-                { type: 36346, title: '企业风采' },
+                {
+                    type: 63463,
+                    title: '荣誉介绍',
+                    count: 2,
+                    tips: '添加证书照片'
+                },
+                {
+                    type: 63463,
+                    title: '企业风采',
+                    count: 1,
+                    tips: '点击添加大图'
+                },
                 {
                     id: 251,
                     type: 2,
@@ -111,12 +123,12 @@ export default {
 }
 .button-update {
     background: white;
-    padding: 5px;
+    padding: 8px 15px;
     .weui-flex__item {
-        padding-right: 2.5px;
+        padding-right: 7.5px;
     }
     .weui-flex__item + .weui-flex__item {
-        padding-left: 2.5px;
+        padding-left: 7.5px;
         padding-right: 0px;
     }
     position: fixed;
