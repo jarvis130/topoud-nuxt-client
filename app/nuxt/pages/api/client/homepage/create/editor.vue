@@ -35,6 +35,14 @@ export default {
     },
     mounted() {
         Vue.use(textareaAutoSize)
+        this.$axios
+            .get('/template/getPanelList')
+            .then(_ => {
+                console.log(_)
+            })
+            .catch(({ message }) => {
+                this.$nuxt.error(message)
+            })
     },
     methods: {
         moduleTotop() {},

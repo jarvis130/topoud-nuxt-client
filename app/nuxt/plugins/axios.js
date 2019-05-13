@@ -12,7 +12,8 @@ switch (process.env.NODE_ENV) {
         baseURL = `https://test.topoud.com/api`
         break
     default:
-        baseURL = `/api`
+        baseURL = `https://test.topoud.com/api`
+    // baseURL = `/api`
 }
 const axios = Axios.create({
     baseURL

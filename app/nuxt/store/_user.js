@@ -1,7 +1,7 @@
 // import Cookie from 'js-cookie'
 import axios from '~/plugins/axios'
 import moment from 'moment'
-import nodeEmoji from 'node-emoji'
+// import nodeEmoji from 'node-emoji'
 let firstUserInfo = false
 export default {
     state: {
@@ -58,25 +58,29 @@ export default {
             } else {
                 commit('userLoadingStart')
             }
-            return axios
-                .get('/user/info/settings')
-                .then(({ data: { success, info, message } }) => {
-                    if (!success) {
-                        throw new Error(message)
-                    }
-                    info.nickname = nodeEmoji.emojify(info.nickname)
-                    info.user_name = nodeEmoji.emojify(info.user_name)
-                    commit('userInfoSet', info)
-                    return { info }
-                })
-                .catch(({ response }) => {
-                    commit('userInfoSet', false)
-                    if (!response) return { info }
-                    let {
-                        data: { message, unionkey }
-                    } = response
-                    return { info, message, unionkey }
-                })
+            return (
+                axios
+                    // .get('/user/info/settings')
+                    .get('/member/checkLogin')
+                    .then(({ data: { success, result, msg: message } }) => {
+                        if (!success) {
+                            throw new Error(message)
+                        }
+                        info = result
+                        // info.nickname = nodeEmoji.emojify(info.nickname)
+                        // info.user_name = nodeEmoji.emojify(info.user_name)
+                        commit('userInfoSet', info)
+                        return { info }
+                    })
+                    .catch(({ response }) => {
+                        commit('userInfoSet', false)
+                        if (!response) return { info }
+                        let {
+                            data: { message, unionkey }
+                        } = response
+                        return { info, message, unionkey }
+                    })
+            )
         },
         logout({ commit }) {
             if (!confirm('确认退出登陆？')) return Promise.reject(new Error())
