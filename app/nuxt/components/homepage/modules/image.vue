@@ -1,6 +1,6 @@
 <template lang="pug">
 .homepage-module
-    titleModule(:item='item' :status='status' :loading='!content')
+    titleModule(:item='item' :status='status' :loading='!content' v-if='!status.adding')
     .image-panel(v-if='!content')
         .image-panel-loading
             small 加载中 
@@ -14,7 +14,7 @@
                 img(v-if='item.imgs && item.imgs[0]' :src='item.imgs[0]')
                 template(v-else)
                     .image-add-icon
-                    .text {{item.tips || '请上传图片'}}
+                    .text {{item._tips || '请上传图片'}}
     .homepage-module-2(v-else-if='content.length === 2')
         .homepage-module-2-left
             uploaderModule(@preview='preview_1' @uploaded='uploaded_1' :size='[165, 165]')
@@ -22,14 +22,36 @@
                     img(v-if='item.imgs && item.imgs[0]' :src='item.imgs[0]')
                     template(v-else)
                         .image-add-icon
-                        .text {{item.tips || '请上传图片'}}
+                        .text {{item._tips || '请上传图片'}}
         .homepage-module-2-right
             uploaderModule(@preview='preview_2' @uploaded='uploaded_2' :size='[165, 165]')
                 .homepage-module-panel.image-panel
                     img(v-if='item.imgs && item.imgs[1]' :src='item.imgs[1]')
                     template(v-else)
                         .image-add-icon
-                        .text {{item.tips || '请上传图片'}}
+                        .text {{item._tips || '请上传图片'}}
+    .homepage-module-3(v-else-if='content.length === 3')
+        .homepage-module-3-left
+            uploaderModule(@preview='preview_1' @uploaded='uploaded_1' :size='[113, 113]')
+                .homepage-module-panel.image-panel
+                    img(v-if='item.imgs && item.imgs[0]' :src='item.imgs[0]')
+                    template(v-else)
+                        .image-add-icon
+                        .text {{item._tips || '请上传图片'}}
+        .homepage-module-3-center
+            uploaderModule(@preview='preview_2' @uploaded='uploaded_2' :size='[113, 113]')
+                .homepage-module-panel.image-panel
+                    img(v-if='item.imgs && item.imgs[1]' :src='item.imgs[1]')
+                    template(v-else)
+                        .image-add-icon
+                        .text {{item._tips || '请上传图片'}}
+        .homepage-module-3-right
+            uploaderModule(@preview='preview_3' @uploaded='uploaded_3' :size='[113, 113]')
+                .homepage-module-panel.image-panel
+                    img(v-if='item.imgs && item.imgs[2]' :src='item.imgs[2]')
+                    template(v-else)
+                        .image-add-icon
+                        .text {{item._tips || '请上传图片'}}
 </template>
 <script>
 import titleModule from './_title'
@@ -141,6 +163,12 @@ export default {
         small {
             color: crimson;
         }
+    }
+    .homepage-module-3 & {
+        .image-add-icon {
+            margin-top: 31px;
+        }
+        height: 113px;
     }
 }
 </style>
