@@ -1,5 +1,6 @@
 <template lang="pug">
 .homepage-module
+    titleModule(:item='item' :status='status' :loading='!content' :controllOnly='true' @toTop='$emit(`toTop`, item.sortOrder)')
     template(v-if='item.imgs && item.imgs.length')
         .homepage-module-panel.swiper
             .swiper-container(v-swiper:imgsSwiper='swiperOption')
@@ -24,10 +25,12 @@
 
 </template>
 <script>
+import titleModule from './_title'
 import uploaderModule from '~/components/uploader/homepage'
 export default {
     data() {
         return {
+            content: true,
             swiperOption: {
                 animation: 150,
                 pagination: {
@@ -38,7 +41,8 @@ export default {
     },
     props: ['imgs', 'item', 'status'],
     components: {
-        uploaderModule
+        uploaderModule,
+        titleModule
     },
     methods: {
         add(url) {

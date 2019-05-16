@@ -27,7 +27,7 @@ export default {
     methods: {
         next() {
             if (!this.template.index) return
-            this.$router.push({ path: './editor' })
+            this.$router.push({ path: './panel-list' })
         },
         templateSelect(index) {
             console.log(this.$refs)

@@ -8,29 +8,28 @@
     .image-panel(v-else-if='errormsg' @click='contentGet')
         .image-panel-error
             small {{errormsg}}
-    template(v-else-if='status.editing')
-        .homepage-module-1(v-if='content.length === 1')
-            uploaderModule(@preview='preview_1' @uploaded='uploaded_1' :size='[345, 165]')
+    .homepage-module-1(v-if='content.length === 1')
+        uploaderModule(@preview='preview_1' @uploaded='uploaded_1' :size='[345, 165]')
+            .homepage-module-panel.image-panel
+                img(v-if='item.imgs && item.imgs[0]' :src='item.imgs[0]')
+                template(v-else)
+                    .image-add-icon
+                    .text {{item.tips || '请上传图片'}}
+    .homepage-module-2(v-else-if='content.length === 2')
+        .homepage-module-2-left
+            uploaderModule(@preview='preview_1' @uploaded='uploaded_1' :size='[165, 165]')
                 .homepage-module-panel.image-panel
                     img(v-if='item.imgs && item.imgs[0]' :src='item.imgs[0]')
                     template(v-else)
                         .image-add-icon
                         .text {{item.tips || '请上传图片'}}
-        .homepage-module-2(v-else-if='content.length === 2')
-            .homepage-module-2-left
-                uploaderModule(@preview='preview_1' @uploaded='uploaded_1' :size='[165, 165]')
-                    .homepage-module-panel.image-panel
-                        img(v-if='item.imgs && item.imgs[0]' :src='item.imgs[0]')
-                        template(v-else)
-                            .image-add-icon
-                            .text {{item.tips || '请上传图片'}}
-            .homepage-module-2-right
-                uploaderModule(@preview='preview_2' @uploaded='uploaded_2' :size='[165, 165]')
-                    .homepage-module-panel.image-panel
-                        img(v-if='item.imgs && item.imgs[1]' :src='item.imgs[1]')
-                        template(v-else)
-                            .image-add-icon
-                            .text {{item.tips || '请上传图片'}}
+        .homepage-module-2-right
+            uploaderModule(@preview='preview_2' @uploaded='uploaded_2' :size='[165, 165]')
+                .homepage-module-panel.image-panel
+                    img(v-if='item.imgs && item.imgs[1]' :src='item.imgs[1]')
+                    template(v-else)
+                        .image-add-icon
+                        .text {{item.tips || '请上传图片'}}
 </template>
 <script>
 import titleModule from './_title'
@@ -45,7 +44,11 @@ export default {
         }
     },
     mounted() {
-        this.contentGet()
+        if (this.item._content) {
+            this.content = this.item._content
+        } else {
+            this.contentGet()
+        }
     },
     methods: {
         preview_1(url, index) {
@@ -70,7 +73,7 @@ export default {
                 .then(({ data: { success, result: content, message } }) => {
                     if (!success) throw Error(message)
                     if (content && content.length) {
-                        this.content = content
+                        this.item._content = this.content = content
                     } else {
                         this.contentInit()
                     }
@@ -81,9 +84,14 @@ export default {
         },
         contentInit() {
             let panelId = this.item.panelId
-            let remark = parseInt(this.item.remark) || 2
-            let p = []
-            if (remark > 0 && remark < 5) {
+            let remark = this.item.remark && (parseInt(this.item.remark) || 2)
+            let p = [
+                this.$axios.post('/template/savePanelContent', {
+                    panelId,
+                    type: 8
+                })
+            ]
+            if (remark && remark > 0 && remark < 5) {
                 p.push(
                     this.$axios.post('/template/savePanelContent', {
                         panelId,
