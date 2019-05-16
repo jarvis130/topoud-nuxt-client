@@ -1,27 +1,28 @@
 <template lang="pug">
-.homepage-editor-create
-    .add-more
-        nuxt-link(to='./module-add')
-            .topoud-btn.text +添加更多模块
-    .sotable-items(v-sortable='{animation:150,handle:`.i-sort`,onUpdate: sortCallBack}')
-        .sotable-item(v-for='item in templates' :key='item.id')
-            swiperModule( v-if='item.type === 123' :item='item' :status='status' @remove='moduleRemove' @toTop='moduleTotop')
-            textModule(   v-if='item.type === 36346' :item='item' :status='status' @remove='moduleRemove' @toTop='moduleTotop')
-            imageModule(  v-if='item.type === 63463' :item='item' :status='status'  @remove='moduleRemove' @toTop='moduleTotop')
-    .button-update
-        .weui-flex
-            .weui-flex__item(@click='status.editing = !status.editing')
-                .topoud-btn.plain {{status.editing ? '预览' : '继续编辑'}}
-            .weui-flex__item
-                .topoud-btn(:class='{disabled: !status.editing}') 保存
+.container
+    .loading-fullscreen(v-if='!template.list')
+        .weui-loading
+        small  模版加载中
+    .homepage-editor-create(v-else)
+        .add-more
+            nuxt-link(to='./module-add')
+                .topoud-btn.text +添加更多模块
+        .sotable-items(v-sortable='{animation:150,handle:`.i-sort`,onUpdate: sortCallBack}')
+            .sotable-item(v-for='item in template.list' :key='item.id')
+                swiperModule( v-if='item.type === `6`' :item='item' :status='status' @remove='moduleRemove' @toTop='moduleTotop')
+                textModule(   v-if='item.type === `1`' :item='item' :status='status' @remove='moduleRemove' @toTop='moduleTotop')
+                imageModule(  v-if='item.type === `8`' :item='item' :status='status'  @remove='moduleRemove' @toTop='moduleTotop')
+        .button-update
+            .weui-flex
+                .weui-flex__item(@click='status.editing = !status.editing')
+                    .topoud-btn.plain {{status.editing ? '预览' : '继续编辑'}}
+                .weui-flex__item
+                    .topoud-btn(:class='{disabled: !status.editing}') 保存
 </template>
 <script>
-import Vue from 'vue'
 import swiperModule from '~/components/homepage/modules/swiper'
 import textModule from '~/components/homepage/modules/text'
 import imageModule from '~/components/homepage/modules/image'
-import textareaAutoSize from 'vue-textarea-autosize'
-Vue.use(textareaAutoSize)
 export default {
     components: {
         swiperModule,
@@ -34,15 +35,7 @@ export default {
         }
     },
     mounted() {
-        Vue.use(textareaAutoSize)
-        this.$axios
-            .get('/template/getPanelList')
-            .then(_ => {
-                console.log(_)
-            })
-            .catch(({ message }) => {
-                this.$nuxt.error(message)
-            })
+        this.templateListGet()
     },
     methods: {
         moduleTotop() {},
@@ -51,6 +44,38 @@ export default {
             let item = this.templates[oldIndex]
             this.templates.splice(oldIndex, 1)
             this.templates.splice(newIndex, 0, item)
+        },
+        templateListGet() {
+            this.$axios
+                .get('/template/getPanelList')
+                .then(({ data: { success, message, result: list } }) => {
+                    if (!success) throw Error(message)
+                    if (!list || !list.length) {
+                        this.templateInit()
+                    } else {
+                        this.template.list = list
+                    }
+                })
+                .catch(({ message }) => {
+                    this.$nuxt.error(message)
+                })
+        },
+        templateInit() {
+            // 类型配置 6:轮播图 1:文本 8(1):双行图 8(2):单行图
+            let types = [
+                { type: 6 },
+                { type: 1 },
+                { type: 8, remark: 2 },
+                { type: 8 }
+            ]
+            let p = []
+            for (let i in types) {
+                let { type, remark } = types[i]
+                p.push(
+                    this.$axios.post('/template/savePanel', { type, remark })
+                )
+            }
+            return Promise.all(p).then(_ => this.templateListGet())
         }
     },
     data() {
@@ -60,50 +85,53 @@ export default {
                     el: '.swiper-pagination'
                 }
             },
-            templates: [
-                { type: 123 },
-                { type: 36346, title: '企业介绍' },
-                {
-                    type: 63463,
-                    title: '荣誉介绍',
-                    count: 2,
-                    tips: '添加证书照片'
-                },
-                {
-                    type: 63463,
-                    title: '企业风采',
-                    count: 1,
-                    tips: '点击添加大图'
-                },
-                {
-                    id: 251,
-                    type: 2,
-                    list: [
-                        'http://img95.699pic.com/photo/50036/2982.jpg_wh300.jpg',
-                        'http://img95.699pic.com/photo/50033/7408.jpg_wh300.jpg',
-                        'http://img95.699pic.com/photo/50036/2981.jpg_wh300.jpg'
-                    ]
-                },
-                {
-                    id: 235235,
-                    type: 1,
-                    text:
-                        '这是一段企业介绍，而且还有点长，大概这这这这这这这这这这这这这这这这这这这这么长\n再随便输入一点什么东西，加长一点看看是否有问题'
-                },
-                {
-                    id: 346,
-                    type: 4,
-                    text: '这个企业的风采实在是非常非常的好，又大又圆又长又宽'
-                },
-                {
-                    id: 2326,
-                    type: 3,
-                    image1:
-                        'http://img95.699pic.com/photo/50036/2982.jpg_wh300.jpg',
-                    image2:
-                        'http://img95.699pic.com/photo/50036/2982.jpg_wh300.jpg'
-                }
-            ],
+            template: {
+                list: false
+            },
+            // templates: [
+            //     { type: 123 },
+            //     { type: 36346, title: '企业介绍' },
+            //     {
+            //         type: 63463,
+            //         title: '荣誉介绍',
+            //         count: 2,
+            //         tips: '添加证书照片'
+            //     },
+            //     {
+            //         type: 63463,
+            //         title: '企业风采',
+            //         count: 1,
+            //         tips: '点击添加大图'
+            //     },
+            //     {
+            //         id: 251,
+            //         type: 2,
+            //         list: [
+            //             'http://img95.699pic.com/photo/50036/2982.jpg_wh300.jpg',
+            //             'http://img95.699pic.com/photo/50033/7408.jpg_wh300.jpg',
+            //             'http://img95.699pic.com/photo/50036/2981.jpg_wh300.jpg'
+            //         ]
+            //     },
+            //     {
+            //         id: 235235,
+            //         type: 1,
+            //         text:
+            //             '这是一段企业介绍，而且还有点长，大概这这这这这这这这这这这这这这这这这这这这么长\n再随便输入一点什么东西，加长一点看看是否有问题'
+            //     },
+            //     {
+            //         id: 346,
+            //         type: 4,
+            //         text: '这个企业的风采实在是非常非常的好，又大又圆又长又宽'
+            //     },
+            //     {
+            //         id: 2326,
+            //         type: 3,
+            //         image1:
+            //             'http://img95.699pic.com/photo/50036/2982.jpg_wh300.jpg',
+            //         image2:
+            //             'http://img95.699pic.com/photo/50036/2982.jpg_wh300.jpg'
+            //     }
+            // ],
             status: {
                 editing: true
             }
@@ -200,6 +228,14 @@ export default {
         position: relative;
         padding-left: 10px;
         padding-bottom: 6px;
+        input {
+            background: none;
+            font-size: 18px;
+            line-height: 25px;
+            color: #0b0e15;
+            width: 200px;
+            border: none;
+        }
         &::before {
             display: block;
             position: absolute;

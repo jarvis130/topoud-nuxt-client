@@ -5,7 +5,7 @@
             .header-env-test(v-if='isTest' title='测试环境')
             .header-env-dev(v-if='isDev' title='开发环境')
             headerModule(v-if='header!==false' :class='{wild: header===`wild`}')
-            nuxt
+            nuxt(keep-alive)
     .footer
         //- footerModule(v-if='!isDev')
         footerModule

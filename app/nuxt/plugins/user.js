@@ -11,6 +11,9 @@ Vue.prototype.$goLogin = function() {
         }
     })
 }
+Vue.prototype.$userAsync = function({ token, userId }, callback) {
+    return this.$store.dispatch('userAsync', { token, userId })
+}
 Vue.prototype.$userCheck = function(callback) {
     return this.$store
         .dispatch('userInfoGet')

@@ -29,9 +29,9 @@ export default {
         userLoadingStart(state) {
             state.userLoading = true
         },
-        // userLoadingFinish(state) {
-        //     state.userLoading = false
-        // },
+        userLoadingFinish(state) {
+            state.userLoading = false
+        },
         logout(state) {
             state.userInfo = false
         }
@@ -45,6 +45,22 @@ export default {
         }
     },
     actions: {
+        userAsync({ commit, getters, dispatch }, { token, userId }) {
+            commit('userLoadingStart')
+            return axios
+                .get('/member/loginWithToken', { params: { token, userId } })
+                .then(({ data: { success, msg, message } }) => {
+                    if (!success) {
+                        throw new Error(msg || message)
+                    }
+                })
+                .catch(({ message }) => {
+                    console.error('loginWithToken', message)
+                })
+                .then(_ => {
+                    dispatch('userInfoGet')
+                })
+        },
         userInfoGet({ commit, getters }) {
             if (firstUserInfo && getters.userLoading) {
                 return
