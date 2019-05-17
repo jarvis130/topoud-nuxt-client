@@ -1,6 +1,6 @@
 <template lang="pug">
 .homepage-module
-    titleModule(:item='item' :status='status' :loading='!content' v-if='!status.adding')
+    titleModule(:item='item' :status='status' :loading='!content' v-if='!status.adding' @toTop='$emit(`toTop`, item.sortOrder)' @remove='$emit(`remove`, item.sortOrder)')
     .image-panel(v-if='!content')
         .image-panel-loading
             small 加载中 

@@ -11,16 +11,14 @@ export const typesAll = [
             {
                 type: '1',
                 panelName: '标题',
-                _content: {
-                    mark: 'titleOnly'
-                }
+                remark: 'titleOnly',
+                _content: [{}]
             },
             {
                 type: '1',
                 panelName: '正文',
-                _content: {
-                    mark: 'contentOnly'
-                }
+                remark: 'contentOnly',
+                _content: [{}]
             },
             {
                 type: '1',

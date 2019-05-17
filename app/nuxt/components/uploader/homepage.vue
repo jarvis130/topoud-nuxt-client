@@ -1,11 +1,12 @@
 <template lang="pug">
 el-upload(
-    action='https://jsonplaceholder.typicode.com/posts/'
+    action='http://test.topoud.com/api/common/uploadCompressImage'
     :show-file-list='false'
-    :before-upload='uploadBefore'
     :on-change='uploadChange'
     :on-preview='uploadPreview'
+    :with-credentials='true'
     :limit='1'
+    :http-request='uploadRequest'
     )
     div
         slot
@@ -53,8 +54,13 @@ export default {
                 autoCropHeight: this.size[1], // 默认生成截图框高度
                 fixed: true, // 是否开启截图框宽高固定比例
                 fixedNumber: this.size // 截图框的宽高比例
-            }
+            },
+            headers: {},
+            file: false
         }
+    },
+    mounted() {
+        this.headers = this.$axios.lastRequestHeader
     },
     methods: {
         uploadPreview(file) {
@@ -63,18 +69,18 @@ export default {
             // this.$emit(`preview`, url)
         },
         uploadChange(file, fileList) {
-            // console.log('change', file, fileList)
+            console.log('change', file, fileList)
             // return
             // this.$emit(`preview`, file.url)
             if (this.option.img === file.url) return
             this.cropperActive = true
             this.option.img = file.url
         },
-        uploadBefore(file, e2) {
-            console.log('before', file, e2)
-            return file
-            // return new Promise((resolve, reject) => {})
-        },
+        // uploadBefore(file, e2) {
+        //     console.log('before', file, e2)
+        //     // return file
+        //     return new Promise((resolve, reject) => {})
+        // },
         cropperComfirm() {
             this.$refs.cropper.getCropData(data => {
                 // console.log(data)
@@ -85,6 +91,27 @@ export default {
         cropperCancel() {
             this.cropperActive = false
             this.option.img = false
+        },
+        uploadRequest() {
+            // let file = this.file
+            // alert('upload start')
+            // this.$axios
+            //     .post('/common/uploadCompressImage', { file })
+            //     .then(
+            //         ({
+            //             data: {
+            //                 success,
+            //                 result: { image_uri },
+            //                 message
+            //             }
+            //         }) => {
+            //             if (!success) throw Error('result')
+            //             console.log(image_uri)
+            //         }
+            //     )
+            //     .catch(({ message }) => {
+            //         this.$message.error(message)
+            //     })
         }
     }
 }

@@ -6,7 +6,7 @@
         |  加载中
         br
         br
-        small USER ASYNC
+        small(style='color: #efefef') USER ASYNC
 </template>
 <script>
 export default {
@@ -63,9 +63,11 @@ export default {
             font-size: 12px;
             line-height: 17px;
             color: #9da2aa;
-            margin-top: 8px;
-            span + span {
-                margin-left: 22px;
+            span {
+                padding: 8px 11px;
+                &:last-child {
+                    padding-right: 0px;
+                }
             }
             .el-icon-close {
                 font-weight: bolder;

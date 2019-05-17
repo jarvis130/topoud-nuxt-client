@@ -1,6 +1,6 @@
 <template lang="pug">
 .homepage-module
-    titleModule(:item='item' :status='status' :loading='!content' :controllOnly='true' @toTop='$emit(`toTop`, item.sortOrder)')
+    titleModule(:item='item' :status='status' :loading='!content' :controllOnly='true' @toTop='$emit(`toTop`, item.sortOrder)'  @remove='$emit(`remove`, item.sortOrder)')
     template(v-if='item.imgs && item.imgs.length')
         .homepage-module-panel.swiper
             .swiper-container(v-swiper:imgsSwiper='swiperOption')

@@ -8,12 +8,12 @@
             nuxt-link(to='./panel-add')
                 .topoud-btn.text +添加更多模块
         .sotable-items(v-sortable='{animation:150,handle:`.i-sort`,onUpdate: sortCallBack}')
-            nuxt-link.sotable-item(v-for='(item, index) in template.list' :key='item.id' :to='`./panel-edit?sortOrder=${index}`')
-                swiperModule( v-if='item.type === `6`' :item='item' :status='status' @toTop='moduleTotop')
-                textModule(   v-else-if='item.type === `1`' :item='item' :status='status' @toTop='moduleTotop')
-                imageModule(  v-else-if='item.type === `8`' :item='item' :status='status' @toTop='moduleTotop')
+            nuxt-link.sotable-item(v-for='(item, index) in template.list' :key='item._hash' :to='`./panel-edit?sortOrder=${index}`')
+                swiperModule( v-if='item.type === `6`' :item='item' :status='status' @toTop='moduleTotop' @remove='moduleRemove')
+                textModule(   v-else-if='item.type === `1`' :item='item' :status='status' @toTop='moduleTotop' @remove='moduleRemove')
+                imageModule(  v-else-if='item.type === `8`' :item='item' :status='status' @toTop='moduleTotop' @remove='moduleRemove')
         .button-update
-            .topoud-btn(:class='{disabled: !status.editing}') 保存
+            .topoud-btn(@click='templateUpdate') 保存
 </template>
 <script>
 import swiperModule from '~/components/homepage/modules/swiper'
@@ -41,7 +41,24 @@ export default {
         }
     },
     methods: {
-        moduleTotop() {},
+        moduleTotop(sortOrder) {
+            if (!sortOrder) return
+            let item = this.template.list[sortOrder]
+            this.template.list.splice(sortOrder, 1)
+            this.template.list.splice(sortOrder - 1, 0, item)
+            // this.template.list.unshift(item)
+            for (let i in this.template.list) {
+                this.template.list[i].sortOrder = i
+            }
+        },
+        moduleRemove(sortOrder) {
+            let item = this.template.list[sortOrder]
+            this.template.list.splice(sortOrder, 1)
+            this.removingList.push(item)
+            for (let i in this.template.list) {
+                this.template.list[i].sortOrder = i
+            }
+        },
         sortCallBack({ newIndex, oldIndex }) {
             let item = this.templates[oldIndex]
             this.templates.splice(oldIndex, 1)
@@ -78,6 +95,155 @@ export default {
                 )
             }
             return Promise.all(p).then(_ => this.templateListGet())
+        },
+        templateUpdate() {
+            if (!confirm('确认更新并发布？')) return
+            let p = []
+            console.log(this.template.list)
+            for (let i in this.template.list) {
+                this.template.list[i].sortOrder = i
+            }
+            for (let i in this.template.list) {
+                let body = {},
+                    item = this.template.list[i]
+                for (let key in item) {
+                    if (key.indexOf('_') === 0) continue
+                    body[key] = item[key]
+                }
+                p.push(
+                    this.$axios
+                        .post('/template/savePanel', body)
+                        .then(
+                            ({
+                                data: {
+                                    success,
+                                    message,
+                                    result: { panelId }
+                                }
+                            }) => {
+                                if (!success) throw Error(message)
+                                if (!item.panelId) {
+                                    item.panelId = panelId
+                                    item._created = true
+                                }
+                                return { success }
+                            }
+                        )
+                        .catch(({ message }) => {
+                            return { message }
+                        })
+                )
+                if (item.panelId) {
+                    for (let j in item._content) {
+                        let content = item._content[j],
+                            body = {}
+                        for (let key in content) {
+                            if (key.indexOf('_') === 0) continue
+                            body[key] = content[key]
+                        }
+                        body.panelId = item.panelId
+                        console.log(body)
+                        p.push(
+                            this.$axios
+                                .post('/template/savePanelContent', body)
+                                .then(({ data: { success, message } }) => {
+                                    if (!success) throw Error(message)
+                                    return { success }
+                                })
+                                .catch(({ message }) => {
+                                    return { message }
+                                })
+                        )
+                    }
+                }
+            }
+            for (let i in this.removingList) {
+                let { panelId } = this.removingList[i]
+                if (!panelId) continue
+                p.push(
+                    this.$axios
+                        .post('/template/deletePanel', { panelId })
+                        .then(({ data: { success, message } }) => {
+                            if (!success) throw Error(message)
+                            return { success }
+                        })
+                        .catch(({ message }) => {
+                            return { message }
+                        })
+                )
+            }
+            this.status.updating = true
+            let errorList = []
+            Promise.all(p)
+                .then(result => {
+                    this.status.updating = false
+                    for (let i in result) {
+                        if (!result[i].success) {
+                            this.errorList.push(result[i].message)
+                        }
+                    }
+                    let unSavePanel = []
+                    for (let i in this.template.list) {
+                        let item = this.template.list[i]
+                        if (!item._created) continue
+                        for (let j in item._content) {
+                            let content = item._content[j],
+                                body = {}
+                            for (let key in content) {
+                                if (key.indexOf('_') === 0) continue
+                                body[key] = content[key]
+                            }
+                            body.panelId = item.panelId
+                            p.push(1)
+                            unSavePanel.push(
+                                this.$axios
+                                    .post('/template/savePanelContent', body)
+                                    .then(({ data: { success, message } }) => {
+                                        if (!success) throw Error(message)
+                                        return { success }
+                                    })
+                                    .catch(({ message }) => {
+                                        return { message }
+                                    })
+                            )
+                        }
+                    }
+                    if (unSavePanel.length) {
+                        return Promise.all(unSavePanel).then(result => {
+                            this.status.updating = false
+                            for (let i in result) {
+                                if (!result[i].success) {
+                                    this.errorList.push(result[i].message)
+                                }
+                            }
+                        })
+                    }
+                })
+                .then(_ => {
+                    if (!errorList.length) {
+                        this.$message.success('保存成功')
+                        this.removingList.length = '0'
+                    } else {
+                        console.log(errorList)
+                        this.$message.error(
+                            '部分接口出错' + `(${errorList.length}/${p.length})`
+                        )
+                    }
+                })
+        },
+        _templateCreateHash() {
+            for (let i in this.template.list) {
+                if (!this.template.list[i]) {
+                    this.template.list[i]._hash =
+                        this.template.list[i]._hash || Math.random()
+                }
+            }
+        }
+    },
+    watch: {
+        'this.template.list.length'() {
+            console.log('?')
+            this._templateCreateHash()
         }
     },
     data() {
@@ -92,7 +258,8 @@ export default {
             },
             status: {
                 editInList: true
-            }
+            },
+            removingList: []
         }
     }
 }
