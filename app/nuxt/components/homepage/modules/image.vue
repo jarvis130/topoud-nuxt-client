@@ -9,49 +9,68 @@
         .image-panel-error
             small {{errormsg}}
     .homepage-module-1(v-if='content.length === 1')
-        uploaderModule(@preview='preview_1' @uploaded='uploaded_1' :size='[345, 165]')
+        uploaderModule(@upload='upload_1' :size='[345, 165]')
             .homepage-module-panel.image-panel
-                img(v-if='item.imgs && item.imgs[0]' :src='item.imgs[0]')
+                .loading(v-if='content[0]._picUrl && !content[0].picUrl') 上传中，请稍后
+                    .weui-loading
+                img(v-if='content[0]._picUrl || content[0].picUrl' :src='content[0]._picUrl || content[0].picUrl')
                 template(v-else)
                     .image-add-icon
                     .text {{item._tips || '请上传图片'}}
+    //- 2 ---
+    //- 2 ---
+    //- 2 ---
     .homepage-module-2(v-else-if='content.length === 2')
         .homepage-module-2-left
-            uploaderModule(@preview='preview_1' @uploaded='uploaded_1' :size='[165, 165]')
+            uploaderModule(@upload='upload_1' :size='[165, 165]')
                 .homepage-module-panel.image-panel
-                    img(v-if='item.imgs && item.imgs[0]' :src='item.imgs[0]')
+                    .loading(v-if='content[0]._picUrl && !content[0].picUrl') 上传中，请稍后
+                        .weui-loading
+                    img(v-if='content[0]._picUrl || content[0].picUrl' :src='content[0]._picUrl || content[0].picUrl')
                     template(v-else)
                         .image-add-icon
                         .text {{item._tips || '请上传图片'}}
         .homepage-module-2-right
-            uploaderModule(@preview='preview_2' @uploaded='uploaded_2' :size='[165, 165]')
+            uploaderModule(@upload='upload_2' :size='[165, 165]')
                 .homepage-module-panel.image-panel
-                    img(v-if='item.imgs && item.imgs[1]' :src='item.imgs[1]')
+                    .loading(v-if='content[1]._picUrl && !content[1].picUrl') 上传中，请稍后
+                        .weui-loading
+                    img(v-if='content[1]._picUrl || content[1].picUrl' :src='content[1]._picUrl || content[1].picUrl')
                     template(v-else)
                         .image-add-icon
                         .text {{item._tips || '请上传图片'}}
+    //- 3 ---
+    //- 3 ---
+    //- 3 ---
     .homepage-module-3(v-else-if='content.length === 3')
         .homepage-module-3-left
-            uploaderModule(@preview='preview_1' @uploaded='uploaded_1' :size='[113, 113]')
+            uploaderModule(@upload='upload_1' :size='[113, 113]')
                 .homepage-module-panel.image-panel
-                    img(v-if='item.imgs && item.imgs[0]' :src='item.imgs[0]')
+                    .loading(v-if='content[0]._picUrl && !content[0].picUrl') 上传中，请稍后
+                        .weui-loading
+                    img(v-if='content[0]._picUrl || content[0].picUrl' :src='content[0]._picUrl || content[0].picUrl')
                     template(v-else)
                         .image-add-icon
                         .text {{item._tips || '请上传图片'}}
         .homepage-module-3-center
-            uploaderModule(@preview='preview_2' @uploaded='uploaded_2' :size='[113, 113]')
+            uploaderModule(@upload='upload_2' :size='[113, 113]')
                 .homepage-module-panel.image-panel
-                    img(v-if='item.imgs && item.imgs[1]' :src='item.imgs[1]')
+                    .loading(v-if='content[1]._picUrl && !content[1].picUrl') 上传中，请稍后
+                        .weui-loading
+                    img(v-if='content[1]._picUrl || content[1].picUrl' :src='content[1]._picUrl || content[1].picUrl')
                     template(v-else)
                         .image-add-icon
                         .text {{item._tips || '请上传图片'}}
         .homepage-module-3-right
-            uploaderModule(@preview='preview_3' @uploaded='uploaded_3' :size='[113, 113]')
+            uploaderModule(@upload='upload_3' :size='[113, 113]')
                 .homepage-module-panel.image-panel
-                    img(v-if='item.imgs && item.imgs[2]' :src='item.imgs[2]')
+                    .loading(v-if='content[2]._picUrl && !content[2].picUrl') 上传中，请稍后
+                        .weui-loading
+                    img(v-if='content[2]._picUrl || content[2].picUrl' :src='content[2]._picUrl || content[2].picUrl')
                     template(v-else)
                         .image-add-icon
                         .text {{item._tips || '请上传图片'}}
+    small(v-if='status.editing') 请等待图片上传后再点击完成
 </template>
 <script>
 import titleModule from './_title'
@@ -73,18 +92,22 @@ export default {
         }
     },
     methods: {
-        preview_1(url, index) {
-            if (!this.item.imgs) this.$set(this.item, 'imgs', [])
-            this.$set(this.item.imgs, index || 0, url)
+        upload({ type, value, index }) {
+            console.log({ type, value, index })
+            if (type === 'preview') {
+                this.$set(this.content[index], '_picUrl', value)
+            } else if (type === 'uploaded') {
+                this.$set(this.content[index], 'picUrl', value)
+            }
         },
-        preview_2(url, index) {
-            this.preview_1(url, 1)
+        upload_1({ type, value }) {
+            this.upload({ type, value, index: 0 })
         },
-        uploaded_1(url) {
-            this.preview_1(url, 0)
+        upload_2({ type, value }) {
+            this.upload({ type, value, index: 1 })
         },
-        uploaded_2(url) {
-            this.preview_1(url, 1)
+        upload_3({ type, value }) {
+            this.upload({ type, value, index: 2 })
         },
         contentGet() {
             this.errormsg = false
@@ -131,6 +154,24 @@ export default {
 
 <style lang="less" scoped>
 .image-panel {
+    position: relative;
+    .loading {
+        text-align: center;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.6);
+        vertical-align: middle;
+        padding-top: 60px;
+        color: white;
+        font-weight: 200;
+        font-size: 12px;
+        .weui-loading {
+            margin-left: 5px;
+        }
+    }
     background: white;
     height: 165px;
     .image-add-icon {

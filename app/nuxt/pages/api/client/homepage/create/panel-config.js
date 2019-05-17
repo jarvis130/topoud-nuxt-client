@@ -48,7 +48,8 @@ export const typesAll = [
             },
             {
                 type: '6',
-                _tips: '点击添加幻灯图片'
+                _tips: '点击添加幻灯图片',
+                _content: []
             }
         ]
     }

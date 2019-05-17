@@ -7,7 +7,7 @@
         .add-more
             nuxt-link(to='./panel-add')
                 .topoud-btn.text +添加更多模块
-        .sotable-items(v-sortable='{animation:150,handle:`.i-sort`,onUpdate: sortCallBack}')
+        .sotable-items(v-sortable='{animation:150, handle:`.i-sort`, onUpdate: sortCallBack}')
             nuxt-link.sotable-item(v-for='(item, index) in template.list' :key='item._hash' :to='`./panel-edit?sortOrder=${index}`')
                 swiperModule( v-if='item.type === `6`' :item='item' :status='status' @toTop='moduleTotop' @remove='moduleRemove')
                 textModule(   v-else-if='item.type === `1`' :item='item' :status='status' @toTop='moduleTotop' @remove='moduleRemove')
@@ -38,6 +38,11 @@ export default {
             })
         } else {
             this.templateListGet()
+        }
+        if (window.__removingListContent) {
+            this.removingListContent = window.__removingListContent
+        } else {
+            window.__removingListContent = this.removingListContent
         }
     },
     methods: {
@@ -110,6 +115,7 @@ export default {
                     if (key.indexOf('_') === 0) continue
                     body[key] = item[key]
                 }
+                body.isEnable = true
                 p.push(
                     this.$axios
                         .post('/template/savePanel', body)
@@ -172,6 +178,23 @@ export default {
                         })
                 )
             }
+            for (let i in this.removingListContent) {
+                let { panelContentId } = this.removingListContent[i]
+                if (!panelContentId) continue
+                p.push(
+                    this.$axios
+                        .get('/template/deletePanelContent', {
+                            params: { panelContentId }
+                        })
+                        .then(({ data: { success, message } }) => {
+                            if (!success) throw Error(message)
+                            return { success }
+                        })
+                        .catch(({ message }) => {
+                            return { message }
+                        })
+                )
+            }
             this.status.updating = true
             let errorList = []
             Promise.all(p)
@@ -179,7 +202,7 @@ export default {
                     this.status.updating = false
                     for (let i in result) {
                         if (!result[i].success) {
-                            this.errorList.push(result[i].message)
+                            errorList.push(result[i].message)
                         }
                     }
                     let unSavePanel = []
@@ -213,7 +236,7 @@ export default {
                             this.status.updating = false
                             for (let i in result) {
                                 if (!result[i].success) {
-                                    this.errorList.push(result[i].message)
+                                    errorList.push(result[i].message)
                                 }
                             }
                         })
@@ -259,7 +282,8 @@ export default {
             status: {
                 editInList: true
             },
-            removingList: []
+            removingList: [],
+            removingListContent: []
         }
     }
 }
