@@ -82,6 +82,7 @@ module.exports = {
         { src: '~/plugins/user', ssr: false }
     ],
     build: {
+        publicPath: '/client/_nuxt/',
         extractCSS: { allChunks: true },
         // extractCSS: true,
         vendor: [
