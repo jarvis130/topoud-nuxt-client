@@ -1,0 +1,13 @@
+{
+    "apps": [
+        {
+            "name": "topoud-client-test-app",
+            "script": "./app/www",
+            "env": {
+                "NODE_ENV": "test",
+                "PORT": 3200
+            },
+            "max_memory_restart": "100M"
+        }
+    ]
+}
