@@ -7,4 +7,5 @@ zip -r .build.test.zip .nuxt
 git add .build.test.zip
 git commit -m build-test
 git push
-#ssh root@0.0.0.0
+ssh root@221.229.196.233
+

@@ -7,6 +7,6 @@ git reset HEAD --hard
 git pull
 # npm install --production 
 rm -rf .nuxt
-pm2 stop xxx-test-app
+pm2 stop topoud-client-test-app
 unzip .build.test.zip
 pm2 start server/pm2.test.json
