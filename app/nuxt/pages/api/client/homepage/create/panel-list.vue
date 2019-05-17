@@ -179,12 +179,12 @@ export default {
                 )
             }
             for (let i in this.removingListContent) {
-                let { panelContentId } = this.removingListContent[i]
-                if (!panelContentId) continue
+                let { id } = this.removingListContent[i]
+                if (!id) continue
                 p.push(
                     this.$axios
                         .get('/template/deletePanelContent', {
-                            params: { panelContentId }
+                            params: { id }
                         })
                         .then(({ data: { success, message } }) => {
                             if (!success) throw Error(message)

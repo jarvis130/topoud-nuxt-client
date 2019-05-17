@@ -1,45 +1,48 @@
 <template lang="pug">
 .homepage-create
-    .weui-panel
-    .weui-panel
-        .weui-cell.top
-            .weui-label 企业名称
-            .weui-cell__bd
-                input.weui-input(placeholder='一个月只能修改一次')
-            .weui-cell__ft
-                .topoud-btn.plain.small 认证
-        .weui-cell.top
-            .weui-label 企业地址
-            .weui-cell__bd
-                input.weui-input(placeholder='默认读取名片的地址')
-            .weui-cell__ft
-                .topoud-btn.plain.small 获取地址
-        .weui-cell.top
-            .weui-label 联系电话
-            .weui-cell__bd
-                input.weui-input(placeholder='023-66664155')
-    .weui-panel
-        .weui-cell.weui-cell_access(@click='industrySelecting=true')
-            .weui-label 行业
-            .weui-cell__bd
-                .input-selector {{'点击选择'}}
-            .weui-cell__ft
-    transition
-        .weui-mask(v-if='industrySelecting' @click='industrySelecting=false')
-    transition
-        .weui-actionsheet.weui-actionsheet_toggle(v-if='industrySelecting')
-            //- .weui-actionsheet__title
-                .weui-actionsheet__title-text title
-            .weui-actionsheet__menu
-                .weui-actionsheet__cell 行业1
-                .weui-actionsheet__cell 行业2
-                .weui-actionsheet__cell 行业3
-                .weui-actionsheet__cell 行业4
-            //- .weui-actionsheet__action
-                .weui-actionsheet__cell(@click='industrySelecting=false') action
-    .btn-area
-        nuxt-link(to='./create/template-select')
-            .topoud-btn 下一步
+    .loading-fullscreen(v-if='!store')
+        .weui-loading
+        | 获取店铺信息中
+    template(v-else)
+        .weui-panel
+        .weui-panel
+            .weui-cell.top
+                .weui-label 企业名称
+                .weui-cell__bd
+                    input.weui-input(placeholder='一个月只能修改一次' v-model='store.storeName')
+                //- .weui-cell__ft
+                    .topoud-btn.plain.small 认证
+            .weui-cell.top
+                .weui-label 企业地址
+                .weui-cell__bd
+                    input.weui-input(placeholder='默认读取名片的地址' v-model='store.address')
+                .weui-cell__ft
+                    .topoud-btn.plain.small 获取地址
+            .weui-cell.top
+                .weui-label 联系电话
+                .weui-cell__bd
+                    input.weui-input(placeholder='023-66XXXX55' v-model='store.phone')
+        .weui-panel
+            .weui-cell.weui-cell_access(@click='industryTree.list=industryTree.value')
+                .weui-label 行业
+                .weui-cell__bd
+                    .input-selector {{(industryTree.kv[store.industryId] && industryTree.kv[store.industryId].industryName) || '点击选择'}}
+                .weui-cell__ft
+        transition
+            .weui-mask(v-if='industryTree.list' @click='industryTree.list=false')
+        transition
+            .weui-actionsheet.weui-actionsheet_toggle(v-if='industryTree.list')
+                //- .weui-actionsheet__title
+                    .weui-actionsheet__title-text title
+                .weui-actionsheet__menu(style='max-height: 310px; overflow: auto;')
+                    .weui-actionsheet__cell(v-for='(item, index) in industryTree.list' @click='industrySelect(index)') {{item.industryName}}
+                //- .weui-actionsheet__action
+                    .weui-actionsheet__cell(@click='industrySelecting=false') action
+        .btn-area(@click.stop.capture='nextStep')
+            //- nuxt-link(to='./create/template-select')
+            //- nuxt-link(to='./create/panel-list')
+            .topoud-btn(:class='{disabled: loading}') 下一步
+                .weui-loading(v-if='loading')
 </template>
 <script>
 export default {
@@ -47,7 +50,118 @@ export default {
         return { title: '官网基础设置' }
     },
     data() {
-        return { industrySelecting: false }
+        return {
+            loading: false,
+            store: false,
+            industryTree: { value: false, list: false, kv: {} },
+            keysNeccesary: {
+                storeName: '企业名称',
+                address: '企业地址',
+                phone: '联系电话',
+                industryId: '行业'
+            }
+        }
+    },
+    methods: {
+        nextStep() {
+            if (this.loading) return
+            for (let key in this.keysNeccesary) {
+                if (!this.store[key]) {
+                    this.$message.error('请填写' + this.keysNeccesary[key])
+                    return
+                }
+            }
+            this.loading = true
+            this.$axios
+                .post('/store/saveStore', this.store)
+                .then(({ data: { success, message, result } }) => {
+                    if (!success) throw Error(message)
+                    this.$router.push('./create/panel-list')
+                    this.loading = false
+                })
+                .catch(({ message }) => {
+                    this.loading = false
+                    this.$nuxt.error(message)
+                })
+        },
+        industrySelect(index) {
+            if (!this.industryTree.list) return
+            if (this.industryTree.list[index].children) {
+                let list = this.industryTree.list[index].children
+                this.industryTree.list = false
+                setTimeout(_ => {
+                    this.industryTree.list = list
+                }, 200)
+                return
+            }
+            this.store.industryId = this.industryTree.list[index].industryId
+            this.industryTree.list = false
+        },
+        getLocation() {
+            window.wx.getLocation({
+                type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+                success: function(res) {
+                    var { latitude, longitude } = res
+                    this.store.latitude = latitude
+                    this.store.longitude = longitude
+                }
+            })
+        },
+        storeInfoGet() {
+            this.$axios('/store/getStoreInfo')
+                .then(({ data: { success, message, result: store } }) => {
+                    if (!success) throw Error(message)
+                    if (!store) {
+                        this.storeInit()
+                    } else {
+                        this.store = store
+                    }
+                })
+                .catch(({ message }) => {
+                    this.$nuxt.error(message)
+                })
+        },
+        storeInit() {
+            this.$axios
+                .post('/store/saveStore', {})
+                .then(({ data: { success, message, result } }) => {
+                    if (!success) throw Error(message)
+                    this.storeInfoGet()
+                })
+                .catch(({ message }) => {
+                    this.$nuxt.error(message)
+                })
+        },
+        industryTreeGet() {
+            this.$axios('/icard/getIndustryTree')
+                .then(({ data: { success, message, result } }) => {
+                    if (!success) throw Error(message)
+                    this.industryTree.value = result
+                    for (let i in result) {
+                        let item = result[i]
+                        this.$set(
+                            this.industryTree.kv,
+                            parseInt(item.industryId),
+                            item
+                        )
+                        for (let j in item.children || []) {
+                            let item1 = item.children[j]
+                            this.$set(
+                                this.industryTree.kv,
+                                parseInt(item1.industryId),
+                                item1
+                            )
+                        }
+                    }
+                })
+                .catch(({ message }) => {
+                    this.$nuxt.error(message)
+                })
+        }
+    },
+    mounted() {
+        this.storeInfoGet()
+        this.industryTreeGet()
     }
 }
 </script>
