@@ -37,7 +37,8 @@ export default {
                 this.template.list = window.__homepageCreatePanelList
             })
         } else {
-            this.templateListGet()
+            // this.templateListGet()
+            this.templateGet()
         }
         if (window.__removingListContent) {
             this.removingListContent = window.__removingListContent
@@ -69,23 +70,65 @@ export default {
             this.templates.splice(oldIndex, 1)
             this.templates.splice(newIndex, 0, item)
         },
-        templateListGet() {
+        templateGet() {
+            this.$axios('/template/getTemplateListByPage')
+                .then(({ data: { success, message, msg, result } }) => {
+                    if (!success) throw Error(message || msg)
+                    let { data } = result
+                    if (!data || !data.length) {
+                        this.templateInit()
+                        // return
+                    } else {
+                        this.template.templateId = data[0].templateId
+                        this.template.id = data[0].id
+                        this.templateListGet()
+                    }
+                })
+                .catch(({ message }) => {
+                    this.$nuxt.error({ message })
+                })
+        },
+        templateInit() {
+            if (this.template.inited) {
+                return this.$nuxt.error({ message: '初始化失败' })
+            }
+            this.template.inited = true
             this.$axios
-                .get('/template/getPanelList')
+                .post('/template/saveTemplate', { type: 4 })
+                .then(({ data: { success, message, result } }) => {
+                    if (!success) throw Error(message)
+                    this.templateGet()
+                })
+                .catch(({ message }) => {
+                    this.$nuxt.error({ message })
+                })
+        },
+        templateListGet() {
+            let { templateId } = this.template
+            if (!templateId) {
+                return this.$nuxt.error({ message: 'templateId invalid' })
+            }
+            this.$axios
+                .get('/template/getPanelList', { params: { templateId } })
                 .then(({ data: { success, message, result: list } }) => {
                     if (!success) throw Error(message)
                     if (!list || !list.length) {
-                        this.templateInit()
+                        this.templateListInit()
                     } else {
                         window.__homepageCreatePanelList = this.template.list = list
                     }
                 })
                 .catch(({ message }) => {
-                    this.$nuxt.error(message)
+                    this.$nuxt.error({ message })
                 })
         },
-        templateInit() {
+        templateListInit() {
+            if (this.template.listInited) {
+                return this.$nuxt.error({ message: '初始化失败' })
+            }
+            this.template.listInited = true
             // 类型配置 6:轮播图 1:文本 8(1):单行图 8(2):双行图
+            let { templateId } = this.template
             let types = typesInit
             let p = []
             for (let i in types) {
@@ -93,9 +136,12 @@ export default {
                 p.push(
                     this.$axios.post('/template/savePanel', {
                         type,
+                        templateId,
                         remark,
                         panelName,
-                        sortOrder: i
+                        sortOrder: i,
+                        terminal: 1,
+                        status: 1
                     })
                 )
             }
@@ -103,6 +149,7 @@ export default {
         },
         templateUpdate() {
             if (!confirm('确认更新并发布？')) return
+            let { templateId } = this.template
             let p = []
             console.log(this.template.list)
             for (let i in this.template.list) {
@@ -116,6 +163,9 @@ export default {
                     body[key] = item[key]
                 }
                 body.isEnable = true
+                body.templateId = templateId
+                body.terminal = 1
+                body.status = 1
                 p.push(
                     this.$axios
                         .post('/template/savePanel', body)
@@ -148,6 +198,7 @@ export default {
                             body[key] = content[key]
                         }
                         body.panelId = item.panelId
+                        body.templateId = templateId
                         console.log(body)
                         p.push(
                             this.$axios
@@ -217,6 +268,7 @@ export default {
                                 body[key] = content[key]
                             }
                             body.panelId = item.panelId
+                            body.templateId = templateId
                             p.push(1)
                             unSavePanel.push(
                                 this.$axios
@@ -243,6 +295,16 @@ export default {
                     }
                 })
                 .then(_ => {
+                    let { id } = this.template
+                    return this.$axios.post('/template/saveTemplate', {
+                        templateId,
+                        id,
+                        type: 4,
+                        isPub: true,
+                        isDefault: true
+                    })
+                })
+                .then(_ => {
                     if (!errorList.length) {
                         this.$message.success('保存成功')
                         this.removingList.length = '0'
@@ -252,6 +314,9 @@ export default {
                             '部分接口出错' + `(${errorList.length}/${p.length})`
                         )
                     }
+                })
+                .catch(({ message }) => {
+                    this.$message.error(message)
                 })
         },
         _templateCreateHash() {
@@ -277,7 +342,10 @@ export default {
                 }
             },
             template: {
-                list: false
+                inited: false,
+                listInited: false,
+                list: false,
+                templateId: false
             },
             status: {
                 editInList: true

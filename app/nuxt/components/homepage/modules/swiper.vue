@@ -12,11 +12,11 @@
                 .swiper-pagination.swiper-pagination-white
         .controll(v-if='status.editing')
             span.image-item-sort(v-sortable="{onUpdate: itemSortUpdate}")
-                .image-item(v-for='(img, index) in content')
+                .image-item(v-for='(img, index) in content' @click.stop.capture='remove(index)')
                     .loading(v-if='img._picUrl && !img.picUrl')
                         .weui-loading
                     img(:src='img._picUrl || img.picUrl')
-                    .image-item-remove(@click.stop.capture='remove(index)') 删除
+                    .image-item-remove 删除
             uploaderModule(:size='[345, 160]' @upload='add' v-if='content.length < 5').image-add
                 .image-add-icon
     uploaderModule(:size='[345, 160]' @upload='add' v-else)
