@@ -15,6 +15,7 @@ Vue.prototype.$userAsync = function({ token, userId }, callback) {
     return this.$store.dispatch('userAsync', { token, userId })
 }
 Vue.prototype.$userCheck = function(callback) {
+    if (!this.$axios.$topoudToken) this.$axios.$topoudToken = this.$route.query.topoudToken
     return this.$store
         .dispatch('userInfoGet')
         .then(_ => {

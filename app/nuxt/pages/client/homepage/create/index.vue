@@ -16,7 +16,8 @@
                 .weui-label 企业地址
                 .weui-cell__bd
                     input.weui-input(placeholder='默认读取名片的地址' v-model='store.address')
-                .weui-cell__ft
+                    small {{store.longitude}},{{store.latitude}}
+                .weui-cell__ft(@click='getLocation')
                     .topoud-btn.plain.small 获取地址
             .weui-cell.top
                 .weui-label 联系电话
@@ -98,6 +99,7 @@ export default {
             this.industryTree.list = false
         },
         getLocation() {
+            if (!window.wx) return
             window.wx.getLocation({
                 type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
                 success: function(res) {
