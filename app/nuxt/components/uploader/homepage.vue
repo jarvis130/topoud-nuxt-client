@@ -1,35 +1,37 @@
 <template lang="pug">
-el-upload(
-    action='http://test.topoud.com/api/common/uploadCompressImage'
-    :show-file-list='false'
-    :on-change='uploadChange'
-    :before-upload='uploadBefore'
-    :with-credentials='true'
-    :limit='1'
-    )
-    div
-        slot
-        .copper-container(v-if='cropperActive')
-            vueCropper(
-                ref="cropper"
-                :img="option.img"
-                :outputSize="option.outputSize"
-                :outputType="option.outputType"
-                :info="option.info"
-                :canScale="option.canScale"
-                :autoCrop="option.autoCrop"
-                :autoCropWidth="option.autoCropWidth"
-                :autoCropHeight="option.autoCropHeight"
-                :fixed="option.fixed"
-                :fixedNumber="option.fixedNumber"
-                :centerBox='true'
-            )
-            .btn-area
-                .left(@click.stop='cropperCancel')
-                    .topoud-btn.plain 取消
-                .right(@click.stop='cropperComfirm')
-                    .topoud-btn 上传
-
+div
+    slot(v-if='$route.params.storeId')
+    el-upload(
+        v-else
+        action='http://test.topoud.com/api/common/uploadCompressImage'
+        :show-file-list='false'
+        :on-change='uploadChange'
+        :before-upload='uploadBefore'
+        :with-credentials='true'
+        :limit='1'
+        )
+        div
+            slot
+            .copper-container(v-if='cropperActive')
+                vueCropper(
+                    ref="cropper"
+                    :img="option.img"
+                    :outputSize="option.outputSize"
+                    :outputType="option.outputType"
+                    :info="option.info"
+                    :canScale="option.canScale"
+                    :autoCrop="option.autoCrop"
+                    :autoCropWidth="option.autoCropWidth"
+                    :autoCropHeight="option.autoCropHeight"
+                    :fixed="option.fixed"
+                    :fixedNumber="option.fixedNumber"
+                    :centerBox='true'
+                )
+                .btn-area
+                    .left(@click.stop='cropperCancel')
+                        .topoud-btn.plain 取消
+                    .right(@click.stop='cropperComfirm')
+                        .topoud-btn 上传
 </template>
 <script>
 import Vue from 'vue'

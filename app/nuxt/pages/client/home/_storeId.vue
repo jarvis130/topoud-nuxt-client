@@ -9,6 +9,8 @@
                 swiperModule( v-if='item.type === 6' :item='item' :status='status')
                 textModule(   v-else-if='item.type === 1' :item='item' :status='status')
                 imageModule(  v-else-if='item.type === 8' :item='item' :status='status')
+    nuxt-link(to='/client/my/homepage/create/panel-list' replace).btn-area
+        .topoud-btn 编辑我的官网
 </template>
 <script>
 import swiperModule from '~/components/homepage/modules/swiper'
@@ -49,7 +51,7 @@ export default {
                     el: '.swiper-pagination'
                 }
             },
-            status: {}
+            status: { view: true }
         }
     }
 }
@@ -151,5 +153,13 @@ export default {
             clear: both;
         }
     }
+}
+.btn-area {
+    padding: 8px 15px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
 }
 </style>
