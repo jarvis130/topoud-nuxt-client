@@ -51,7 +51,7 @@ export default {
             this.contentGet()
         }
     },
-    props: ['item', 'status'],
+    props: ['item', 'status', 'templateId'],
     components: {
         uploaderModule,
         titleModule
@@ -87,12 +87,13 @@ export default {
         contentGet() {
             this.errormsg = false
             let panelId = this.item.panelId
+            let { templateId } = this
             if (!panelId) {
                 this.item._content = this.content = []
                 return
             }
             this.$axios('/template/getPanelContentList', {
-                params: { panelId }
+                params: { panelId, terminal: 1, templateId }
             })
                 .then(({ data: { success, result: content, message } }) => {
                     if (!success) throw Error(message)

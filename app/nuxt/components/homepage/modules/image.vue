@@ -76,7 +76,7 @@
 import titleModule from './_title'
 import uploaderModule from '~/components/uploader/homepage'
 export default {
-    props: ['item', 'status'],
+    props: ['item', 'status', 'templateId'],
     components: { uploaderModule, titleModule },
     data() {
         return {
@@ -112,8 +112,9 @@ export default {
         contentGet() {
             this.errormsg = false
             let panelId = this.item.panelId
+            let templateId = this.templateId
             this.$axios('/template/getPanelContentList', {
-                params: { panelId }
+                params: { panelId, terminal: 1, templateId }
             })
                 .then(({ data: { success, result: content, message } }) => {
                     if (!success) throw Error(message)
@@ -128,19 +129,29 @@ export default {
                 })
         },
         contentInit() {
-            let panelId = this.item.panelId
+            if (this.inited) {
+                this.$nuxt.error({ message: '数据初始化出错' })
+                return
+            }
+            this.inited = true
+            let { panelId } = this.item
+            let { templateId } = this
             let remark = this.item.remark && (parseInt(this.item.remark) || 2)
             let p = [
                 this.$axios.post('/template/savePanelContent', {
                     panelId,
-                    type: 8
+                    type: 8,
+                    terminal: 1,
+                    templateId
                 })
             ]
             if (remark && remark > 0 && remark < 5) {
                 p.push(
                     this.$axios.post('/template/savePanelContent', {
                         panelId,
-                        type: 8
+                        templateId,
+                        type: 8,
+                        terminal: 1
                     })
                 )
             }

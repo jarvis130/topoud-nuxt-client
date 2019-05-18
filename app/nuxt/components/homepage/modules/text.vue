@@ -38,7 +38,7 @@ if (process.browser) {
 
 export default {
     components: { titleModule },
-    props: ['item', 'status'],
+    props: ['item', 'status', 'templateId'],
     data() {
         return {
             content: false,
@@ -93,11 +93,13 @@ export default {
         contentGet() {
             this.errormsg = false
             let panelId = this.item.panelId
+            let { templateId } = this
             this.$axios('/template/getPanelContentList', {
-                params: { panelId }
+                params: { panelId, terminal: 1, templateId }
             })
                 .then(({ data: { success, result: content, message } }) => {
                     if (!success) throw Error(message)
+                    console.log(content)
                     if (content && content.length) {
                         this.item._content = content
                         this.content = content[0]
@@ -110,9 +112,20 @@ export default {
                 })
         },
         contentInit() {
-            let panelId = this.item.panelId
+            if (this.inited) {
+                this.$nuxt.error({ message: '数据初始化出错' })
+                return
+            }
+            this.inited = true
+            let { panelId } = this.item
+            let { templateId } = this
             this.$axios
-                .post('/template/savePanelContent', { panelId, type: 1 })
+                .post('/template/savePanelContent', {
+                    panelId,
+                    type: 1,
+                    templateId,
+                    terminal: 1
+                })
                 .then(_ => {
                     this.contentGet()
                 })

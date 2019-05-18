@@ -9,9 +9,9 @@
                 .topoud-btn.text +添加更多模块
         .sotable-items(v-sortable='{animation:150, handle:`.i-sort`, onUpdate: sortCallBack}')
             nuxt-link.sotable-item(v-for='(item, index) in template.list' :key='item._hash' :to='`./panel-edit?sortOrder=${index}`')
-                swiperModule( v-if='item.type === `6`' :item='item' :status='status' @toTop='moduleTotop' @remove='moduleRemove')
-                textModule(   v-else-if='item.type === `1`' :item='item' :status='status' @toTop='moduleTotop' @remove='moduleRemove')
-                imageModule(  v-else-if='item.type === `8`' :item='item' :status='status' @toTop='moduleTotop' @remove='moduleRemove')
+                swiperModule( v-if='item.type === `6`' :item='item' :status='status' @toTop='moduleTotop' @remove='moduleRemove' :templateId='template.templateId')
+                textModule(   v-else-if='item.type === `1`' :item='item' :status='status' @toTop='moduleTotop' @remove='moduleRemove' :templateId='template.templateId')
+                imageModule(  v-else-if='item.type === `8`' :item='item' :status='status' @toTop='moduleTotop' @remove='moduleRemove' :templateId='template.templateId')
         .button-update
             .topoud-btn(@click='templateUpdate') 保存
 </template>
@@ -32,9 +32,15 @@ export default {
         }
     },
     mounted() {
-        if (window.__homepageCreatePanelList) {
+        if (
+            window.__homepageCreatePanelList &&
+            window.__templateTerminalMobileId
+        ) {
             this.$nextTick(_ => {
                 this.template.list = window.__homepageCreatePanelList
+                this.template.id = window.__templateTerminalMobileId.id
+                this.template.templateId =
+                    window.__templateTerminalMobileId.templateId
             })
         } else {
             // this.templateListGet()
@@ -79,8 +85,10 @@ export default {
                         this.templateInit()
                         // return
                     } else {
-                        this.template.templateId = data[0].templateId
-                        this.template.id = data[0].id
+                        let templateId = (this.template.templateId =
+                            data[0].templateId)
+                        let id = (this.template.id = data[0].id)
+                        window.__templateTerminalMobileId = { templateId, id }
                         this.templateListGet()
                     }
                 })
@@ -109,7 +117,9 @@ export default {
                 return this.$nuxt.error({ message: 'templateId invalid' })
             }
             this.$axios
-                .get('/template/getPanelList', { params: { templateId } })
+                .get('/template/getPanelList', {
+                    params: { templateId, terminal: 1 }
+                })
                 .then(({ data: { success, message, result: list } }) => {
                     if (!success) throw Error(message)
                     if (!list || !list.length) {
@@ -199,6 +209,7 @@ export default {
                         }
                         body.panelId = item.panelId
                         body.templateId = templateId
+                        body.terminal = 1
                         console.log(body)
                         p.push(
                             this.$axios
@@ -269,6 +280,7 @@ export default {
                             }
                             body.panelId = item.panelId
                             body.templateId = templateId
+                            body.terminal = 1
                             p.push(1)
                             unSavePanel.push(
                                 this.$axios
