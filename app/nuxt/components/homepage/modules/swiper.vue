@@ -37,6 +37,7 @@ export default {
         return {
             content: true,
             swiperOption: {
+                autoplay: true,
                 animation: 150,
                 pagination: {
                     el: '.swiper-pagination'
