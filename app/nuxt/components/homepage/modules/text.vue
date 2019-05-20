@@ -1,12 +1,12 @@
 <template lang="pug">
 .homepage-module
-    template(v-if='status.adding || !setting.contentOnly')
-        titleModule(v-if='!status.editing' :item='item' :status='status' :loading='!content' @toTop='$emit(`toTop`, item.sortOrder)' @remove='$emit(`remove`, item.sortOrder)')
-        template(v-else)
-            .homepage-module-panel.text-panel
-                textarea-autosize.text-panel-textarea(placeholder='请输入标题' :min-height='32' rows='1' v-model='item.panelName')
-                .icon.i-edit(v-if='!item.panelName' style='left: 85px;')
-    template(v-if='status.adding || !setting.titleOnly')
+    //- template(v-if='status.adding || !setting.contentOnly')
+    titleModule(v-if='!status.editing' :setting='setting' :item='item' :status='status' :loading='!content' @toTop='$emit(`toTop`, item.sortOrder)' @remove='$emit(`remove`, item.sortOrder)')
+    template(v-else-if='!setting.contentOnly')
+        .homepage-module-panel.text-panel
+            textarea-autosize.text-panel-textarea(:placeholder='item._panelName || "请输入标题"' :min-height='32' rows='1' v-model='item.panelName')
+            .icon.i-edit(v-if='!item.panelName' :style='{left: (15 + ((item._panelName && item._panelName.length) || 5) * 14) + "px"}')
+    template(v-if='!setting.titleOnly')
         .homepage-module-panel.text-panel.text-body
             .text-panel-loading(v-if='!content')
                 small 加载中 
@@ -14,10 +14,10 @@
             .text-panel-error(v-else-if='errormsg' @click='contentGet')
                 small {{errormsg}}
             template(v-else-if='status.editing')
-                textarea-autosize.text-panel-textarea(:class='{bolder: setting.bolder, center: setting.center}' placeholder='请输入文字描述' :min-height='90' v-model='content.productName')
-            .text-panel-preview.empty(:class='{bolder: setting.bolder, center: setting.center}' v-else-if='!content.productName') 请输入文字描述
+                textarea-autosize.text-panel-textarea(:class='{bolder: setting.bolder, center: setting.center}' :placeholder='content._productName || "请输入文字描述"' :min-height='90' v-model='content.productName')
+            .text-panel-preview.empty(:class='{bolder: setting.bolder, center: setting.center}' v-else-if='!content.productName') {{content._productName || "请输入文字描述"}}
             .text-panel-preview(:class='{bolder: setting.bolder, center: setting.center}' v-else v-html='content.productName && content.productName.replace(\/\\n\/g,`<br\>`)')
-            .icon.i-edit(v-if='content && !content.productName && !setting.center')
+            .icon.i-edit(v-if='content && !content.productName && !setting.center' :style='{left: (19 + ((content._productName && content._productName.length) || 7) * 14) + "px"}')
         .text-btns(v-if='status.editing')
             .text-btn(@click='setting.bolder = !setting.bolder' :class='{active: setting.bolder}')
                 img(src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEgAAABICAYAAABV7bNHAAAEaklEQVR4Xu2cb0xVZRzHP08kL7y4GQqb0IuotVhNZf1BoBKXiYVUTm0GM1ymLkguU2xLRYFCW/Ui58pqrkzn5uakQoKRiDqthfknSxHUoi1cNnoRcoGxtI577riL4NyL5xwOl3Pu87w72/N7dr+f5/v8znnOee5PMKhpmnYfUADMAxKA8YP7uOy6F/gd+Ar4SAhxcaA+EbjQNC0KeAcoAsa5DMKtyrkOvAesF0L8I4P8gDRNux2oBrJvdSSX96sD5gshrgcAbQWKXS7aqLytQojVQtO0B4CzgHSRav8RuAGkSEAfAIWKjC6B7RJQC5CsAOkSaJWAeiLgVm52/nslIM1sdCTEKUDDzLICpABZSwTKQcpBykHWCCgHWeOncpBykHKQNQLKQdb4qRykHOQAB129+gfnzjcb+qUTJsQQGxvLnYkJeDweQ7Ej2XlUltjBhkYWLMo1/bsz0tPIfjqLvNzFxMfHmR7HTKAjAAWExcR4eKN8Iy8vW0pUlPxKZX9zFKAAjrUlxZRv2mA/HfldbDTeKFpdYnok6uuqeezRdNshORaQhCMh2d3CDujkieNMmhTr19nV5aOvrw+fz8fJU2eoqvqS02d+CMrg4oWzJCbK4wP2tbADavu5mfg4/TuThJXz3CKamr7XJVBbU0XmzMftozMWclAoQFL5Z7v2sMq7RhfC5/v3kjVndmQDCpXglYOAbe9/yPoNZbouifgc1Nb2K/OeXUh7+5UhgGY/MYvqL/bZurzk4GFP0sXeQjzj/7/X6rzWyaXLv3Do0GFdAPKJ+mhjPcnJ8jCcvS3sgIzKS5gyhT27PyE19WGjoab6OwrQ0vwlVL65iTsmTjQl1kyQowBJgbMyZ1K06hXmZj1pRq/hGMcBCigsLFjJW5srbN/Vhx3QU3PnEB0dPWRm5Xaj+UILHR1/Bp11b1EBWyorDLvCSEDYAQ33JN3S0krJa+s4dvxbXV0NX9eQnjbDiGZDfcc8IKmmy+cj5cE0XTflvvA8Oz6WxyztaY4AJKUvzs2ntq5+CAV527/U+qM9dMbCg+JwSyygPG/JSxyoqdUF0X2tI7IBydce9099KGjCjmhAf3V2UlZeyac7d+u6ZEbqIzQ26DtrJGwV9hyktxfr6e3B5+vmt/YrNDWdoLtbnlTWbyWrvVSUl44EC90xwg7IijK5af3umyMkJd1lZZiQsY4GVFFWSskar21w5MCOBbRyxTLefXuz+7caRqdfPvese30t+S/m2Q7HEQ5KmT6NyXGTuefuJJ7JySYjI43ocaP3h8hRWWJGXTKW+itAw8yGAqQAWVuwykHKQcpB1ggoB1njp3KQcpBykDUCykHW+KnCAqH5+QsLqNIUwSH5S1Oo4ibBAW2TgGR5nJ+A26ytVtdF/wtMCxRY2gEsd51Ea4K2CyFeDQCSxysOApnWxnRNdIMsVyaEuDGwyJusQLWlv1TX0PMortEeUsjf/UXeSiUc/zvpwd01Tbu3vyJVTgSWCZTL6vJAJjcBUQd1g/pAeQUAAAAASUVORK5CYII=')
@@ -187,7 +187,7 @@ export default {
     width: 11px;
     height: 11px;
     position: absolute;
-    left: 117px;
+    // left: 117px;
     top: 15px;
 }
 .text-btn {

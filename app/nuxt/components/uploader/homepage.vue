@@ -87,6 +87,7 @@ export default {
                             }
                         }) => {
                             if (!success) throw Error(message)
+                            debugger
                             this.$emit(`upload`, {
                                 type: 'uploaded',
                                 value: url,

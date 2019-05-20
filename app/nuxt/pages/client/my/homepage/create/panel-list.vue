@@ -9,9 +9,9 @@
                 .topoud-btn.text +添加更多模块
         .sotable-items(v-sortable='{animation:150, handle:`.i-sort`, onUpdate: sortCallBack}')
             nuxt-link.sotable-item(v-for='(item, index) in template.list' :key='item._hash' :to='`./panel-edit?sortOrder=${index}`')
-                swiperModule( v-if='item.type === `6`' :item='item' :status='status' @toTop='moduleTotop' @remove='moduleRemove' :templateId='template.templateId')
-                textModule(   v-else-if='item.type === `1`' :item='item' :status='status' @toTop='moduleTotop' @remove='moduleRemove' :templateId='template.templateId')
-                imageModule(  v-else-if='item.type === `8`' :item='item' :status='status' @toTop='moduleTotop' @remove='moduleRemove' :templateId='template.templateId')
+                swiperModule( v-if='!sorting && item.type === `6`' :item='item' :status='status' @toTop='moduleTotop' @remove='moduleRemove' :templateId='template.templateId')
+                textModule(   v-else-if='!sorting && item.type === `1`' :item='item' :status='status' @toTop='moduleTotop' @remove='moduleRemove' :templateId='template.templateId')
+                imageModule(  v-else-if='!sorting && item.type === `8`' :item='item' :status='status' @toTop='moduleTotop' @remove='moduleRemove' :templateId='template.templateId')
         .button-update
             .topoud-btn(@click='templateUpdate') 保存
 </template>
@@ -55,6 +55,7 @@ export default {
     methods: {
         moduleTotop(sortOrder) {
             if (!sortOrder) return
+            this.sorting = true
             let item = this.template.list[sortOrder]
             this.template.list.splice(sortOrder, 1)
             this.template.list.splice(sortOrder - 1, 0, item)
@@ -62,6 +63,9 @@ export default {
             for (let i in this.template.list) {
                 this.template.list[i].sortOrder = i
             }
+            this.$nextTick(_ => {
+                this.sorting = false
+            })
         },
         moduleRemove(sortOrder) {
             let item = this.template.list[sortOrder]
@@ -337,12 +341,17 @@ export default {
                     this.template.list[i]._hash =
                         this.template.list[i]._hash || Math.random()
                 }
+                this.template.list[i].sortOrder = parseInt(i)
             }
         }
     },
+    computed: {
+        listLength() {
+            return this.template.list && this.template.list.length
+        }
+    },
     watch: {
-        'this.template.list.length'() {
-            console.log('?')
+        listLength() {
             this._templateCreateHash()
         }
     },
@@ -363,7 +372,9 @@ export default {
                 editInList: true
             },
             removingList: [],
-            removingListContent: []
+            removingListContent: [],
+            // 同样类型的组件在排序变化时不会重新渲染， 需要通过sorting控制重新绘制
+            sorting: false
         }
     }
 }

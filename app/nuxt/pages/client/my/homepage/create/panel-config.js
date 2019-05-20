@@ -10,19 +10,20 @@ export const typesAll = [
         list: [
             {
                 type: '1',
-                panelName: '标题',
+                _panelName: '标题',
                 remark: 'titleOnly',
                 _content: [{}]
             },
             {
                 type: '1',
-                panelName: '正文',
+                _panelName: '正文',
                 remark: 'contentOnly',
-                _content: [{}]
+                _content: [{ _productName: '正文' }]
             },
             {
                 type: '1',
-                panelName: '标题+正文'
+                _panelName: '标题+正文',
+                _content: [{ _productName: '正文' }]
             }
         ]
     },

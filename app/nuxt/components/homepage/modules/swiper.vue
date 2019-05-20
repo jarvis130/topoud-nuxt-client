@@ -69,6 +69,7 @@ export default {
                     return
                 }
             }
+            debugger
             this.content.push({ _picUrl, picUrl, _hash })
         },
         remove(index) {

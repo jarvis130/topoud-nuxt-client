@@ -9,7 +9,7 @@
             .weui-cell.top
                 .weui-label 企业名称
                 .weui-cell__bd
-                    input.weui-input(placeholder='一个月只能修改一次' v-model='store.storeName')
+                    input.weui-input(placeholder='一个月只能修改一次' maxlength='20' v-model='store.storeName')
                 //- .weui-cell__ft
                     .topoud-btn.plain.small 认证
             .weui-cell.top
@@ -47,6 +47,7 @@
                 .weui-loading(v-if='loading')
 </template>
 <script>
+import reg from '~/assets/js/reg'
 export default {
     head() {
         return { title: '官网基础设置' }
@@ -72,6 +73,11 @@ export default {
                     this.$message.error('请填写' + this.keysNeccesary[key])
                     return
                 }
+            }
+            let { phone } = this.store
+            if (!reg.landline.test(phone) && !reg.mobile.test(phone)) {
+                this.$message.error('联系电话格式错误')
+                return
             }
             this.loading = true
             this.$axios

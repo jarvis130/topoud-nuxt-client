@@ -16,6 +16,7 @@ module.exports = {
         'no-fallthrough': 'off',
         'no-trailing-spaces': 'off',
         'one-var': 'off',
+        'no-debugger': 'off',
         camelcase: 'off'
     }
 }
