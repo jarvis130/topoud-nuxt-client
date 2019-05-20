@@ -53,27 +53,31 @@ export default {
         }
     },
     methods: {
-        moduleTotop(sortOrder) {
-            if (!sortOrder) return
-            this.sorting = true
-            let item = this.template.list[sortOrder]
-            this.template.list.splice(sortOrder, 1)
-            this.template.list.splice(sortOrder - 1, 0, item)
-            // this.template.list.unshift(item)
+        reSort() {
             for (let i in this.template.list) {
                 this.template.list[i].sortOrder = i
             }
+            this.sorting = true
+            let y = window.scrollY
             this.$nextTick(_ => {
                 this.sorting = false
+                this.$nextTick(_ => {
+                    window.scrollTo(0, y)
+                })
             })
+        },
+        moduleTotop(sortOrder) {
+            if (!sortOrder) return
+            let item = this.template.list[sortOrder]
+            this.template.list.splice(sortOrder, 1)
+            this.template.list.splice(sortOrder - 1, 0, item)
+            this.reSort()
         },
         moduleRemove(sortOrder) {
             let item = this.template.list[sortOrder]
             this.template.list.splice(sortOrder, 1)
             this.removingList.push(item)
-            for (let i in this.template.list) {
-                this.template.list[i].sortOrder = i
-            }
+            this.reSort()
         },
         sortCallBack({ newIndex, oldIndex }) {
             let item = this.templates[oldIndex]
@@ -342,8 +346,8 @@ export default {
                     this.template.list[i]._hash =
                         this.template.list[i]._hash || Math.random()
                 }
-                this.template.list[i].sortOrder = parseInt(i)
             }
+            this.reSort()
         }
     },
     computed: {

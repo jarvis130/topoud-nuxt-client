@@ -24,6 +24,13 @@ export default {
             }
             this.$emit(`remove`)
         }
+    },
+    watch: {
+        'item.panelName'(to) {
+            if (to.length > 15) {
+                this.item.panelName = this.item.panelName.substr(0, 15)
+            }
+        }
     }
 }
 </script>
