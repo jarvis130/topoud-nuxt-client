@@ -81,7 +81,9 @@ export default {
             this.templates.splice(newIndex, 0, item)
         },
         templateGet() {
-            this.$axios('/template/getTemplateListByPage')
+            this.$axios('/template/getTemplateListByPage', {
+                params: { type: 4 }
+            })
                 .then(({ data: { success, message, msg, result } }) => {
                     if (!success) throw Error(message || msg)
                     let { data } = result
@@ -122,7 +124,7 @@ export default {
             }
             this.$axios
                 .get('/template/getPanelList', {
-                    params: { templateId, terminal: 1 }
+                    params: { templateId, terminal: 1, type: 4 }
                 })
                 .then(({ data: { success, message, result: list } }) => {
                     if (!success) throw Error(message)
@@ -165,7 +167,7 @@ export default {
             if (!confirm('确认更新并发布？')) return
             let { templateId } = this.template
             let p = []
-            console.log(this.template.list)
+            // console.log(this.template.list)
             for (let i in this.template.list) {
                 this.template.list[i].sortOrder = i
             }
@@ -214,7 +216,6 @@ export default {
                         body.panelId = item.panelId
                         body.templateId = templateId
                         body.terminal = 1
-                        console.log(body)
                         p.push(
                             this.$axios
                                 .post('/template/savePanelContent', body)

@@ -58,9 +58,6 @@ export default {
     },
     methods: {
         add({ value, type, hash: _hash }) {
-            if (this.content.length >= 5) {
-                return this.$message.error('最多添加5张')
-            }
             let _picUrl = type === 'preview' ? value : undefined,
                 picUrl = type === 'uploaded' ? value : undefined
             for (let i in this.content) {
@@ -69,7 +66,9 @@ export default {
                     return
                 }
             }
-            debugger
+            if (this.content.length >= 5) {
+                return this.$message.error('最多添加5张')
+            }
             this.content.push({ _picUrl, picUrl, _hash })
         },
         remove(index) {
