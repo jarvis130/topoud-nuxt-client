@@ -106,9 +106,8 @@ export default {
             this.industryTree.list = false
         },
         getLocationRequest(index) {
-            alert('go' + index)
             if (this.getLocationRequestIndex !== index) return
-            if (this.getLocationRequestTimes > 10) return
+            if (this.getLocationRequestTimes > 30) return
             this.getLocationRequestTimes++
             let { getLocationRequestHash: hash } = this
             this.$axios(
