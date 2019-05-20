@@ -24,7 +24,7 @@ export default {
     },
     head() {
         return {
-            title: '云柬官网'
+            title: '官网'
         }
     },
     mounted() {
