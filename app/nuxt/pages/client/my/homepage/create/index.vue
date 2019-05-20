@@ -128,11 +128,11 @@ export default {
             })
         },
         getLocation() {
-            // if (!window.wx) return
+            if (!window.wx) return
             let hash = this.$random.string(32)
-            // window.wx.miniProgram.navigateTo({
-            //     url: `/pages/webview/location?hash=${hash}`
-            // })
+            window.wx.miniProgram.navigateTo({
+                url: `/pages/webview/location?hash=${hash}`
+            })
             this.getLocationRequestHash = hash
             this.getLocationRequestIndex = this.getLocationRequestIndex || 0
             this.getLocationRequestIndex++

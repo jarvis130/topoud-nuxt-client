@@ -2,7 +2,7 @@
  * @Author: 刘盾 Liudun (liudun@beclon.com)(bach109109@qq.com)(liudun@zbj.com)
  * @Date: 2019-02-26 09:25:47
  * @Last Modified by: 刘盾 Liudun (liudun@beclon.com)(bach109109@qq.com)(liudun@zbj.com)
- * @Last Modified time: 2019-05-20 14:41:54
+ * @Last Modified time: 2019-05-20 15:12:08
  * 入口文件
  */
 
@@ -18,6 +18,25 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
 // 接口服务
+if (!development) {
+    app.use((req, res, next) => {
+        res.header(
+            'Access-Control-Allow-Headers',
+            'Content-Type,Content-Length, Authorization, Accept,X-Requested-With'
+        )
+        res.header(
+            'Access-Control-Allow-Methods',
+            'PUT,POST,GET,DELETE,OPTIONS'
+        )
+        res.header('Access-Control-Allow-Credentials', true)
+        res.header('Access-Control-Allow-Origin', req.headers.origin)
+        if (req.method === 'OPTIONS') {
+            res.sendStatus(200)
+            return res.end()
+        }
+        next()
+    })
+}
 app.use(require('./api/routes/location-hash'))
 
 // nuxt
