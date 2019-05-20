@@ -106,6 +106,7 @@ export default {
             this.industryTree.list = false
         },
         getLocationRequest(index) {
+            alert('go' + index)
             if (this.getLocationRequestIndex !== index) return
             if (this.getLocationRequestTimes > 10) return
             this.getLocationRequestTimes++
@@ -114,18 +115,22 @@ export default {
                 this.$axios.baseURL.replace(/\/api$/, '') +
                     '/client/my/homepage/create/location-hash-get',
                 { params: { hash } }
-            ).then(({ data: { success, message, result } }) => {
-                if (!success) throw Error(message)
-                if (!result) {
-                    setTimeout(_ => {
-                        this.getLocationRequest(index)
-                    }, 1000)
-                    return
-                }
-                let [longitude, latitude] = result.split(',')
-                this.store.longitude = longitude
-                this.store.latitude = latitude
-            })
+            )
+                .then(({ data: { success, message, result } }) => {
+                    if (!success) throw Error(message)
+                    if (!result) {
+                        setTimeout(_ => {
+                            this.getLocationRequest(index)
+                        }, 1000)
+                        return
+                    }
+                    let [longitude, latitude] = result.split(',')
+                    this.store.longitude = longitude
+                    this.store.latitude = latitude
+                })
+                .catch(({ message }) => {
+                    alert('请求出错' + 'message')
+                })
         },
         getLocation() {
             if (!window.wx) return
