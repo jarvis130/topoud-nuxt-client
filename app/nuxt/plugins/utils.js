@@ -1,5 +1,24 @@
 import Vue from 'vue'
 import axios from './axios'
+
+const create = ({ len, lib }) => {
+    let maxPos = lib.length
+    let pwd = ''
+    for (let i = 0; i < len; i++) {
+        pwd += lib.charAt(Math.floor(Math.random() * maxPos))
+    }
+    return pwd
+}
+const stringLib =
+    'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678' /** **默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1** **/
+const numberLib = '0123456789'
+const string = len => {
+    return create({ len, lib: stringLib })
+}
+const number = len => {
+    return create({ len, lib: numberLib })
+}
+
 export default ({ app, req }) => {
     let terminal = {}
     // console.log(app)
@@ -24,4 +43,8 @@ export default ({ app, req }) => {
     Vue.prototype.$terminal = terminal
     Vue.prototype.$axios = axios
     app.$axios = axios
+
+    if (process.browser) {
+        Vue.prototype.$random = { string, number }
+    }
 }

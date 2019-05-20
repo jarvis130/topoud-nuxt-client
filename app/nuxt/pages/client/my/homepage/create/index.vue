@@ -16,7 +16,7 @@
                 .weui-label 企业地址
                 .weui-cell__bd
                     input.weui-input(placeholder='默认读取名片的地址' v-model='store.address')
-                    small(v-if='store.longitude && store.latitude') {{store.longitude}},{{store.latitude}}
+                    small(v-if='store.longitude && store.latitude') 坐标:{{store.longitude}},{{store.latitude}}
                     small(v-else) 还未获取地址经纬度
                 .weui-cell__ft(@click='getLocation')
                     .topoud-btn.plain.small 获取地址
@@ -105,24 +105,47 @@ export default {
             this.store.industryId = this.industryTree.list[index].industryId
             this.industryTree.list = false
         },
+        getLocationRequest(index) {
+            if (this.getLocationRequestIndex !== index) return
+            if (this.getLocationRequestTimes > 10) return
+            this.getLocationRequestTimes++
+            let { getLocationRequestHash: hash } = this
+            this.$axios(
+                this.$axios.baseURL.replace(/\/api$/, '') +
+                    '/client/my/homepage/create/location-hash-get',
+                { params: { hash } }
+            ).then(({ data: { success, message, result } }) => {
+                if (!success) throw Error(message)
+                if (!result) {
+                    setTimeout(_ => {
+                        this.getLocationRequest(index)
+                    }, 1000)
+                    return
+                }
+                let [longitude, latitude] = result.split(',')
+                this.store.longitude = longitude
+                this.store.latitude = latitude
+            })
+        },
         getLocation() {
-            if (!window.wx) return
-            window.wx.miniProgram.navigateTo({ url: '/pages/webview/location' })
-            // alert('go')
-            // alert(window.wx.getLocation)
-            // window.wx.getLocation({
-            //     type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
-            //     success: function(res) {
-            //         var { latitude, longitude } = res
-            //         alert(latitude)
-            //         alert(longitude)
-            //         this.store.latitude = latitude
-            //         this.store.longitude = longitude
-            //     },
-            //     fail(e) {
-            //         alert(JSON.stringify(e))
-            //     }
+            // if (!window.wx) return
+            let hash = this.$random.string(32)
+            // window.wx.miniProgram.navigateTo({
+            //     url: `/pages/webview/location?hash=${hash}`
             // })
+            this.getLocationRequestHash = hash
+            this.getLocationRequestIndex = this.getLocationRequestIndex || 0
+            this.getLocationRequestIndex++
+            this.getLocationRequestTimes = 0
+            this.getLocationRequest(this.getLocationRequestIndex)
+
+            // setTimeout(_ => {
+            //     this.$axios.post(
+            //         this.$axios.baseURL.replace(/\/api$/, '') +
+            //             '/client/my/homepage/create/location-hash-set',
+            //         { hash, value: '109.0235,29.235754' }
+            //     )
+            // }, 3500)
         },
         storeInfoGet() {
             this.$axios('/store/getStoreInfo')

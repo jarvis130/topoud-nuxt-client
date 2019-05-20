@@ -19,6 +19,7 @@ switch (process.env.NODE_ENV) {
 const axios = Axios.create({
     baseURL
 })
+axios.baseURL = baseURL
 axios.interceptors.request.use(function(request) {
     if (process.browser) {
         request.headers.Authorization = `Bearer ${axios.$topoudToken}`
