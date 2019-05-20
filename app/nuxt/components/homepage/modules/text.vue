@@ -4,7 +4,7 @@
     titleModule(v-if='!status.editing' :setting='setting' :item='item' :status='status' :loading='!content' @toTop='$emit(`toTop`, item.sortOrder)' @remove='$emit(`remove`, item.sortOrder)')
     template(v-else-if='!setting.contentOnly')
         .homepage-module-panel.text-panel
-            textarea-autosize.text-panel-textarea(:placeholder='item._panelName || "请输入标题"' :min-height='32' rows='1' v-model='item.panelName')
+            textarea-autosize.text-panel-textarea(:placeholder='item._panelName || "请输入标题"' :min-height='32' rows='1' v-model='item.panelName' maxlength='15')
             .icon.i-edit(v-if='!item.panelName' :style='{left: (15 + ((item._panelName && item._panelName.length) || 5) * 14) + "px"}')
     template(v-if='!setting.titleOnly')
         .homepage-module-panel.text-panel.text-body
@@ -129,6 +129,16 @@ export default {
                 .then(_ => {
                     this.contentGet()
                 })
+        }
+    },
+    watch: {
+        'item.panelName'(to) {
+            if (to.length > 15) {
+                let text = this.item.panelName.substr(0, 15)
+                // this.item.panelName = ''
+                console.log(to, text)
+                this.item.panelName = text
+            }
         }
     }
 }
