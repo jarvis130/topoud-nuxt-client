@@ -9,7 +9,7 @@
             .weui-cell.top
                 .weui-label 企业名称
                 .weui-cell__bd
-                    input.weui-input(placeholder='一个月只能修改一次' maxlength='20' v-model='store.storeName')
+                    input.weui-input(placeholder='一个月只能修改一次' maxlength='15' v-model='store.storeName')
                 //- .weui-cell__ft
                     .topoud-btn.plain.small 认证
             .weui-cell.top
@@ -107,21 +107,22 @@ export default {
         },
         getLocation() {
             if (!window.wx) return
+            window.wx.miniProgram.navigateTo({ url: '/pages/webview/location' })
             // alert('go')
             // alert(window.wx.getLocation)
-            window.wx.getLocation({
-                type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
-                success: function(res) {
-                    var { latitude, longitude } = res
-                    alert(latitude)
-                    alert(longitude)
-                    this.store.latitude = latitude
-                    this.store.longitude = longitude
-                },
-                fail(e) {
-                    alert(JSON.stringify(e))
-                }
-            })
+            // window.wx.getLocation({
+            //     type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+            //     success: function(res) {
+            //         var { latitude, longitude } = res
+            //         alert(latitude)
+            //         alert(longitude)
+            //         this.store.latitude = latitude
+            //         this.store.longitude = longitude
+            //     },
+            //     fail(e) {
+            //         alert(JSON.stringify(e))
+            //     }
+            // })
         },
         storeInfoGet() {
             this.$axios('/store/getStoreInfo')

@@ -2,7 +2,7 @@
  * @Author: 刘盾 Liudun (liudun@beclon.com)(bach109109@qq.com)(liudun@zbj.com)
  * @Date: 2019-02-26 09:25:47
  * @Last Modified by: 刘盾 Liudun (liudun@beclon.com)(bach109109@qq.com)(liudun@zbj.com)
- * @Last Modified time: 2019-05-17 18:27:31
+ * @Last Modified time: 2019-05-20 14:41:54
  * 入口文件
  */
 
@@ -16,6 +16,9 @@ app.use(logger('dev'))
 app.use(cookieParser())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
+
+// 接口服务
+app.use(require('./api/routes/location-hash'))
 
 // nuxt
 var { Nuxt, Builder } = require('nuxt')

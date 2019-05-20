@@ -124,7 +124,7 @@ export default {
             }
             this.$axios
                 .get('/template/getPanelList', {
-                    params: { templateId, terminal: 1, type: 4 }
+                    params: { templateId, terminal: 1 }
                 })
                 .then(({ data: { success, message, result: list } }) => {
                     if (!success) throw Error(message)
