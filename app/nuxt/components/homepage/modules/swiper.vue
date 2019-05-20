@@ -1,7 +1,7 @@
 <template lang="pug">
 .homepage-module
     titleModule(:item='item' :status='status' :loading='!content' :controllOnly='true' @toTop='$emit(`toTop`, item.sortOrder)'  @remove='$emit(`remove`, item.sortOrder)')
-    template(v-if='content && content.length')
+    div(v-show='content && content.length')
         .homepage-module-panel.swiper
             .swiper-container(v-swiper:imgsSwiper='swiperOption')
                 .swiper-wrapper
@@ -12,14 +12,14 @@
                 .swiper-pagination.swiper-pagination-white
         .controll(v-if='status.editing')
             span.image-item-sort(v-sortable="{onUpdate: itemSortUpdate}")
-                .image-item(v-for='(img, index) in content' @click.stop.capture='remove(index)')
+                .image-item(v-for='(img, index) in content' @click.capture='remove(index)')
                     .loading(v-if='img._picUrl && !img.picUrl')
                         .weui-loading
                     img(:src='img._picUrl || img.picUrl')
                     .image-item-remove 删除
-            uploaderModule(:size='[345, 160]' @upload='add' v-if='content.length < 5').image-add
+            uploaderModule(:size='[345, 160]' @upload='add' v-show='content.length < 5').image-add
                 .image-add-icon
-    uploaderModule(:size='[345, 160]' @upload='add' v-else)
+    uploaderModule(:size='[345, 160]' @upload='add' v-show='!content || !content.length')
         .homepage-module-panel.swiper
             .empty
                 .image-add-icon

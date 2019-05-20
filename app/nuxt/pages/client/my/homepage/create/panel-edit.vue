@@ -6,7 +6,7 @@
     textModule(   v-else-if='item.type === `1`' :item='item' :status='status')
     imageModule(  v-else-if='item.type === `8`' :item='item' :status='status' )
     .button-update
-        nuxt-link.topoud-btn(to='./panel-list' replace) 完成
+        .topoud-btn(@click='goBack()') 完成
 </template>
 <script>
 import swiperModule from '~/components/homepage/modules/swiper'
@@ -35,7 +35,8 @@ export default {
     },
     methods: {
         goBack() {
-            this.$router.replace('./panel-list')
+            this.$router.go(-1)
+            // this.$router.replace('./panel-list')
         }
     },
     head() {
