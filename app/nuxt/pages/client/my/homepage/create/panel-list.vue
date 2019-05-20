@@ -416,7 +416,7 @@ export default {
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 20;
+    z-index: 99;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.17);
 }
 .left {
