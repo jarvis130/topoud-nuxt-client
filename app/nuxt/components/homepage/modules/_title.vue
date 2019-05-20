@@ -4,7 +4,7 @@
     template(v-else)
         .homepage-module-title-text(v-if='!controllOnly && (status.adding || !(setting && setting.contentOnly))' :class='{editInList: status.editInList}')
             input(style='width: 100%' v-model='item.panelName' v-if='status.editing' :placeholder='`(${item._panelName || "请填写标题"})`' maxlength='152')
-            span(v-else) {{item.name || item.panelName || item._panelName || `(请填写标题)`}}
+            span(v-else) {{item.name || item.panelName || item._panelName || (status.view ? '' : `(请填写标题)`)}}
         .homepage-module-title-action(v-if='status.editInList')
             span(@click.stop.prevent='$emit(`toTop`)' v-if='item.sortOrder && item.sortOrder > 0')
                 .icon.i-totop
