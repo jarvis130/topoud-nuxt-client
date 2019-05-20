@@ -9,7 +9,7 @@
                 swiperModule( v-if='item.type === 6' :item='item' :status='status')
                 textModule(   v-else-if='item.type === 1' :item='item' :status='status')
                 imageModule(  v-else-if='item.type === 8' :item='item' :status='status')
-    nuxt-link(to='/client/my/homepage/create/panel-list' replace).btn-area
+    nuxt-link(to='/client/my/homepage/create' replace v-if='$route.params.storeId == $store.getters.userInfo.storeId').btn-area
         .topoud-btn 编辑我的官网
 </template>
 <script>
