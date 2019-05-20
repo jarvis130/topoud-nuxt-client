@@ -123,9 +123,10 @@ export default {
                         }, 1000)
                         return
                     }
-                    let [longitude, latitude] = result.split(',')
+                    let [longitude, latitude, address] = result.split(',')
                     this.store.longitude = longitude
                     this.store.latitude = latitude
+                    this.store.address = address
                 })
                 .catch(({ message }) => {
                     alert('请求出错' + 'message')

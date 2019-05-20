@@ -9,7 +9,7 @@ router.post(
             res.status(500).send({ message: 'hash invalid' })
             return
         }
-        if (!value || !/^(\d|\.)+\,(\d|\.)+$/.test(value)) {
+        if (!value || !/^(\d|\.)+\,(\d|\.)+/.test(value)) {
             return res.status(500).send({ message: 'value invalid' })
         }
         return redisClient
