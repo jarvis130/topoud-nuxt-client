@@ -155,6 +155,7 @@ export default {
     }
 }
 .btn-area {
+    z-index: 40;
     padding: 8px 15px;
     position: fixed;
     bottom: 0;

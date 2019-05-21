@@ -334,7 +334,8 @@ export default {
                     if (!errorList.length) {
                         this.$message.success('保存成功')
                         this.removingList.length = '0'
-                        window.wx && window.wx.miniProgram.navigateBack()
+                        // window.wx && window.wx.miniProgram.navigateBack()
+                        // window.wx && window.wx.miniProgram.navigateBack()
                         // setTimeout(_ => {
                         //     this.$router.go(-2)
                         // }, 1000)
