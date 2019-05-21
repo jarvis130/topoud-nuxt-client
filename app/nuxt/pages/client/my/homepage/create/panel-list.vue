@@ -46,6 +46,11 @@ export default {
             // this.templateListGet()
             this.templateGet()
         }
+        if (window.__removingList) {
+            this.removingList = window.__removingList
+        } else {
+            window.__removingList = this.removingList
+        }
         if (window.__removingListContent) {
             this.removingListContent = window.__removingListContent
         } else {
@@ -329,6 +334,10 @@ export default {
                     if (!errorList.length) {
                         this.$message.success('保存成功')
                         this.removingList.length = '0'
+                        window.wx && window.wx.miniProgram.navigateBack()
+                        // setTimeout(_ => {
+                        //     this.$router.go(-2)
+                        // }, 1000)
                     } else {
                         console.log(errorList)
                         this.$message.error(

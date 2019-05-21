@@ -1,5 +1,5 @@
 <template lang="pug">
-.homepage-module
+.homepage-module(v-if='!status.view || ((content.productName || setting.titleOnly) && (item.panelName || setting.contentOnly))')
     //- template(v-if='status.adding || !setting.contentOnly')
     titleModule(v-if='!status.editing' :setting='setting' :item='item' :status='status' :loading='!content' @toTop='$emit(`toTop`, item.sortOrder)' @remove='$emit(`remove`, item.sortOrder)')
     template(v-else-if='!setting.contentOnly')
@@ -7,7 +7,7 @@
             textarea-autosize.text-panel-textarea(:placeholder='item._panelName || "请输入标题"' :min-height='32' rows='1' v-model='item.panelName' maxlength='15')
             .icon.i-edit(v-if='!item.panelName' :style='{left: (15 + ((item._panelName && item._panelName.length) || 5) * 14) + "px"}')
     template(v-if='!setting.titleOnly')
-        .homepage-module-panel.text-panel.text-body
+        .homepage-module-panel.text-panel.text-body(v-if='content.productName || !status.view')
             .text-panel-loading(v-if='!content')
                 small 加载中 
                 .weui-loading
@@ -99,7 +99,7 @@ export default {
             })
                 .then(({ data: { success, result: content, message } }) => {
                     if (!success) throw Error(message)
-                    console.log(content)
+                    // console.log(content)
                     if (content && content.length) {
                         this.item._content = content
                         this.content = content[0]
