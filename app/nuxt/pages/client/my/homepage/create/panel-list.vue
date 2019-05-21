@@ -13,10 +13,19 @@
                 textModule(   v-else-if='!sorting && item.type === `1`' :item='item' :status='status' @toTop='moduleTotop' @remove='moduleRemove' :templateId='template.templateId')
                 imageModule(  v-else-if='!sorting && item.type === `8`' :item='item' :status='status' @toTop='moduleTotop' @remove='moduleRemove' :templateId='template.templateId')
         .button-update
-            .topoud-btn(@click=' templateUpdate ' :class='{ disabled: status.updating }') 保存
+            .topoud-btn(@click='status.confirming = true' :class='{ disabled: status.updating }') 保存
                 template(v-if='status.updating')
                     span 中 
                     .weui-loading
+    transition(name='fade')
+        .weui-mask(v-if='status.confirming' @click='status.confirming = false')
+    transition(name='fade')
+        .weui-dialog(v-if='status.confirming')
+            .weui-dialog__hd 确认保存？
+            .weui-dialog__bd
+            .weui-dialog__ft
+                .weui-dialog__btn.weui-dialog__btn_default(@click='status.confirming = false') 取消
+                .weui-dialog__btn.weui-dialog__btn_primary(@click='status.confirming = false;templateUpdate();') 保存
 </template>
 <script>
 import swiperModule from '~/components/homepage/modules/swiper'
@@ -176,7 +185,15 @@ export default {
             return Promise.all(p).then(_ => this.templateListGet())
         },
         templateUpdate() {
-            if (!confirm('确认更新并发布？')) return
+            // if (!confirm('确认更新并发布？')) return
+            // if (!window.test) {
+            //     window.wx && window.wx.miniProgram.navigateBack()
+            //     // window.wx &&
+            //     //     window.wx.miniProgram.switchTab({
+            //     //         url: '/pages/card/officialWeb/index'
+            //     //     })
+            //     return
+            // }
             let { templateId } = this.template
             let p = []
             // console.log(this.template.list)
@@ -387,6 +404,7 @@ export default {
                 templateId: false
             },
             status: {
+                confirming: false,
                 updating: false,
                 editInList: true
             },
