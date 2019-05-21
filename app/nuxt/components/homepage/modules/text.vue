@@ -1,5 +1,5 @@
 <template lang="pug">
-.homepage-module(v-if='!status.view || ((content.productName || setting.titleOnly) && (item.panelName || setting.contentOnly))')
+.homepage-module(v-if='!status.view || (content.productName || setting.titleOnly) || (item.name || item.panelName || setting.contentOnly)')
     //- template(v-if='status.adding || !setting.contentOnly')
     titleModule(v-if='!status.editing' :setting='setting' :item='item' :status='status' :loading='!content' @toTop='$emit(`toTop`, item.sortOrder)' @remove='$emit(`remove`, item.sortOrder)')
     template(v-else-if='!setting.contentOnly')
@@ -53,8 +53,8 @@ export default {
         }
     },
     mounted() {
-        if (this.item._content) {
-            this.content = this.item._content[0]
+        if (this.item._content || this.item.panelContents) {
+            this.content = this.item._content[0] || this.item.panelContents[0]
         } else {
             this.contentGet()
         }

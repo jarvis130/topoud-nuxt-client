@@ -1,5 +1,5 @@
 <template lang="pug">    
-.homepage-module-title(v-if='item.panelName || !status.view')
+.homepage-module-title(v-if='item.name || item.panelName || !status.view')
     br(v-if='loading')
     template(v-else)
         .homepage-module-title-text(v-if='!controllOnly && (status.adding || !(setting && setting.contentOnly))' :class='{editInList: status.editInList}')
