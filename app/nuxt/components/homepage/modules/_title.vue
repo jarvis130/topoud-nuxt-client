@@ -9,19 +9,33 @@
             span(@click.stop.prevent='$emit(`toTop`)' v-if='item.sortOrder && item.sortOrder > 0')
                 .icon.i-totop
                 | 上移
-            span(@click.stop.prevent='remove')
+            span(@click.stop.prevent='confirming = true')
                 .el-icon-close
                 | 删除
     .clearfix
+    transition(name='fade')
+        .weui-mask(v-if='confirming' @click.stop.prevent='confirming = false')
+    transition(name='fade')
+        .weui-dialog(v-if='confirming')
+            .weui-dialog__hd 确认删除？
+            .weui-dialog__bd
+            .weui-dialog__ft
+                .weui-dialog__btn.weui-dialog__btn_default(@click.stop.prevent='confirming = false') 取消
+                .weui-dialog__btn.weui-dialog__btn_primary(@click.stop.prevent='confirming = false; $emit(`remove`);') 保存
 </template>
 <script>
 export default {
+    data() {
+        return {
+            confirming: false
+        }
+    },
     props: ['item', 'status', 'loading', 'controllOnly', 'setting'],
     methods: {
         remove() {
-            if (!confirm(`确认删除${this.item.panelName || '当前板块'}？`)) {
-                return
-            }
+            // if (!confirm(`确认删除${this.item.panelName || '当前板块'}？`)) {
+            //     return
+            // }
             this.$emit(`remove`)
         }
     },

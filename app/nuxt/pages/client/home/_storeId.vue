@@ -62,7 +62,6 @@ export default {
     padding: 10px 15px 15px 15px;
     &-title {
         &-text {
-            display: inline-block;
             font-size: 18px;
             line-height: 25px;
             color: #0b0e15;

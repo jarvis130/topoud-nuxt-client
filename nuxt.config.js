@@ -3,7 +3,7 @@ const path = require('path')
 module.exports = {
     srcDir: path.join('./app/nuxt'),
     head: {
-        title: 'topoud',
+        title: '云柬名片',
         meta: [
             {
                 name: 'viewport',

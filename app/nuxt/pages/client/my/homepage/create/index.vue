@@ -129,7 +129,7 @@ export default {
                     this.store.address = address
                 })
                 .catch(({ message }) => {
-                    alert('请求出错' + 'message')
+                    alert('请求出错:' + message)
                 })
         },
         getLocation() {
@@ -160,6 +160,17 @@ export default {
                         this.storeInit()
                     } else {
                         this.store = store
+                        if (!store.storeName) {
+                            this.$axios('/icard/getDefaultCard').then(
+                                ({
+                                    data: {
+                                        result: { company }
+                                    }
+                                }) => {
+                                    this.store.storeName = company
+                                }
+                            )
+                        }
                     }
                 })
                 .catch(({ message }) => {
