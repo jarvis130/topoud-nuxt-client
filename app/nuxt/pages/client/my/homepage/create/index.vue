@@ -84,7 +84,7 @@ export default {
                 .post('/store/saveStore', this.store)
                 .then(({ data: { success, message, result } }) => {
                     if (!success) throw Error(message)
-                    this.$router.push('./create/panel-list')
+                    this.$router.replace('./create/panel-list')
                     this.loading = false
                 })
                 .catch(({ message }) => {

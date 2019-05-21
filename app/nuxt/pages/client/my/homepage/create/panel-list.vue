@@ -13,7 +13,10 @@
                 textModule(   v-else-if='!sorting && item.type === `1`' :item='item' :status='status' @toTop='moduleTotop' @remove='moduleRemove' :templateId='template.templateId')
                 imageModule(  v-else-if='!sorting && item.type === `8`' :item='item' :status='status' @toTop='moduleTotop' @remove='moduleRemove' :templateId='template.templateId')
         .button-update
-            .topoud-btn(@click='templateUpdate') 保存
+            .topoud-btn(@click=' templateUpdate ' :class='{ disabled: status.updating }') 保存
+                template(v-if='status.updating')
+                    span 中 
+                    .weui-loading
 </template>
 <script>
 import swiperModule from '~/components/homepage/modules/swiper'
@@ -335,10 +338,10 @@ export default {
                         this.$message.success('保存成功')
                         this.removingList.length = '0'
                         // window.wx && window.wx.miniProgram.navigateBack()
-                        // window.wx && window.wx.miniProgram.navigateBack()
-                        // setTimeout(_ => {
-                        //     this.$router.go(-2)
-                        // }, 1000)
+                        setTimeout(_ => {
+                            window.wx && window.wx.miniProgram.navigateBack()
+                            // this.$router.go(-2)
+                        }, 1500)
                     } else {
                         console.log(errorList)
                         this.$message.error(
@@ -384,6 +387,7 @@ export default {
                 templateId: false
             },
             status: {
+                updating: false,
                 editInList: true
             },
             removingList: [],

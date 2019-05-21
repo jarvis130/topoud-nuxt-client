@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 cross-env
-killall node
+#killall node
 NODE_ENV=production nuxt build -c ./nuxt.config.js
 rm -rf .build.prod.zip
 zip -r .build.prod.zip .nuxt
