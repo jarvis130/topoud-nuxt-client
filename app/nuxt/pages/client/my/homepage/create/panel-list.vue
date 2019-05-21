@@ -356,7 +356,16 @@ export default {
                         this.removingList.length = '0'
                         // window.wx && window.wx.miniProgram.navigateBack()
                         setTimeout(_ => {
-                            window.wx && window.wx.miniProgram.navigateBack()
+                            try {
+                                window.wx &&
+                                    window.wx.miniProgram.switchTab({
+                                        url: '/pages/card/home/index'
+                                        // url: '/pages/card/officialWeb/index'
+                                    })
+                            } catch (e) {
+                                alert(JSON.stringify(e))
+                            }
+                            // window.wx && window.wx.miniProgram.navigateBack()
                             // this.$router.go(-2)
                         }, 1500)
                     } else {
