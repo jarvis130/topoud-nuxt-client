@@ -71,12 +71,14 @@ export default {
                 return this.$message.error('最多添加5张')
             }
             this.content.push({ _picUrl, picUrl, _hash })
+            this.contentSortUpdate()
         },
         remove(index) {
             if (!confirm('确认删除？')) return
             let item = this.content[index]
             this.content.splice(index, 1)
             window.__removingListContent.push(item)
+            this.contentSortUpdate()
         },
         itemSortUpdate(e) {
             let { oldIndex, newIndex } = e
@@ -84,6 +86,7 @@ export default {
             let img = imgs[oldIndex]
             imgs.splice(oldIndex, 1)
             imgs.splice(newIndex, 0, img)
+            this.contentSortUpdate()
         },
         contentGet() {
             this.errormsg = false
@@ -103,6 +106,11 @@ export default {
                 .catch(({ message }) => {
                     this.errormsg = message
                 })
+        },
+        contentSortUpdate() {
+            for (let i in this.content) {
+                this.content[i].sortOrder = i
+            }
         }
     }
 }
