@@ -157,7 +157,8 @@ export default {
                 .then(({ data: { success, message, result: store } }) => {
                     if (!success) throw Error(message)
                     if (!store) {
-                        this.storeInit()
+                        throw Error('store id invalid')
+                        // this.storeInit()
                     } else {
                         this.store = store
                         if (!store.storeName) {
@@ -177,17 +178,17 @@ export default {
                     this.$nuxt.error(message)
                 })
         },
-        storeInit() {
-            this.$axios
-                .post('/store/saveStore', {})
-                .then(({ data: { success, message, result } }) => {
-                    if (!success) throw Error(message)
-                    this.storeInfoGet()
-                })
-                .catch(({ message }) => {
-                    this.$nuxt.error(message)
-                })
-        },
+        // storeInit() {
+        //     this.$axios
+        //         .post('/store/saveStore', {})
+        //         .then(({ data: { success, message, result } }) => {
+        //             if (!success) throw Error(message)
+        //             this.storeInfoGet()
+        //         })
+        //         .catch(({ message }) => {
+        //             this.$nuxt.error(message)
+        //         })
+        // },
         industryTreeGet() {
             this.$axios('/icard/getIndustryTree')
                 .then(({ data: { success, message, result } }) => {
