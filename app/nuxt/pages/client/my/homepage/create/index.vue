@@ -84,7 +84,7 @@ export default {
                 .post('/store/saveStore', this.store)
                 .then(({ data: { success, message, result } }) => {
                     if (!success) throw Error(message)
-                    this.$router.replace('./create/panel-list')
+                    this.$router.push('./create/panel-list')
                     this.loading = false
                 })
                 .catch(({ message }) => {
@@ -129,7 +129,7 @@ export default {
                     this.store.address = address
                 })
                 .catch(({ message }) => {
-                    alert('请求出错:' + message)
+                    this.$nuxt.error('请求出错，请重新获取地址:' + message)
                 })
         },
         getLocation() {

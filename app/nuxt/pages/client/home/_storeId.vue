@@ -9,8 +9,21 @@
                 swiperModule( v-if='item.type === 6' :item='item' :status='status')
                 textModule(   v-else-if='item.type === 1' :item='item' :status='status')
                 imageModule(  v-else-if='item.type === 8' :item='item' :status='status')
-    nuxt-link(to='/client/my/homepage/create' replace v-if='$route.params.storeId == $store.getters.userInfo.storeId').btn-area
-        .topoud-btn 编辑我的官网
+        .homepage-module(v-if='storeInfo')
+            .weui-panel(style='border-radius: 4px; overflow: hidden;')
+                .weui-cell
+                    .weui-label 联系电话：
+                    .weui-cell__bd 
+                        a(:href='`tel:${storeInfo.phone}`') {{storeInfo.phone}}
+                .weui-cell
+                    .weui-label 地址：
+                    .weui-cell__bd {{storeInfo.address}}
+                div(style='line-height: 1; margin-bottom: -2px;')
+                    img(:src='storeInfo.mapUrl' style='width: 100%; padding:0; margin:0; max-height: 180px;background:#efefef;')
+    template(v-if='$route.params.storeId == $store.getters.userInfo.storeId')
+        br
+        nuxt-link(to='/client/my/homepage/create' replace).btn-area
+            .topoud-btn 编辑我的官网
 </template>
 <script>
 import swiperModule from '~/components/homepage/modules/swiper'
@@ -40,6 +53,44 @@ export default {
             .catch(({ message }) => {
                 this.$nuxt.error({ message })
             })
+        this.$axios('/store/getStoreInfo', { params: { storeId } })
+            .then(
+                ({
+                    data: {
+                        success,
+                        message,
+                        result: {
+                            address,
+                            longitude,
+                            latitude,
+                            phone,
+                            storeName
+                        }
+                    }
+                }) => {
+                    if (!success) throw Error(message)
+                    let xy = `${latitude},${longitude}`
+                    let mapUrl = `https://apis.map.qq.com/ws/staticmap/v2/?key=${
+                        this.qqMapKey
+                    }&center=${xy}&zoom=16&labels=anchor:3|${storeName.substr(
+                        0,
+                        12
+                    )}|${xy}&size=450*180`
+                    // let mapUrl = `https://apis.map.qq.com/ws/staticmap/v2/?size=450*300&key=${
+                    //     this.qqMapKey
+                    // }&center=${xy}&labels=${address}|${xy}`
+                    this.storeInfo = {
+                        address,
+                        longitude,
+                        latitude,
+                        phone,
+                        mapUrl
+                    }
+                }
+            )
+            .catch(({ message }) => {
+                this.$nuxt.error({ message })
+            })
     },
     data() {
         return {
@@ -51,7 +102,9 @@ export default {
                     el: '.swiper-pagination'
                 }
             },
-            status: { view: true }
+            storeInfo: false,
+            status: { view: true },
+            qqMapKey: '5DRBZ-DZIKF-N77JW-JB2QB-TZE7E-3GBGY'
         }
     }
 }
