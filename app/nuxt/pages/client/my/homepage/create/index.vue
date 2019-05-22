@@ -129,7 +129,7 @@ export default {
                     this.store.address = address
                 })
                 .catch(({ message }) => {
-                    this.$nuxt.error('请求出错，请重新获取地址:' + message)
+                    this.$message.error('请求出错，请重新获取地址:' + message)
                 })
         },
         getLocation() {
@@ -165,7 +165,7 @@ export default {
                             this.$axios('/icard/getDefaultCard').then(
                                 ({
                                     data: {
-                                        result: { company,address,telephone }
+                                        result: { company, address, telephone }
                                     }
                                 }) => {
                                     this.store.storeName = company

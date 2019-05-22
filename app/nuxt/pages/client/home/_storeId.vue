@@ -18,8 +18,9 @@
                 .weui-cell
                     .weui-label 企业地址:
                     .weui-cell__bd {{storeInfo.address}}
-                div(style='line-height: 1; margin-bottom: -2px;')
-                    img(:src='storeInfo.mapUrl' style='width: 100%; padding:0; margin:0; max-height: 180px;background:#efefef;')
+                .homepage-map(style='line-height: 1; ')
+                    img(:src='storeInfo.mapUrl')
+                    .clearfix
     template(v-if='$route.params.storeId == $store.getters.userInfo.storeId')
         br
         nuxt-link(to='/client/my/homepage/create' replace).btn-area
@@ -76,6 +77,8 @@ export default {
                         0,
                         12
                     )}|${xy}&size=450*180`
+                    // mapUrl =
+                    //     'http://qiniu.topoud.com/201905201550145ce25c363cbec.png'
                     // let mapUrl = `https://apis.map.qq.com/ws/staticmap/v2/?size=450*300&key=${
                     //     this.qqMapKey
                     // }&center=${xy}&labels=${address}|${xy}`
@@ -214,5 +217,22 @@ export default {
     left: 0;
     right: 0;
     background: white;
+}
+.homepage-map {
+    line-height: 1;
+    img {
+        line-height: 1;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        max-height: 180px;
+        background: #efefef;
+        margin-bottom: -2px;
+    }
+    overflow: hidden;
+    border: 1px solid #aaa;
+    // border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
 }
 </style>
