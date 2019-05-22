@@ -23,7 +23,7 @@
             .weui-cell.top
                 .weui-label 联系电话
                 .weui-cell__bd
-                    input.weui-input(placeholder='023-66XXXX55' v-model='store.phone')
+                    input.weui-input(placeholder='' v-model='store.phone')
         .weui-panel
             .weui-cell.weui-cell_access(@click='industryTree.list=industryTree.value')
                 .weui-label 行业
@@ -165,10 +165,12 @@ export default {
                             this.$axios('/icard/getDefaultCard').then(
                                 ({
                                     data: {
-                                        result: { company }
+                                        result: { company,address,telephone }
                                     }
                                 }) => {
                                     this.store.storeName = company
+                                    this.store.address = address
+                                    this.store.phone = telephone
                                 }
                             )
                         }
