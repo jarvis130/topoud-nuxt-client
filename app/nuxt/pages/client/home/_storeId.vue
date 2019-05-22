@@ -12,11 +12,11 @@
         .homepage-module(v-if='storeInfo')
             .weui-panel(style='border-radius: 4px; overflow: hidden;')
                 .weui-cell
-                    .weui-label 联系电话：
+                    .weui-label 联系电话:
                     .weui-cell__bd 
                         a(:href='`tel:${storeInfo.phone}`') {{storeInfo.phone}}
                 .weui-cell
-                    .weui-label 地址：
+                    .weui-label 企业地址:
                     .weui-cell__bd {{storeInfo.address}}
                 div(style='line-height: 1; margin-bottom: -2px;')
                     img(:src='storeInfo.mapUrl' style='width: 100%; padding:0; margin:0; max-height: 180px;background:#efefef;')
