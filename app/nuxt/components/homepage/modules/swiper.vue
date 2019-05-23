@@ -17,9 +17,9 @@
                         .weui-loading
                     img(:src='img._picUrl || img.picUrl')
                     .image-item-remove 删除
-            uploaderModule(:size='[345, 160]' @upload='add' v-show='content.length < 5').image-add
+            uploaderModule(:size='[375, 180]' @upload='add' v-show='content.length < 5').image-add
                 .image-add-icon
-    uploaderModule(:size='[345, 160]' @upload='add' v-show='!content || !content.length')
+    uploaderModule(:size='[375, 180]' @upload='add' v-show='!content || !content.length')
         .homepage-module-panel.swiper
             .empty
                 .image-add-icon

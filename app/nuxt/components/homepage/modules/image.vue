@@ -9,7 +9,7 @@
         .image-panel-error
             small {{errormsg}}
     .homepage-module-1(v-if='content.length === 1')
-        uploaderModule(@upload='upload_1' :size='[345, 165]')
+        uploaderModule(@upload='upload_1' :size='[375, 180]')
             .homepage-module-panel.image-panel
                 .loading(v-if='content[0]._picUrl && !content[0].picUrl') 上传中，请稍后
                     .weui-loading
@@ -22,7 +22,7 @@
     //- 2 ---
     .homepage-module-2(v-else-if='content.length === 2')
         .homepage-module-2-left
-            uploaderModule(@upload='upload_1' :size='[165, 165]')
+            uploaderModule(@upload='upload_1' :size='[375, 375]')
                 .homepage-module-panel.image-panel
                     .loading(v-if='content[0]._picUrl && !content[0].picUrl') 上传中，请稍后
                         .weui-loading
@@ -31,7 +31,7 @@
                         .image-add-icon
                         .text {{item._tips || '请上传图片'}}
         .homepage-module-2-right
-            uploaderModule(@upload='upload_2' :size='[165, 165]')
+            uploaderModule(@upload='upload_2' :size='[375, 375]')
                 .homepage-module-panel.image-panel
                     .loading(v-if='content[1]._picUrl && !content[1].picUrl') 上传中，请稍后
                         .weui-loading
@@ -44,7 +44,7 @@
     //- 3 ---
     .homepage-module-3(v-else-if='content.length === 3')
         .homepage-module-3-left
-            uploaderModule(@upload='upload_1' :size='[113, 113]')
+            uploaderModule(@upload='upload_1' :size='[375, 375]')
                 .homepage-module-panel.image-panel
                     .loading(v-if='content[0]._picUrl && !content[0].picUrl') 上传中，请稍后
                         .weui-loading
@@ -53,7 +53,7 @@
                         .image-add-icon
                         .text {{item._tips || '请上传图片'}}
         .homepage-module-3-center
-            uploaderModule(@upload='upload_2' :size='[113, 113]')
+            uploaderModule(@upload='upload_2' :size='[375, 375]')
                 .homepage-module-panel.image-panel
                     .loading(v-if='content[1]._picUrl && !content[1].picUrl') 上传中，请稍后
                         .weui-loading
@@ -62,7 +62,7 @@
                         .image-add-icon
                         .text {{item._tips || '请上传图片'}}
         .homepage-module-3-right
-            uploaderModule(@upload='upload_3' :size='[113, 113]')
+            uploaderModule(@upload='upload_3' :size='[375, 375]')
                 .homepage-module-panel.image-panel
                     .loading(v-if='content[2]._picUrl && !content[2].picUrl') 上传中，请稍后
                         .weui-loading

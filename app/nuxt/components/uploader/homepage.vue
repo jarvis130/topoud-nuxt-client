@@ -9,6 +9,7 @@ div
         :before-upload='uploadBefore'
         :with-credentials='true'
         :limit='1'
+        :full='true'
         )
         div
             slot
@@ -40,7 +41,7 @@ if (process.browser) {
     Vue.use(vueCropper.default)
 }
 export default {
-    props: { size: { default: [165, 165] } },
+    props: { size: { default: [375, 375] } },
     data() {
         return {
             cropperActive: false,

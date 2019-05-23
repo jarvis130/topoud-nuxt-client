@@ -16,8 +16,8 @@
                 div(style='line-height: 1;margin-bottom: 15px;')
                     img(:src='meaninglessItem2' style='height: 9px;')
             .some-btn #[img(:src='meaninglessItem3')] {{storeInfo.phone}}
-            .map
-                img(:src='storeInfo.mapUrl' @click='openLocation')
+            .map(@click='openLocation')
+                img(:src='storeInfo.mapUrl')
             .address
                 .icon.i-locationfill
                 | 详细地址:{{storeInfo.address}}
@@ -46,8 +46,11 @@ export default {
             if (!this.storeInfo) return
             if (!window.wx) return
             let { storeName, address, longitude, latitude } = this.storeInfo
+            // alert(
+            //     `/pages/webview/location-open?name=${storeName}&address=${address}&longitude=${longitude}&latitude=${latitude}`
+            // )
             window.wx.miniProgram.navigateTo({
-                url: `/pages/webview/location-open?name=${storeName}&address=${address}$longitude=${longitude}&latitude=${latitude}`
+                url: `/pages/webview/location-open?name=${storeName}&address=${address}&longitude=${longitude}&latitude=${latitude}`
             })
         }
     },
@@ -97,7 +100,8 @@ export default {
                         longitude,
                         latitude,
                         phone,
-                        mapUrl
+                        mapUrl,
+                        storeName
                     }
                 }
             )
@@ -243,12 +247,13 @@ export default {
     .some-btn {
         vertical-align: middle;
         color: white;
-        font-size: 14px;
+        font-size: 16px;
         height: 40px;
         border-radius: 4px;
         line-height: 40px;
         background: linear-gradient(to right, #c3af91, #9a7654);
         img {
+            margin-bottom: 3px;
             margin-right: 10px;
             vertical-align: middle;
             height: 18px;
@@ -258,9 +263,11 @@ export default {
     .map {
         background: #dfdfdf;
         margin: 15px 0;
-        width: 100%;
         min-height: 50px;
         border-radius: 4px;
+        img {
+            width: 100%;
+        }
     }
     .address {
         color: #979da5;
