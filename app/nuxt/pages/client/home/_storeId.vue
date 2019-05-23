@@ -18,7 +18,7 @@
                 .weui-cell
                     .weui-label 企业地址:
                     .weui-cell__bd {{storeInfo.address}}
-                .homepage-map(style='line-height: 1; ')
+                .homepage-map(style='line-height: 1; ' @click='openLocation')
                     img(:src='storeInfo.mapUrl')
                     .clearfix
     template(v-if='$route.params.storeId == $store.getters.userInfo.storeId')
@@ -39,6 +39,16 @@ export default {
     head() {
         return {
             title: '官网'
+        }
+    },
+    methods: {
+        openLocation() {
+            if (!this.storeInfo) return
+            if (!window.wx) return
+            let { storeName, address, longitude, latitude } = this.storeInfo
+            window.wx.miniProgram.navigateTo({
+                url: `/pages/webview/location-open?name=${storeName}&address=${address}$longitude=${longitude}&latitude=${latitude}`
+            })
         }
     },
     mounted() {

@@ -136,7 +136,7 @@ export default {
             if (!window.wx) return
             let hash = this.$random.string(32)
             window.wx.miniProgram.navigateTo({
-                url: `/pages/webview/location?hash=${hash}`
+                url: `/pages/webview/location-choose?hash=${hash}`
             })
             this.getLocationRequestHash = hash
             this.getLocationRequestIndex = this.getLocationRequestIndex || 0
