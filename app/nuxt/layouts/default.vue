@@ -66,7 +66,7 @@ export default {
         link: [
             {
                 rel: 'stylesheet',
-                href: 'https://at.alicdn.com/t/font_1181053_rwkok7dxq8s.css'
+                href: 'https://at.alicdn.com/t/font_1181053_9afj5vpliqb.css'
             }
         ]
     }
