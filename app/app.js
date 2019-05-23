@@ -2,7 +2,7 @@
  * @Author: 刘盾 Liudun (liudun@beclon.com)(bach109109@qq.com)(liudun@zbj.com)
  * @Date: 2019-02-26 09:25:47
  * @Last Modified by: 刘盾 Liudun (liudun@beclon.com)(bach109109@qq.com)(liudun@zbj.com)
- * @Last Modified time: 2019-05-20 15:12:08
+ * @Last Modified time: 2019-05-23 10:51:59
  * 入口文件
  */
 
@@ -38,29 +38,32 @@ if (!development) {
     })
 }
 app.use(require('./api/routes/location-hash'))
+app.use(require('./api/routes/location-api'))
 
 // nuxt
 var { Nuxt, Builder } = require('nuxt')
 var config = require('../nuxt.config.js')
 config.dev = development
 
-// 微信授权跳转登录
-
-var nuxt = new Nuxt(config)
-if (config.dev) {
-    let ip = require('ip')
-    let fs = require('fs')
-    let path = require('path')
-    let p = path.join(__dirname, '../.localip.js')
-    fs.writeFileSync(p, "export default '" + ip.address() + "'\n")
-    //
-    var builder = new Builder(nuxt)
-    builder.build().then(_ => {
-        let devRoutes = require('../dev-routes')
-        console.log(`点击打开局域网链接：http://${ip.address()}:4000/client`)
-    })
-    //
+if (!process.env.NODE_APITEST) {
+    var nuxt = new Nuxt(config)
+    if (config.dev) {
+        let ip = require('ip')
+        let fs = require('fs')
+        let path = require('path')
+        let p = path.join(__dirname, '../.localip.js')
+        fs.writeFileSync(p, "export default '" + ip.address() + "'\n")
+        //
+        var builder = new Builder(nuxt)
+        builder.build().then(_ => {
+            let devRoutes = require('../dev-routes')
+            console.log(
+                `点击打开局域网链接：http://${ip.address()}:4000/client`
+            )
+        })
+        //
+    }
+    app.use(nuxt.render)
 }
-app.use(nuxt.render)
 
 module.exports = app

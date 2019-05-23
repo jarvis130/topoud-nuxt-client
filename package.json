@@ -4,6 +4,7 @@
     "private": true,
     "scripts": {
         "start": "cross-env NODE_ENV=development node ./app/www",
+        "api": "cross-env NODE_ENV=development NODE_APITEST=1 node-dev ./app/www",
         "build": "sh server/build.prod.sh",
         "buildtest": "sh server/build.test.sh"
     },
