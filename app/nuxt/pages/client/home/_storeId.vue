@@ -86,7 +86,7 @@ export default {
                     let xy = `${latitude},${longitude}`
                     let mapUrl = `https://apis.map.qq.com/ws/staticmap/v2/?key=${
                         this.qqMapKey
-                    }&center=${xy}&zoom=16&labels=anchor:3|${storeName.substr(
+                    }&center=${xy}&zoom=16&labels=anchor:3|border:0|${storeName.substr(
                         0,
                         12
                     )}|${xy}&size=450*180`

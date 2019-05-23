@@ -96,6 +96,7 @@ export default {
             console.log({ type, value, index })
             if (type === 'preview') {
                 this.$set(this.content[index], '_picUrl', value)
+                this.$set(this.content[index], 'picUrl', false)
             } else if (type === 'uploaded') {
                 this.$set(this.content[index], 'picUrl', value)
             }
