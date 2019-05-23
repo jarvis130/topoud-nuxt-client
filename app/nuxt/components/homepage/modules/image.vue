@@ -198,7 +198,7 @@ export default {
     }
     img {
         width: 100%;
-        height: 165px;
+        // height: 165px;
         background: #efefef;
     }
     &-loading {
