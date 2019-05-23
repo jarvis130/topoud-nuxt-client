@@ -89,7 +89,7 @@ export default {
                 })
                 .catch(({ message }) => {
                     this.loading = false
-                    this.$nuxt.error(message)
+                    this.$message.error(message)
                 })
         },
         industrySelect(index) {
