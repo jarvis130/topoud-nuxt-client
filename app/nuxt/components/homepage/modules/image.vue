@@ -130,8 +130,8 @@ export default {
             if (!window.wx) return
             let urls = []
             let wx = window.wx
-            this.content.map(({ picUrl }) => urls.push(picUrl))
-            ;(wx.miniProgram ? wx.miniProgram.previewImage : wx.previewImage)({
+            this.content.map(({ picUrl }) => picUrl && urls.push(picUrl))
+            wx.previewImage({
                 current,
                 urls
             })

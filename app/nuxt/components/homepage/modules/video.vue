@@ -13,7 +13,7 @@
             .homepage-module-panel.image-panel
                 .loading(v-if='content[0]._picUrl && !content[0].picUrl') 上传中，请稍后
                     .weui-loading
-                video(:id='hash' v-if='content[0]._picUrl || content[0].picUrl' :src='content[0].picUrl || content[0]._picUrl')
+                video(v-if='content[0]._picUrl || content[0].picUrl' :src='content[0].picUrl || content[0]._picUrl')
                 template(v-else-if='!status.view')
                     .image-add-icon
                     .text {{item._tips || '请上传视频'}}
@@ -48,8 +48,7 @@ export default {
                 this.$set(this.content[index], '_picUrl', false)
             }
         },
-        upload_1({ type, hash, value }) {
-            this.hash = hash
+        upload_1({ type, value }) {
             this.upload({ type, value, index: 0 })
         },
         contentGet() {

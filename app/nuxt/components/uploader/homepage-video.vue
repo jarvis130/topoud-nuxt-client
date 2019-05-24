@@ -46,22 +46,24 @@ export default {
                 this.$toast.close()
                 let duration = v.duration
                 // v.destroy()
-                if (duration > 2) {
+                if (duration > 30) {
                     this.$toast.error({
-                        message: '视频不超过30秒',
+                        message: '不能超过30秒',
                         duration: 3
                     })
                     return
                 }
-                this.videoUpload()
+                this.videoUpload(file)
             }, 500)
             return false
         },
-        videoUpload() {
-            let file = this.fileBlob
+        videoUpload(file) {
+            // let file = this.fileBlob
             this.$toast('上传中')
+            let data = new FormData()
+            data.append('file', file)
             this.$axios
-                .post('/common/uploadImage', { file })
+                .post('/common/imageUpload', data)
                 .then(
                     ({
                         data: {
