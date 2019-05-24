@@ -124,5 +124,20 @@ export default {
             clear: both;
         }
     }
+    &-9 {
+        &-item {
+            float: left;
+            width: 33.3333%;
+            margin-bottom: 3px;
+            &:nth-child(3n-1),
+            &:nth-child(3n-2) {
+                padding-right: 1.5px;
+            }
+            &:nth-child(3n-1),
+            &:nth-child(3n) {
+                padding-left: 1.5px;
+            }
+        }
+    }
 }
 </style>

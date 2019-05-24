@@ -7,8 +7,9 @@
         .sotable-items
             .sotable-item(v-for='(item, index) in template.list')
                 swiperModule( v-if='item.type === 6' :item='item' :status='status')
-                textModule(   v-else-if='item.type === 1' :item='item' :status='status')
-                imageModule(  v-else-if='item.type === 8' :item='item' :status='status')
+                textModule(   v-else-if='item.type === 11' :item='item' :status='status')
+                imageModule(  v-else-if='item.type === 10' :item='item' :status='status')
+                videoModule(  v-else-if='item.type === 9' :item='item' :status='status')
         .contact-us
             .title 联系我们
                 br
@@ -30,11 +31,13 @@
 import swiperModule from '~/components/homepage/modules/swiper'
 import textModule from '~/components/homepage/modules/text'
 import imageModule from '~/components/homepage/modules/image'
+import videoModule from '~/components/homepage/modules/video'
 export default {
     components: {
         swiperModule,
         textModule,
-        imageModule
+        imageModule,
+        videoModule
     },
     head() {
         return {
@@ -226,6 +229,21 @@ export default {
             content: ' ';
             display: block;
             clear: both;
+        }
+    }
+    &-9 {
+        &-item {
+            float: left;
+            width: 33.3333%;
+            margin-bottom: 3px;
+            &:nth-child(3n-1),
+            &:nth-child(3n-2) {
+                padding-right: 1.5px;
+            }
+            &:nth-child(3n-1),
+            &:nth-child(3n) {
+                padding-left: 1.5px;
+            }
         }
     }
 }

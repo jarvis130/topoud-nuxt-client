@@ -13,8 +13,8 @@
             .homepage-module-panel.image-panel
                 .loading(v-if='content[0]._picUrl && !content[0].picUrl') 上传中，请稍后
                     .weui-loading
-                img(v-if='content[0]._picUrl || content[0].picUrl' :src='content[0]._picUrl || content[0].picUrl')
-                template(v-else)
+                img(@click='imgPreview(content[0].picUrl)' v-if='content[0]._picUrl || content[0].picUrl' :src='content[0]._picUrl || content[0].picUrl')
+                template(v-else-if='!status.view')
                     .image-add-icon
                     .text {{item._tips || '请上传图片'}}
     //- 2 ---
@@ -26,8 +26,8 @@
                 .homepage-module-panel.image-panel
                     .loading(v-if='content[0]._picUrl && !content[0].picUrl') 上传中，请稍后
                         .weui-loading
-                    img(v-if='content[0]._picUrl || content[0].picUrl' :src='content[0]._picUrl || content[0].picUrl')
-                    template(v-else)
+                    img(@click='imgPreview(content[0].picUrl)' v-if='content[0]._picUrl || content[0].picUrl' :src='content[0]._picUrl || content[0].picUrl')
+                    template(v-else-if='!status.view')
                         .image-add-icon
                         .text {{item._tips || '请上传图片'}}
         .homepage-module-2-right
@@ -35,8 +35,8 @@
                 .homepage-module-panel.image-panel
                     .loading(v-if='content[1]._picUrl && !content[1].picUrl') 上传中，请稍后
                         .weui-loading
-                    img(v-if='content[1]._picUrl || content[1].picUrl' :src='content[1]._picUrl || content[1].picUrl')
-                    template(v-else)
+                    img(@click='imgPreview(content[1].picUrl)' v-if='content[1]._picUrl || content[1].picUrl' :src='content[1]._picUrl || content[1].picUrl')
+                    template(v-else-if='!status.view')
                         .image-add-icon
                         .text {{item._tips || '请上传图片'}}
     //- 3 ---
@@ -48,8 +48,8 @@
                 .homepage-module-panel.image-panel
                     .loading(v-if='content[0]._picUrl && !content[0].picUrl') 上传中，请稍后
                         .weui-loading
-                    img(v-if='content[0]._picUrl || content[0].picUrl' :src='content[0]._picUrl || content[0].picUrl')
-                    template(v-else)
+                    img(@click='imgPreview(content[0].picUrl)' v-if='content[0]._picUrl || content[0].picUrl' :src='content[0]._picUrl || content[0].picUrl')
+                    template(v-else-if='!status.view')
                         .image-add-icon
                         .text {{item._tips || '请上传图片'}}
         .homepage-module-3-center
@@ -57,8 +57,8 @@
                 .homepage-module-panel.image-panel
                     .loading(v-if='content[1]._picUrl && !content[1].picUrl') 上传中，请稍后
                         .weui-loading
-                    img(v-if='content[1]._picUrl || content[1].picUrl' :src='content[1]._picUrl || content[1].picUrl')
-                    template(v-else)
+                    img(@click='imgPreview(content[1].picUrl)' v-if='content[1]._picUrl || content[1].picUrl' :src='content[1]._picUrl || content[1].picUrl')
+                    template(v-else-if='!status.view')
                         .image-add-icon
                         .text {{item._tips || '请上传图片'}}
         .homepage-module-3-right
@@ -66,15 +66,28 @@
                 .homepage-module-panel.image-panel
                     .loading(v-if='content[2]._picUrl && !content[2].picUrl') 上传中，请稍后
                         .weui-loading
-                    img(v-if='content[2]._picUrl || content[2].picUrl' :src='content[2]._picUrl || content[2].picUrl')
-                    template(v-else)
+                    img(@click='imgPreview(content[2].picUrl)' v-if='content[2]._picUrl || content[2].picUrl' :src='content[2]._picUrl || content[2].picUrl')
+                    template(v-else-if='!status.view')
                         .image-add-icon
                         .text {{item._tips || '请上传图片'}}
-    small(v-if='status.editing') 请等待图片上传后再点击完成
+    //- 9 ---
+    //- 9 ---
+    //- 9 ---
+    .homepage-module-9(v-else-if='content.length === 9')
+        .homepage-module-9-item(v-for='index in [0,1,2,3,4,5,6,7,8]')
+            uploaderModule(@upload='upload_9($event, index)' :size='[375, 375]')
+                .homepage-module-panel.image-panel
+                    .loading(v-if='content[index]._picUrl && !content[index].picUrl') 上传中，请稍后
+                        .weui-loading
+                    img(@click='imgPreview(content[index].picUrl)' v-if='content[index]._picUrl || content[index].picUrl' :src='content[index]._picUrl || content[index].picUrl')
+                    template(v-else-if='!status.view')
+                        .image-add-icon
+                        .text {{item._tips || '请上传图片'}}
+        .clearfix
 </template>
 <script>
 import titleModule from './_title'
-import uploaderModule from '~/components/uploader/homepage'
+import uploaderModule from '~/components/uploader/homepage-image'
 export default {
     props: ['item', 'status', 'templateId'],
     components: { uploaderModule, titleModule },
@@ -109,6 +122,19 @@ export default {
         },
         upload_3({ type, value }) {
             this.upload({ type, value, index: 2 })
+        },
+        upload_9({ type, value }, index) {
+            this.upload({ type, value, index })
+        },
+        imgPreview(current) {
+            if (!window.wx) return
+            let urls = []
+            let wx = window.wx
+            this.content.map(({ picUrl }) => urls.push(picUrl))
+            ;(wx.miniProgram ? wx.miniProgram.previewImage : wx.previewImage)({
+                current,
+                urls
+            })
         },
         contentGet() {
             this.errormsg = false
@@ -217,7 +243,8 @@ export default {
             color: crimson;
         }
     }
-    .homepage-module-3 & {
+    .homepage-module-3 &,
+    .homepage-module-9 & {
         .image-add-icon {
             margin-top: 31px;
         }

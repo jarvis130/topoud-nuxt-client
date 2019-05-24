@@ -79,7 +79,8 @@ module.exports = {
         // { src: '~/plugins/component', ssr: false },
         { src: '~/plugins/compatible', ssr: false },
         { src: '~/plugins/directive', ssr: false },
-        { src: '~/plugins/user', ssr: false }
+        { src: '~/plugins/user', ssr: false },
+        { src: '~/plugins/weui-toast', ssr: false }
     ],
     build: {
         publicPath: '/client/_nuxt/',

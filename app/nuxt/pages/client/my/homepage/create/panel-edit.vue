@@ -3,8 +3,9 @@
     br
     br
     swiperModule( v-if='item.type === `6`' :item='item' :status='status')
-    textModule(   v-else-if='item.type === `1`' :item='item' :status='status')
-    imageModule(  v-else-if='item.type === `8`' :item='item' :status='status' )
+    textModule(   v-else-if='item.type === `11`' :item='item' :status='status')
+    imageModule(  v-else-if='item.type === `10`' :item='item' :status='status' )
+    videoModule(  v-else-if='item.type === `9`' :item='item' :status='status' )
     .button-update
         .topoud-btn(@click='goBack()') 完成
 </template>
@@ -12,11 +13,13 @@
 import swiperModule from '~/components/homepage/modules/swiper'
 import textModule from '~/components/homepage/modules/text'
 import imageModule from '~/components/homepage/modules/image'
+import videoModule from '~/components/homepage/modules/video'
 export default {
     components: {
         swiperModule,
         textModule,
-        imageModule
+        imageModule,
+        videoModule
     },
     data() {
         return {

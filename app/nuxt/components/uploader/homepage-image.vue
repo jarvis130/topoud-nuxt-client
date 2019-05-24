@@ -3,12 +3,13 @@ div
     slot(v-if='$route.params.storeId')
     el-upload(
         v-else
-        action='http://test.topoud.com/api/common/uploadCompressImage'
+        action='nothing'
         :show-file-list='false'
         :on-change='uploadChange'
         :before-upload='uploadBefore'
         :with-credentials='true'
         :limit='1'
+        accept='image/*'
         :full='true'
         )
         div
@@ -69,6 +70,10 @@ export default {
             this.option.img = file.url
         },
         uploadBefore(file, e2) {
+            if (!/^image/.test(file.type)) {
+                this.$toast.error('类型必须为图片')
+                return false
+            }
             this.cropperActive = true
             return false
         },
@@ -76,6 +81,7 @@ export default {
             this.$refs.cropper.getCropData(file => {
                 let hash = Math.random()
                 this.$emit(`upload`, { type: 'preview', value: file, hash })
+                this.$toast('上传中')
                 this.cropperCancel()
                 this.$axios
                     .post('/common/uploadCompressImage', { file })
@@ -88,6 +94,7 @@ export default {
                             }
                         }) => {
                             if (!success) throw Error(message)
+                            this.$toast.close()
                             this.$emit(`upload`, {
                                 type: 'uploaded',
                                 value: url,
@@ -96,6 +103,7 @@ export default {
                         }
                     )
                     .catch(({ message }) => {
+                        this.$toast.close()
                         this.$message.error(message)
                     })
                     .then(_ => {

@@ -4,19 +4,22 @@
         .cate-title-item(v-for='(cate, index) in typesAll' :class='{active: index === cateActiveIndex}' :key='cate.cate' @click='cateActiveIndex = index') {{cate.cate}}
     div(v-for='item in cateActive.list' @click.stop.capture.prevent='add(item)')
         swiperModule( v-if='item.type === `6`' :item='item' :status='status')
-        textModule(   v-else-if='item.type === `1`' :item='item' :status='status')
-        imageModule(  v-else-if='item.type === `8`' :item='item' :status='status')
+        textModule(   v-else-if='item.type === `11`' :item='item' :status='status')
+        imageModule(  v-else-if='item.type === `10`' :item='item' :status='status')
+        videoModule(  v-else-if='item.type === `9`' :item='item' :status='status')
 </template>
 <script>
 import swiperModule from '~/components/homepage/modules/swiper'
 import textModule from '~/components/homepage/modules/text'
 import imageModule from '~/components/homepage/modules/image'
+import videoModule from '~/components/homepage/modules/video'
 import { typesAll } from './panel-config'
 export default {
     components: {
         swiperModule,
         textModule,
-        imageModule
+        imageModule,
+        videoModule
     },
     head() {
         return { title: '添加模块' }

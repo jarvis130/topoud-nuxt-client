@@ -10,8 +10,9 @@
         .sotable-items(v-sortable='{animation:150, handle:`.i-sort`, onUpdate: sortCallBack}')
             nuxt-link.sotable-item(v-for='(item, index) in template.list' :key='item._hash' :to='`./panel-edit?sortOrder=${index}`')
                 swiperModule( v-if='!sorting && item.type === `6`' :item='item' :status='status' @toTop='moduleTotop' @remove='moduleRemove' :templateId='template.templateId')
-                textModule(   v-else-if='!sorting && item.type === `1`' :item='item' :status='status' @toTop='moduleTotop' @remove='moduleRemove' :templateId='template.templateId')
-                imageModule(  v-else-if='!sorting && item.type === `8`' :item='item' :status='status' @toTop='moduleTotop' @remove='moduleRemove' :templateId='template.templateId')
+                textModule(   v-else-if='!sorting && item.type === `11`' :item='item' :status='status' @toTop='moduleTotop' @remove='moduleRemove' :templateId='template.templateId')
+                imageModule(  v-else-if='!sorting && item.type === `10`' :item='item' :status='status' @toTop='moduleTotop' @remove='moduleRemove' :templateId='template.templateId')
+                videoModule(  v-else-if='!sorting && item.type === `9`' :item='item' :status='status' @toTop='moduleTotop' @remove='moduleRemove' :templateId='template.templateId')
         .button-update
             .topoud-btn(@click='status.confirming = true' :class='{ disabled: status.updating }') 保存
                 template(v-if='status.updating')
@@ -31,12 +32,14 @@
 import swiperModule from '~/components/homepage/modules/swiper'
 import textModule from '~/components/homepage/modules/text'
 import imageModule from '~/components/homepage/modules/image'
+import videoModule from '~/components/homepage/modules/video'
 import { typesInit } from './panel-config'
 export default {
     components: {
         swiperModule,
         textModule,
-        imageModule
+        imageModule,
+        videoModule
     },
     head() {
         return {

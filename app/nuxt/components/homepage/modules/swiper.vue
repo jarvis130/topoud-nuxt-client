@@ -31,7 +31,7 @@
 </template>
 <script>
 import titleModule from './_title'
-import uploaderModule from '~/components/uploader/homepage'
+import uploaderModule from '~/components/uploader/homepage-image'
 export default {
     data() {
         return {
