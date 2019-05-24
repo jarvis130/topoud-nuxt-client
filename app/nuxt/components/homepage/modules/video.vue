@@ -10,10 +10,11 @@
             small {{errormsg}}
     .homepage-module-1(v-if='content.length === 1')
         uploaderModule(@upload='upload_1' :size='[375, 180]')
-            .homepage-module-panel.image-panel
+            .homepage-module-panel.image-panel(ref='videoContainer')
+                .mask(v-if='!status.view')
                 .loading(v-if='content[0]._picUrl && !content[0].picUrl') 上传中，请稍后
                     .weui-loading
-                video(v-if='content[0]._picUrl || content[0].picUrl' :src='content[0].picUrl || content[0]._picUrl')
+                video( style='width:100%' ref='video' v-if='content[0]._picUrl || content[0].picUrl' :src='content[0].picUrl || content[0]._picUrl' controls="controls")
                 template(v-else-if='!status.view')
                     .image-add-icon
                     .text {{item._tips || '请上传视频'}}
@@ -36,8 +37,19 @@ export default {
         } else {
             this.contentGet()
         }
+        this.videoResize()
     },
     methods: {
+        videoResize() {
+            // if (!this.content || !this.content[0].picUrl) return
+            // setTimeout(_ => {
+            //     let { videoHeight, videoWidth } = this.$refs.video
+            //     this.$refs.video.height =
+            //         (this.$refs.videoContainer.clientWidth * videoHeight) /
+            //         videoWidth
+            //     this.$refs.videoContainer.style.height = 'unset'
+            // }, 600)
+        },
         upload({ type, value, index }) {
             console.log({ type, value, index })
             if (type === 'preview') {
@@ -46,6 +58,7 @@ export default {
             } else if (type === 'uploaded') {
                 this.$set(this.content[index], 'picUrl', value)
                 this.$set(this.content[index], '_picUrl', false)
+                this.videoResize()
             }
         },
         upload_1({ type, value }) {
@@ -107,6 +120,15 @@ export default {
 
 <style lang="less" scoped>
 .image-panel {
+    .mask {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0px;
+        bottom: 100px;
+        z-index: 50;
+        // background: rgba(0, 0, 0, 0.6);
+    }
     position: relative;
     .loading {
         text-align: center;
@@ -126,7 +148,8 @@ export default {
         }
     }
     background: white;
-    height: 165px;
+    min-height: 165px;
+    line-height: 1;
     .image-add-icon {
         margin-top: 60px;
     }

@@ -63,7 +63,16 @@ export default {
             let data = new FormData()
             data.append('file', file)
             this.$axios
-                .post('/common/imageUpload', data)
+                .post('/common/imageUpload', data, {
+                    onUploadProgress: progressEvent => {
+                        var complete =
+                            (((progressEvent.loaded / progressEvent.total) *
+                                100) |
+                                0) +
+                            '%'
+                        this.$toast(`上传中(${complete})`)
+                    }
+                })
                 .then(
                     ({
                         data: {
