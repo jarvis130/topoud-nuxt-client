@@ -7,4 +7,4 @@ zip -r .build.prod.zip .nuxt
 git add .build.prod.zip
 git commit -m build-production
 git push
-# ssh root@0.0.0.0
+ssh root@47.111.28.10

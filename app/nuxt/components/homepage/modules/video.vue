@@ -14,7 +14,7 @@
                 .mask(v-if='!status.view')
                 .loading(v-if='content[0]._picUrl && !content[0].picUrl') 上传中，请稍后
                     .weui-loading
-                video( style='width:100%' ref='video' v-if='content[0]._picUrl || content[0].picUrl' :src='content[0].picUrl || content[0]._picUrl' controls="controls")
+                video(autoplay='true' style='width:100%' ref='video' v-if='content[0]._picUrl || content[0].picUrl' :src='content[0].picUrl || content[0]._picUrl' controls="controls")
                 template(v-else-if='!status.view')
                     .image-add-icon
                     .text {{item._tips || '请上传视频'}}
