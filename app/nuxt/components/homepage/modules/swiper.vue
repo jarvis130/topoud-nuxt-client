@@ -102,6 +102,9 @@ export default {
                 .then(({ data: { success, result: content, message } }) => {
                     if (!success) throw Error(message)
                     this.item._content = this.content = content
+                    while (content.length > 5) {
+                        content.pop()
+                    }
                 })
                 .catch(({ message }) => {
                     this.errormsg = message
