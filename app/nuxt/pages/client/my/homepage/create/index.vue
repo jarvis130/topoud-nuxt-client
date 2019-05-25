@@ -18,8 +18,9 @@
                     input.weui-input(placeholder='默认读取名片的地址' v-model='store.address')
                     //- small(v-if='store.longitude && store.latitude') 坐标:{{store.longitude}},{{store.latitude}}
                     //- small(v-else) 还未获取地址经纬度
-                .weui-cell__ft(@click='getLocation')
-                    .topoud-btn.plain.small 获取地址
+                .weui-cell__ft(@click='getLocation' style='width: 50px;')
+                    //- .topoud-btn.plain.small 获取地址
+                    .icon.i-locationfill(style='color: rgb(55,67,107); font-size: 20px;')
             .weui-cell.top
                 .weui-label 联系电话
                 .weui-cell__bd

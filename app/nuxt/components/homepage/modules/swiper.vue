@@ -1,5 +1,5 @@
 <template lang="pug">
-.homepage-module
+.homepage-module(v-if='!status.view || content.length')
     titleModule(:item='item' :status='status' :loading='!content' :controllOnly='true' @toTop='$emit(`toTop`, item.sortOrder)'  @remove='$emit(`remove`, item.sortOrder)')
     div(v-show='content && content.length')
         .homepage-module-panel.swiper
@@ -35,7 +35,7 @@ import uploaderModule from '~/components/uploader/homepage-image'
 export default {
     data() {
         return {
-            content: true,
+            content: false,
             swiperOption: {
                 autoplay: true,
                 animation: 150,

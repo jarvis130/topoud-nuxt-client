@@ -8,7 +8,7 @@
     .image-panel(v-else-if='errormsg' @click='contentGet')
         .image-panel-error
             small {{errormsg}}
-    .homepage-module-1(v-if='content.length === 1')
+    .homepage-module-1(v-if='content.length === 1 && (!status.view || content[0].picUrl)')
         uploaderModule(@upload='upload_1' :size='[375, 180]')
             .homepage-module-panel.image-panel(ref='videoContainer')
                 .mask(v-if='!status.view')
