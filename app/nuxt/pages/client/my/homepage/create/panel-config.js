@@ -39,18 +39,28 @@ export const typesAll = [
                 type: '10',
                 remark: 2,
                 _tips: '点击添加双图',
-                _content: [{}, {}]
+                _content: [{ sortOrder: 0 }, { sortOrder: 1 }]
             },
             {
                 type: '10',
                 remark: 3,
                 _tips: '点击添加三图',
-                _content: [{}, {}, {}]
+                _content: [{ sortOrder: 0 }, { sortOrder: 1 }, { sortOrder: 2 }]
             },
             {
                 type: '10',
                 _tips: '点击添加图片',
-                _content: [{}, {}, {}, {}, {}, {}, {}, {}, {}]
+                _content: [
+                    { sortOrder: 0 },
+                    { sortOrder: 1 },
+                    { sortOrder: 2 },
+                    { sortOrder: 3 },
+                    { sortOrder: 4 },
+                    { sortOrder: 5 },
+                    { sortOrder: 6 },
+                    { sortOrder: 7 },
+                    { sortOrder: 8 }
+                ]
             },
             {
                 type: '6',

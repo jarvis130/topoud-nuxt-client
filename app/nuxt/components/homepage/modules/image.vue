@@ -8,7 +8,7 @@
     .image-panel(v-else-if='errormsg' @click='contentGet')
         .image-panel-error
             small {{errormsg}}
-    .homepage-module-1(v-if='content.length === 1')
+    .homepage-module-1(v-if='content.length === 1' v-if='!status.view || content[0].picUrl')
         uploaderModule(@upload='upload_1' :size='[375, 180]')
             .homepage-module-panel.image-panel
                 .loading(v-if='content[0]._picUrl && !content[0].picUrl') 上传中，请稍后
@@ -21,7 +21,7 @@
     //- 2 ---
     //- 2 ---
     .homepage-module-2(v-else-if='content.length === 2')
-        .homepage-module-2-left
+        .homepage-module-2-left(v-if='!status.view || content[0].picUrl')
             uploaderModule(@upload='upload_1' :size='[375, 375]')
                 .homepage-module-panel.image-panel
                     .loading(v-if='content[0]._picUrl && !content[0].picUrl') 上传中，请稍后
@@ -30,7 +30,7 @@
                     template(v-else-if='!status.view')
                         .image-add-icon
                         .text {{item._tips || '请上传图片'}}
-        .homepage-module-2-right
+        .homepage-module-2-right(v-if='!status.view || content[1].picUrl')
             uploaderModule(@upload='upload_2' :size='[375, 375]')
                 .homepage-module-panel.image-panel
                     .loading(v-if='content[1]._picUrl && !content[1].picUrl') 上传中，请稍后
@@ -43,7 +43,7 @@
     //- 3 ---
     //- 3 ---
     .homepage-module-3(v-else-if='content.length === 3')
-        .homepage-module-3-left
+        .homepage-module-3-left(v-if='!status.view || content[0].picUrl')
             uploaderModule(@upload='upload_1' :size='[375, 375]')
                 .homepage-module-panel.image-panel
                     .loading(v-if='content[0]._picUrl && !content[0].picUrl') 上传中，请稍后
@@ -52,7 +52,7 @@
                     template(v-else-if='!status.view')
                         .image-add-icon
                         .text {{item._tips || '请上传图片'}}
-        .homepage-module-3-center
+        .homepage-module-3-center(v-if='!status.view || content[1].picUrl')
             uploaderModule(@upload='upload_2' :size='[375, 375]')
                 .homepage-module-panel.image-panel
                     .loading(v-if='content[1]._picUrl && !content[1].picUrl') 上传中，请稍后
@@ -61,7 +61,7 @@
                     template(v-else-if='!status.view')
                         .image-add-icon
                         .text {{item._tips || '请上传图片'}}
-        .homepage-module-3-right
+        .homepage-module-3-right(v-if='!status.view || content[2].picUrl')
             uploaderModule(@upload='upload_3' :size='[375, 375]')
                 .homepage-module-panel.image-panel
                     .loading(v-if='content[2]._picUrl && !content[2].picUrl') 上传中，请稍后
@@ -74,7 +74,7 @@
     //- 9 ---
     //- 9 ---
     .homepage-module-9(v-else-if='content.length === 9')
-        .homepage-module-9-item(v-for='index in [0,1,2,3,4,5,6,7,8]')
+        .homepage-module-9-item(v-for='index in [0,1,2,3,4,5,6,7,8]' v-if='!status.view || content[index].picUrl')
             uploaderModule(@upload='upload_9($event, index)' :size='[375, 375]')
                 .homepage-module-panel.image-panel
                     .loading(v-if='content[index]._picUrl && !content[index].picUrl') 上传中，请稍后
