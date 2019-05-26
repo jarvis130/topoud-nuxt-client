@@ -16,7 +16,7 @@
                 small #[img(:src='meaninglessItem' style='height: 8px;margin-bottom: 3px;')] CONTACT US #[img(:src='meaninglessItem' style='height: 8px;margin-bottom: 3px;')]
                 div(style='line-height: 1;margin-bottom: 15px;')
                     img(:src='meaninglessItem2' style='height: 9px;')
-            .some-btn #[img(:src='meaninglessItem3')] {{storeInfo.phone}}
+            a.some-btn(:href='`tel:${storeInfo.phone}`') #[img(:src='meaninglessItem3')] {{storeInfo.phone}}
             .map(@click='openLocation')
                 img(:src='storeInfo.mapUrl' v-if='storeInfo.mapUrl')
             .address
@@ -266,7 +266,8 @@ export default {
     }
     text-align: center;
     .some-btn {
-        vertical-align: middle;
+        display: block;
+        // vertical-align: middle;
         color: white;
         font-size: 16px;
         height: 40px;
