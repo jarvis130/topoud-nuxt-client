@@ -54,18 +54,18 @@ export default {
                 longitude,
                 latitude
             } = this.storeInfo
-            window.miniProgram.openLocation({
-                latitude,
-                longitude,
-                address,
-                name
-            })
+            // window.miniProgram.openLocation({
+            //     latitude,
+            //     longitude,
+            //     address,
+            //     name
+            // })
             // alert(
             //     `/pages/webview/location-open?name=${storeName}&address=${address}&longitude=${longitude}&latitude=${latitude}`
             // )
-            // window.wx.miniProgram.navigateTo({
-            //     url: `/pages/webview/location-open?name=${storeName}&address=${address}&longitude=${longitude}&latitude=${latitude}`
-            // })
+            window.wx.miniProgram.navigateTo({
+                url: `/pages/webview/location-open?name=${name}&address=${address}&longitude=${longitude}&latitude=${latitude}`
+            })
         }
     },
     mounted() {
