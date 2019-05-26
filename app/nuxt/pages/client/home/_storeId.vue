@@ -18,7 +18,7 @@
                     img(:src='meaninglessItem2' style='height: 9px;')
             .some-btn #[img(:src='meaninglessItem3')] {{storeInfo.phone}}
             .map(@click='openLocation')
-                img(:src='storeInfo.mapUrl')
+                img(:src='storeInfo.mapUrl' v-if='storeInfo.mapUrl')
             .address
                 .icon.i-locationfill
                 | 详细地址:{{storeInfo.address}}
@@ -87,12 +87,15 @@ export default {
                 }) => {
                     if (!success) throw Error(message)
                     let xy = `${latitude},${longitude}`
-                    let mapUrl = `https://apis.map.qq.com/ws/staticmap/v2/?key=${
-                        this.qqMapKey
-                    }&center=${xy}&zoom=16&labels=anchor:3|border:0|${storeName.substr(
-                        0,
-                        12
-                    )}|${xy}&size=450*180`
+                    let mapUrl =
+                        longitude && latitude
+                            ? `https://apis.map.qq.com/ws/staticmap/v2/?key=${
+                                  this.qqMapKey
+                              }&center=${xy}&zoom=16&labels=anchor:3|border:0|${storeName.substr(
+                                  0,
+                                  12
+                              )}|${xy}&size=450*180`
+                            : false
                     // mapUrl =
                     //     'http://qiniu.topoud.com/201905201550145ce25c363cbec.png'
                     // let mapUrl = `https://apis.map.qq.com/ws/staticmap/v2/?size=450*300&key=${
