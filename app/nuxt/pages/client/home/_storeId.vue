@@ -48,13 +48,24 @@ export default {
         openLocation() {
             if (!this.storeInfo) return
             if (!window.wx) return
-            let { storeName, address, longitude, latitude } = this.storeInfo
+            let {
+                storeName: name,
+                address,
+                longitude,
+                latitude
+            } = this.storeInfo
+            window.miniProgram.openLocation({
+                latitude,
+                longitude,
+                address,
+                name
+            })
             // alert(
             //     `/pages/webview/location-open?name=${storeName}&address=${address}&longitude=${longitude}&latitude=${latitude}`
             // )
-            window.wx.miniProgram.navigateTo({
-                url: `/pages/webview/location-open?name=${storeName}&address=${address}&longitude=${longitude}&latitude=${latitude}`
-            })
+            // window.wx.miniProgram.navigateTo({
+            //     url: `/pages/webview/location-open?name=${storeName}&address=${address}&longitude=${longitude}&latitude=${latitude}`
+            // })
         }
     },
     mounted() {
