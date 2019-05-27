@@ -108,7 +108,10 @@ export default {
         },
         getLocationRequest(index) {
             if (this.getLocationRequestIndex !== index) return
-            if (this.getLocationRequestTimes > 30) return
+            if (this.getLocationRequestTimes > 20) {
+                this.$toast.close()
+                return
+            }
             this.getLocationRequestTimes++
             let { getLocationRequestHash: hash } = this
             this.$axios(
@@ -121,21 +124,24 @@ export default {
                     if (!result) {
                         setTimeout(_ => {
                             this.getLocationRequest(index)
-                        }, 1000)
+                        }, 500)
                         return
                     }
+                    this.$toast.close()
                     let [longitude, latitude, address] = result.split(',')
                     this.store.longitude = longitude
                     this.store.latitude = latitude
                     this.store.address = address
                 })
                 .catch(({ message }) => {
+                    this.$toast.close()
                     this.$message.error('请求出错，请重新获取地址:' + message)
                 })
         },
         getLocation() {
             if (!window.wx) return
             let hash = this.$random.string(32)
+            this.$toast('获取地址')
             window.wx.miniProgram.navigateTo({
                 url: `/pages/webview/location-choose?hash=${hash}`
             })
