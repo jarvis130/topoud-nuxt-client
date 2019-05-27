@@ -21,7 +21,7 @@
             .weui-dialog__bd
             .weui-dialog__ft
                 .weui-dialog__btn.weui-dialog__btn_default(@click.stop.prevent='confirming = false') 取消
-                .weui-dialog__btn.weui-dialog__btn_primary(@click.stop.prevent='confirming = false; $emit(`remove`);') 保存
+                .weui-dialog__btn.weui-dialog__btn_primary(@click.stop.prevent='confirming = false; $emit(`remove`);') 删除
 </template>
 <script>
 export default {
