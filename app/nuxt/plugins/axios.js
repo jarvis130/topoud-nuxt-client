@@ -12,8 +12,8 @@ switch (process.env.NODE_ENV) {
         // baseURL = `https://test.topoud.com/api`
         break
     default:
-        baseURL = `https://mall.topoud.com/api`
-    // baseURL = `https://test.topoud.com/api`
+        // baseURL = `https://mall.topoud.com/api`
+        baseURL = `https://test.topoud.com/api`
     // baseURL = `http://192.168.0.118:8081/api`
     // baseURL = `/api`
 }
