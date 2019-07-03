@@ -199,7 +199,7 @@ export default {
         //         })
         // },
         industryTreeGet() {
-            this.$axios('/icard/getIndustryTree')
+            this.$axios('/icard/getIndustryTree?type=2')
                 .then(({ data: { success, message, result } }) => {
                     if (!success) throw Error(message)
                     this.industryTree.value = result
