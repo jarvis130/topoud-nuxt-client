@@ -6,10 +6,10 @@ Axios.defaults.withCredentials = true
 let baseURL
 switch (process.env.NODE_ENV) {
     case 'production':
-        baseURL = `https://mall.topoud.com/api`
-        // break
+        //     baseURL = `https://mall.topoud.com/api`
+        //     break
         // case 'test':
-        // baseURL = `https://test.topoud.com/api`
+        baseURL = `https://test.topoud.com/api`
         break
     default:
         // baseURL = `https://mall.topoud.com/api`
