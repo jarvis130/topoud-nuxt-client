@@ -172,9 +172,15 @@ export default {
                             this.$axios('/icard/getDefaultCard').then(
                                 ({
                                     data: {
-                                        result: { company, address, telephone }
+                                        result: {
+                                            cardId,
+                                            company,
+                                            address,
+                                            telephone
+                                        }
                                     }
                                 }) => {
+                                    debugger
                                     this.store.storeName = company
                                     this.store.address = address
                                     this.store.phone = telephone
