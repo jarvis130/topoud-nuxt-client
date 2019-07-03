@@ -172,15 +172,9 @@ export default {
                             this.$axios('/icard/getDefaultCard').then(
                                 ({
                                     data: {
-                                        result: {
-                                            cardId,
-                                            company,
-                                            address,
-                                            telephone
-                                        }
+                                        result: { company, address, telephone }
                                     }
                                 }) => {
-                                    debugger
                                     this.store.storeName = company
                                     this.store.address = address
                                     this.store.phone = telephone
@@ -205,7 +199,7 @@ export default {
         //         })
         // },
         industryTreeGet() {
-            this.$axios('/icard/getIndustryTree')
+            this.$axios('/icard/getIndustryTree?type=2')
                 .then(({ data: { success, message, result } }) => {
                     if (!success) throw Error(message)
                     this.industryTree.value = result
