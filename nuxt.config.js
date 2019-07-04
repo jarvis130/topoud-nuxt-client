@@ -10,10 +10,10 @@ module.exports = {
                 content:
                     'width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no'
             },
-            {
-                name: 'description',
-                content: 'description'
-            },
+            // {
+            //     name: 'description',
+            //     content: 'description'
+            // },
             {
                 name: 'renderer',
                 content: 'webkit'
