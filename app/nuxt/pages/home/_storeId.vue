@@ -71,7 +71,7 @@ export default {
                 },
                 {
                     name: 'keywords',
-                    content: '云柬，云柬名片，电子名片' + industries
+                    content: '云柬,云柬名片,电子名片' + industries
                 }
             ]
         }
@@ -136,7 +136,7 @@ export default {
                             industryName
                         } = industryList[i]
                         if (industryId0 === industryId) {
-                            industries = industryName
+                            industries = ',' + industryName
                             break
                         }
                         for (let j in children) {
@@ -145,7 +145,8 @@ export default {
                                 industryName: industryName1
                             } = children[j]
                             if (industryId0 === industryId1) {
-                                industries = industryName + ' ' + industryName1
+                                industries =
+                                    ',' + industryName + ',' + industryName1
                                 break
                             }
                         }
