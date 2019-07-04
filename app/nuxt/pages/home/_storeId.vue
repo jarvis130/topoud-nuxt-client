@@ -40,8 +40,12 @@ export default {
         videoModule
     },
     head() {
-        let { list } = this.template,
-            description
+        let {
+                template: { list },
+                storeInfo
+            } = this,
+            description,
+            industries
         if (list) {
             for (let i in list) {
                 let item = list[i]
@@ -55,6 +59,9 @@ export default {
                 }
             }
         }
+        if (storeInfo) {
+            industries = storeInfo.industries || ''
+        }
         return {
             title: this.storeInfo.storeName,
             meta: [
@@ -64,7 +71,7 @@ export default {
                 },
                 {
                     name: 'keywords',
-                    content: '云柬，云柬名片，电子名片'
+                    content: '云柬，云柬名片，电子名片' + industries
                 }
             ]
         }
@@ -97,7 +104,6 @@ export default {
                 if (!resInfo.data.success) {
                     throw Error(resInfo.data.message)
                 }
-                console.log(resIndustry.data)
                 let template, storeInfo
                 template = { list: resTemplates.data.result }
                 for (let i in template.list) {
@@ -110,11 +116,49 @@ export default {
                             longitude,
                             latitude,
                             phone,
-                            storeName
+                            storeName,
+                            industryId: industryId0
                         }
                     }
                 } = resInfo
-                storeInfo = { address, longitude, latitude, phone, storeName }
+                let industries
+                if (
+                    industryId0 &&
+                    resIndustry.data &&
+                    resIndustry.data.result
+                ) {
+                    let { result: industryList } = resIndustry.data
+                    for (let i in industryList) {
+                        if (industries) break
+                        let {
+                            children,
+                            industryId,
+                            industryName
+                        } = industryList[i]
+                        if (industryId0 === industryId) {
+                            industries = industryName
+                            break
+                        }
+                        for (let j in children) {
+                            let {
+                                industryId: industryId1,
+                                industryName: industryName1
+                            } = children[j]
+                            if (industryId0 === industryId1) {
+                                industries = industryName + ' ' + industryName1
+                                break
+                            }
+                        }
+                    }
+                }
+                storeInfo = {
+                    address,
+                    longitude,
+                    latitude,
+                    phone,
+                    storeName,
+                    industries
+                }
                 return { template, storeInfo }
             })
             .catch(({ message }) => {
