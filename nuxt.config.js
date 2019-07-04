@@ -1,7 +1,8 @@
 const path = require('path')
-// const webpack = require('webpack')
+const { NODE_ENV } = process.env
 module.exports = {
     srcDir: path.join('./app/nuxt'),
+    env: { APP_ENV: NODE_ENV },
     head: {
         title: '云柬名片',
         meta: [

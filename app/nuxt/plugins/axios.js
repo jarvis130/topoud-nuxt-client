@@ -4,18 +4,16 @@ import Axios from 'axios'
 import entities from 'entities'
 Axios.defaults.withCredentials = true
 let baseURL
-switch (process.env.NODE_ENV) {
+switch (process.env.APP_ENV) {
     case 'production':
-        //     baseURL = `https://mall.topoud.com/api`
-        //     break
-        // case 'test':
+        baseURL = `https://mall.topoud.com/api`
+        break
+    case 'test':
         baseURL = `https://test.topoud.com/api`
         break
     default:
-        // baseURL = `https://mall.topoud.com/api`
         baseURL = `https://test.topoud.com/api`
     // baseURL = `http://192.168.0.118:8081/api`
-    // baseURL = `/api`
 }
 const axios = Axios.create({
     baseURL
