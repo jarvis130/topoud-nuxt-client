@@ -22,10 +22,10 @@
             .address
                 .icon.i-locationfill
                 | 详细地址:{{storeInfo.address}}
-    template(v-if='$route.params.storeId == $store.getters.userInfo.storeId')
-        br
-        nuxt-link(to='/client/my/homepage/create' replace).btn-area
-            .topoud-btn 编辑我的官网
+    //- template(v-if='$route.params.storeId == $store.getters.userInfo.storeId')
+    br
+    nuxt-link(to='/client/my/homepage/create' replace).btn-area
+        .topoud-btn 编辑我的官网
 </template>
 <script>
 import swiperModule from '~/components/homepage/modules/swiper'
