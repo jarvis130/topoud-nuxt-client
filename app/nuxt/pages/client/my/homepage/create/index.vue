@@ -144,7 +144,7 @@ export default {
         getLocation() {
             if (!window.wx) return
             let hash = this.$random.string(32)
-            this.$toast('获取地址')
+            // this.$toast('获取地址')
             window.wx.miniProgram.navigateTo({
                 url: `/pages/webview/location-choose?hash=${hash}`
             })
