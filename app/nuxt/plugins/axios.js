@@ -6,7 +6,8 @@ Axios.defaults.withCredentials = true
 let baseURL
 switch (process.env.APP_ENV) {
     case 'production':
-        baseURL = `https://mall.topoud.com/api`
+        baseURL = `https://icard.yjmp.net/api`
+        // baseURL = `https://mall.topoud.com/api`
         break
     case 'test':
         baseURL = `https://test-icard.yjmp.net/api`

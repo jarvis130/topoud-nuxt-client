@@ -1,5 +1,5 @@
 const config =
-    process.env.NODE_ENV === 'produnction'
+    process.env.NODE_ENV === 'production'
         ? require('../../api.config.prod.js').redis
         : require('../../api.config.test.js').redis
 const redis = require('redis'),
