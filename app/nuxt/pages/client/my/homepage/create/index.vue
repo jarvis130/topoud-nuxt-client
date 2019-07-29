@@ -118,7 +118,7 @@ export default {
             this.getLocationRequestTimes++
             let { getLocationRequestHash: hash } = this
             this.$axios(
-                this.$axios.baseURL.replace(/\/api$/, '') +
+                this.$axios.localURL +
                     '/client/my/homepage/create/location-hash-get',
                 { params: { hash } }
             )
