@@ -5,7 +5,6 @@ router.post(
     '/client/my/homepage/create/location-hash-set',
     (req, res, next) => {
         let { hash, value } = req.body
-        console.log({ hash, value })
         if (!hash || hash.length < 32) {
             res.status(500).send({ message: 'hash invalid' })
             return
@@ -29,7 +28,6 @@ router.get('/client/my/homepage/create/location-hash-get', (req, res, next) => {
         res.status(500).send({ message: 'hash invalid' })
         return
     }
-    console.log({ hash })
     return redisClient
         .getAsync(`client_location_hash_${hash}`)
         .then(result => {
