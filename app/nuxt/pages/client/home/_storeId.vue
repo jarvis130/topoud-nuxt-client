@@ -107,11 +107,6 @@ export default {
                                   12
                               )}|${xy}&size=450*180`
                             : false
-                    // mapUrl =
-                    //     'http://qiniu.topoud.com/201905201550145ce25c363cbec.png'
-                    // let mapUrl = `https://apis.map.qq.com/ws/staticmap/v2/?size=450*300&key=${
-                    //     this.qqMapKey
-                    // }&center=${xy}&labels=${address}|${xy}`
                     this.storeInfo = {
                         address,
                         longitude,
