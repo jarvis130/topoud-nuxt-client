@@ -18,7 +18,7 @@ router.post(
                 res.send({ success: true })
             })
             .catch(({ message }) => {
-                res.status(500), send({ message })
+                res.status(500).send({ message })
             })
     }
 )
