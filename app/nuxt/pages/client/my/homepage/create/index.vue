@@ -15,11 +15,12 @@
             .weui-cell.top
                 .weui-label 企业地址
                 .weui-cell__bd
-                    input.weui-input(placeholder='默认读取名片的地址' v-model='store.address')
+                    //- input.weui-input(placeholder='默认读取名片的地址' v-model='store.address')
+                    .weui-input {{store.address}}
                     //- :{{store.longitude}},{{store.latitude}}
                     small(v-if='store.longitude && store.latitude') 已选择地图
                     small(v-else) 还未选择地图
-                .weui-cell__ft(@click='getLocation' style='width: 50px;')
+                //- .weui-cell__ft(@click='getLocation' style='width: 50px;')
                     //- .topoud-btn.plain.small 获取地址
                     .icon.i-locationfill(style='color: rgb(55,67,107); font-size: 20px;')
             .weui-cell.top
