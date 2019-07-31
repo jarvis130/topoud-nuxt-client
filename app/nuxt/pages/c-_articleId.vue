@@ -4,6 +4,15 @@
     .author
         span.source {{article.source}}
         span.date {{article.formatDate}}
+    .sharer(v-if='article.articleCardDTO')
+        .weui-cell
+            img.headimg(v-if='article.articleCardDTO.logo' :src='article.articleCardDTO.logo')
+            .headimg(v-else)
+            .weui-cell__bd
+                span.name {{article.articleCardDTO.name || ''}}
+                span.position {{article.articleCardDTO.position || ''}}
+                .company {{article.articleCardDTO.company || ''}}
+            //- .weui-cell__ft 认识他 >
     .content(v-html='article.content')
     .end - END -
     .weui-flex.data
@@ -11,7 +20,7 @@
             span.read {{article.clickRateFormat}}
         .weui-flex__item
             span.praise {{article.praiseRateFormat}}
-    //- .test {{article}}
+    .test {{article}}
 </template>
 <style lang="less">
 .article .content {
@@ -32,6 +41,40 @@
 </style>
 
 <style lang="less" scoped>
+.sharer {
+    background: rgba(247, 247, 247, 1);
+    border-radius: 100px 4px 4px 100px;
+    margin-right: -15px;
+    .headimg {
+        border-radius: 50%;
+        background: #aaa;
+        height: 50px;
+        width: 50px;
+        margin: 6px 10px 6px 0;
+    }
+    .name {
+        font-size: 18px;
+        font-family: Source Han Sans CN;
+        font-weight: 500;
+        line-height: 23px;
+        color: rgba(11, 14, 21, 1);
+    }
+    .position {
+        margin-left: 10px;
+        font-size: 12px;
+        font-family: Source Han Sans CN;
+        font-weight: 400;
+        line-height: 23px;
+        color: rgba(151, 157, 165, 1);
+    }
+    .company {
+        font-size: 14px;
+        font-family: Source Han Sans CN;
+        font-weight: 400;
+        line-height: 23px;
+        color: rgba(151, 157, 165, 1);
+    }
+}
 .data {
     text-align: center;
     font-size: 12px;
@@ -92,13 +135,29 @@
 
 <script>
 export default {
+    mounted() {
+        let {
+            query: { articleId },
+            params: { sharerId }
+        } = this.$route
+        this.$axios
+            .post(
+                this.$axios.icardURL + '/card/comment/listCommentInfoListForH5',
+                {
+                    data: { sharerId, articleId }
+                }
+            )
+            .then(({ data: { result } }) => {
+                debugger
+            })
+    },
     asyncData({
         error,
         params: { articleId },
         query: { sharerId },
         app: { $axios }
     }) {
-        console.log({ sharerId, articleId })
+        // console.log({ sharerId, articleId })
         return $axios
             .post(
                 $axios.icardURL + '/javaapi/card/article/getArticleDetailByH5',
@@ -106,7 +165,9 @@ export default {
                     data: { sharerId, articleId }
                 }
             )
-            .then(({ data: { result: article } }) => {
+            .then(({ data, data: { success, msg, result: article } }) => {
+                if (!success) throw Error(msg)
+                // console.log(data)
                 return { article }
             })
             .catch(({ message }) => {

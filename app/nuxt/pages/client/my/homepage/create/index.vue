@@ -189,12 +189,20 @@ export default {
                             this.$axios('/icard/getDefaultCard').then(
                                 ({
                                     data: {
-                                        result: { company, address, telephone }
+                                        result: {
+                                            latitude,
+                                            longitude,
+                                            company,
+                                            address,
+                                            telephone
+                                        }
                                     }
                                 }) => {
                                     this.store.storeName = company
                                     this.store.address = address
                                     this.store.phone = telephone
+                                    this.store.longitude = longitude
+                                    this.store.latitude = latitude
                                 }
                             )
                         }
