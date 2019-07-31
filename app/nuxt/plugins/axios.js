@@ -3,20 +3,26 @@
 import Axios from 'axios'
 import entities from 'entities'
 Axios.defaults.withCredentials = true
-let baseURL, localURL
+let baseURL, localURL, icardURL, shopURL
 switch (process.env.APP_ENV) {
     case 'production':
         baseURL = `https://icard.yjmp.net/api`
         localURL = `https://home.yjmp.net`
+        icardURL = `https://icard.yjmp.net`
+        shopURL = `https://shop.yjmp.net`
         // baseURL = `https://mall.topoud.com/api`
         break
     case 'test':
         baseURL = `https://test-icard.yjmp.net/api`
         localURL = `https://test-home.yjmp.net`
+        icardURL = `https://test-icard.yjmp.net`
+        shopURL = `https://test-shop.yjmp.net`
         break
     default:
         baseURL = `https://test-icard.yjmp.net/api`
         localURL = `https://test-home.yjmp.net`
+        icardURL = `https://test-icard.yjmp.net`
+        shopURL = `https://test-shop.yjmp.net`
     // baseURL = `http://192.168.0.118:8081/api`
 }
 const axios = Axios.create({
@@ -24,6 +30,8 @@ const axios = Axios.create({
 })
 axios.baseURL = baseURL
 axios.localURL = localURL
+axios.icardURL = icardURL
+axios.shopURL = shopURL
 axios.interceptors.request.use(function(request) {
     if (process.browser) {
         request.headers.Authorization = `Bearer ${axios.$topoudToken}`

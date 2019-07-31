@@ -62,7 +62,7 @@ export default {
             industryTree: { value: false, list: false, kv: {} },
             keysNeccesary: {
                 storeName: '填写企业名称',
-                latitude: '选择地图',
+                // latitude: '选择地图',
                 address: '填写企业地址',
                 phone: '填写联系电话',
                 industryId: '选择行业'
