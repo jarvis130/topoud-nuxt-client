@@ -374,7 +374,7 @@ export default {
                     } else {
                         console.log(errorList)
                         this.$message.error(
-                            '部分接口出错' + `(${errorList.length}/${p.length})`
+                            '部分接口出错' + `(${errorList[0]})(${errorList.length}/${p.length})`
                         )
                     }
                 })
