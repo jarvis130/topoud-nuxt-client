@@ -20,7 +20,7 @@
                     //- :{{store.longitude}},{{store.latitude}}
                     small(v-if='store.longitude && store.latitude') 已选择地图
                     small(v-else) 还未选择地图
-                //- .weui-cell__ft(@click='getLocation' style='width: 50px;')
+                .weui-cell__ft(@click='getLocation' style='width: 50px;')
                     //- .topoud-btn.plain.small 获取地址
                     .icon.i-locationfill(style='color: rgb(55,67,107); font-size: 20px;')
             .weui-cell.top
