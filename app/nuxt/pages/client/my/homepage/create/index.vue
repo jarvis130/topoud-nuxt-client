@@ -14,8 +14,9 @@
                     .topoud-btn.plain.small 认证
             .weui-cell.top
                 .weui-label 企业地址
-                .weui-cell__bd {{store.address}}
-                    //- input.weui-input(placeholder='默认读取名片的地址' v-model='store.address')
+                .weui-cell__bd
+                    //- {{store.address}}
+                    input.weui-input(placeholder='默认读取名片的地址' v-model='store.address')
                     //- .weui-input {{store.address}}
                     //- :{{store.longitude}},{{store.latitude}}
                     small(v-if='store.longitude && store.latitude') 已选择地图
@@ -136,6 +137,7 @@ export default {
                     this.store.longitude = longitude
                     this.store.latitude = latitude
                     this.store.address = address
+                    console.log(this.store)
                 })
                 .catch(({ message }) => {
                     this.$toast.close()
