@@ -211,6 +211,10 @@ export default {
             .then(({ data: { result: comments } }) => {
                 this.comments = comments
             })
+        window.__wechatShareImgUrl = this.article.logo
+        // let imgUrl, title, desc
+        // debugger
+        // this.$wechatShareUpdate({ imgUrl, title, desc })
     },
     data() {
         return {

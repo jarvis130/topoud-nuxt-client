@@ -1,17 +1,23 @@
 import axios from 'axios'
 import Vue from 'vue'
 import { seajs } from 'seajs/dist/sea'
+const signatureUrl = `https://${
+    process.env.APP_ENV !== 'production' ? 'test-' : ''
+}icard.yjmp.net/api/wechat/getSignature?wechatId=8&url=`
 export default _ => {
-    if (Vue.prototype.$terminal.isWechat) {
+    if (!Vue.prototype.$terminal.isWechat) {
         const imgUrl0 = 'https://www.xxx.com/share-icon-min.jpg',
             title0 = '默认标题',
             desc0 = '默认描述'
         seajs.use('https://res2.wx.qq.com/open/js/jweixin-1.4.0.js', _ => {
-            axios(
-                'https://api.xxx.com/node-api/wechat/jssdk/get-signature?url=' +
-                    encodeURIComponent(location.href)
-            ).then(
-                ({ data: { appId, timestamp, nonceStr, signature, url } }) => {
+            axios(signatureUrl + encodeURIComponent(location.href)).then(
+                ({
+                    data: {
+                        result: { timestamp, nonceStr, signature }
+                        // url
+                    }
+                }) => {
+                    let appId = 'wx9776bce4622fc0ea'
                     let config = {
                         appId,
                         timestamp,
@@ -43,7 +49,7 @@ export default _ => {
                     // }
                     let { imgUrl, title, desc } = _ || {}
                     imgUrl = imgUrl || window.__wechatShareImgUrl || imgUrl0
-
+                    console.log(imgUrl)
                     delete window.__wechatShareImgUrl
                     title = title || document.title || title0
                     let descItem = document.querySelector(

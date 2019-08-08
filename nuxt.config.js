@@ -25,7 +25,7 @@ module.exports = {
         { src: '~assets/css/global.less', lang: 'less' }
     ],
     router: {
-        // middleware: 'router',
+        middleware: 'router',
         scrollBehavior: function(to, from, savedPosition) {
             if (savedPosition) {
                 return savedPosition
