@@ -5,7 +5,8 @@ const signatureUrl = `https://${
     process.env.APP_ENV !== 'production' ? 'test-' : ''
 }icard.yjmp.net/api/wechat/getSignature?wechatId=8&url=`
 export default _ => {
-    if (!Vue.prototype.$terminal.isWechat) {
+    let test = true
+    if (test || Vue.prototype.$terminal.isWechat) {
         const imgUrl0 = 'https://www.xxx.com/share-icon-min.jpg',
             title0 = '默认标题',
             desc0 = '默认描述'
@@ -49,7 +50,6 @@ export default _ => {
                     // }
                     let { imgUrl, title, desc } = _ || {}
                     imgUrl = imgUrl || window.__wechatShareImgUrl || imgUrl0
-                    console.log(imgUrl)
                     delete window.__wechatShareImgUrl
                     title = title || document.title || title0
                     let descItem = document.querySelector(

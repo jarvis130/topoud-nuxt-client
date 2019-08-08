@@ -221,6 +221,18 @@ export default {
             comments: []
         }
     },
+    head() {
+        let { intro: content, title } = this.article
+        return {
+            title,
+            meta: [
+                {
+                    name: 'description',
+                    content
+                }
+            ]
+        }
+    },
     asyncData({
         error,
         params: { articleId },
