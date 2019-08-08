@@ -18,7 +18,7 @@ export default _ => {
                         // url
                     }
                 }) => {
-                    let appId = 'wx9776bce4622fc0ea'
+                    let appId = 'wx1f3e345bd2c952b7'
                     let config = {
                         appId,
                         timestamp,
@@ -69,26 +69,6 @@ export default _ => {
                         link: location.href,
                         imgUrl
                     })
-                    // ;(window.__wechatShareInited
-                    //     ? window.wx.updateAppMessageShareData
-                    //     : window.wx.onMenuShareAppMessage)({
-                    //     type: 'link',
-                    //     title,
-                    //     link: location.href,
-                    //     imgUrl,
-                    //     desc
-                    // })
-                    // ;(window.__wechatShareInited
-                    //     ? window.wx.updateTimelineShareData
-                    //     : window.wx.onMenuShareTimeline)({
-                    //     type: 'link',
-                    //     title,
-                    //     link: location.href,
-                    //     imgUrl
-                    // })
-                    // if (!window.__wechatShareInited) {
-                    //     window.__wechatShareInited = true
-                    // }
                 }
                 Vue.prototype.$wechatShareUpdate()
             })
