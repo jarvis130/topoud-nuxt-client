@@ -49,22 +49,17 @@ export default {
                         this.show = false
                         this.payUrl = res.data.result.codeUrl
                         this.qrCode(this.payUrl)
-                        console.log('有链接')
-                        console.log(res.data.result.codeUrl)
                     } else {
                         this.show = true
                         this.payUrl = ''
                         this.text = res.data.message
-                        console.log('无链接')
                     }
-                    console.log(res)
                 })
                 .catch(message => {
                     this.show = true
                     this.payUrl = ''
                     this.text = '生成失败，请点击重试'
                     this.refresh = true
-                    console.log('失败')
                 })
         },
         refreshF: function() {
@@ -72,24 +67,13 @@ export default {
         }
     },
     mounted() {
+        // productId 点击后通过地址传参获取 10477  10478
         this.params = {
-            wechatId: 8,
-            productId: 10478
+            wechatId: 5,
+            productId: this.$route.query.productId
         }
         this.getUrl(this.params)
     }
-    // asyncData({ params, app: { $axios }, error }) {
-    //     return Promise.all([$axios('/icard/getIndustryTree?type=2')])
-    //         .then(data => {
-    //             console.log('成功1')
-    //             console.log(data)
-    //             return { test: 'aeiguahrgiua' }
-    //         })
-    //         .catch(message => {
-    //             console.log('失败1')
-    //             return { test: 'argiuahgaeirg' }
-    //         })
-    // }
 }
 </script>
 
