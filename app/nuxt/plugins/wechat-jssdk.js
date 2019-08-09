@@ -1,17 +1,23 @@
 import axios from 'axios'
 import Vue from 'vue'
 import { seajs } from 'seajs/dist/sea'
+const signatureUrl = `https://${
+    process.env.APP_ENV !== 'production' ? 'test-' : ''
+}icard.yjmp.net/api/wechat/getSignPackage?wechatId=8&url=`
 export default _ => {
-    if (Vue.prototype.$terminal.isWechat) {
+    let test = true
+    if (test || Vue.prototype.$terminal.isWechat) {
         const imgUrl0 = 'https://www.xxx.com/share-icon-min.jpg',
             title0 = '默认标题',
             desc0 = '默认描述'
         seajs.use('https://res2.wx.qq.com/open/js/jweixin-1.4.0.js', _ => {
-            axios(
-                'https://api.xxx.com/node-api/wechat/jssdk/get-signature?url=' +
-                    encodeURIComponent(location.href)
-            ).then(
-                ({ data: { appId, timestamp, nonceStr, signature, url } }) => {
+            axios(signatureUrl + encodeURIComponent(location.href)).then(
+                ({
+                    data: {
+                        result: { appId, timestamp, nonceStr, signature }
+                        // url
+                    }
+                }) => {
                     let config = {
                         appId,
                         timestamp,
@@ -43,7 +49,6 @@ export default _ => {
                     // }
                     let { imgUrl, title, desc } = _ || {}
                     imgUrl = imgUrl || window.__wechatShareImgUrl || imgUrl0
-
                     delete window.__wechatShareImgUrl
                     title = title || document.title || title0
                     let descItem = document.querySelector(
@@ -63,26 +68,6 @@ export default _ => {
                         link: location.href,
                         imgUrl
                     })
-                    // ;(window.__wechatShareInited
-                    //     ? window.wx.updateAppMessageShareData
-                    //     : window.wx.onMenuShareAppMessage)({
-                    //     type: 'link',
-                    //     title,
-                    //     link: location.href,
-                    //     imgUrl,
-                    //     desc
-                    // })
-                    // ;(window.__wechatShareInited
-                    //     ? window.wx.updateTimelineShareData
-                    //     : window.wx.onMenuShareTimeline)({
-                    //     type: 'link',
-                    //     title,
-                    //     link: location.href,
-                    //     imgUrl
-                    // })
-                    // if (!window.__wechatShareInited) {
-                    //     window.__wechatShareInited = true
-                    // }
                 }
                 Vue.prototype.$wechatShareUpdate()
             })

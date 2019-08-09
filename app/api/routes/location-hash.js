@@ -18,7 +18,7 @@ router.post(
                 res.send({ success: true })
             })
             .catch(({ message }) => {
-                res.status(500), send({ message })
+                res.status(500).send({ message })
             })
     }
 )
@@ -31,6 +31,7 @@ router.get('/client/my/homepage/create/location-hash-get', (req, res, next) => {
     return redisClient
         .getAsync(`client_location_hash_${hash}`)
         .then(result => {
+            console.log({ result })
             res.send({ success: true, result })
         })
         .catch(({ message }) => {

@@ -8,5 +8,6 @@
  */
 
 module.exports = [
-    // '/test'
+    // '/test',
+    '/paymentCode'
 ]

@@ -15,9 +15,12 @@
             .weui-cell.top
                 .weui-label 企业地址
                 .weui-cell__bd
+                    //- {{store.address}}
                     input.weui-input(placeholder='默认读取名片的地址' v-model='store.address')
-                    //- small(v-if='store.longitude && store.latitude') 坐标:{{store.longitude}},{{store.latitude}}
-                    //- small(v-else) 还未获取地址经纬度
+                    //- .weui-input {{store.address}}
+                    //- :{{store.longitude}},{{store.latitude}}
+                    small(v-if='store.longitude && store.latitude') 已选择地图
+                    small(v-else) 还未选择地图
                 .weui-cell__ft(@click='getLocation' style='width: 50px;')
                     //- .topoud-btn.plain.small 获取地址
                     .icon.i-locationfill(style='color: rgb(55,67,107); font-size: 20px;')
@@ -25,8 +28,9 @@
                 .weui-label 联系电话
                 .weui-cell__bd
                     input.weui-input(placeholder='' v-model='store.phone')
-        .weui-panel
-            .weui-cell.weui-cell_access(@click='industryTree.list=industryTree.value')
+        nuxt-link.weui-panel(to='./industries' append)
+            //- (@click='industryTree.list=industryTree.value')
+            .weui-cell.weui-cell_access
                 .weui-label 行业
                 .weui-cell__bd
                     .input-selector {{(industryTree.kv[store.industryId] && industryTree.kv[store.industryId].industryName) || '点击选择'}}
@@ -59,10 +63,11 @@ export default {
             store: false,
             industryTree: { value: false, list: false, kv: {} },
             keysNeccesary: {
-                storeName: '企业名称',
-                address: '企业地址',
-                phone: '联系电话',
-                industryId: '行业'
+                storeName: '填写企业名称',
+                // latitude: '选择地图',
+                address: '填写企业地址',
+                phone: '填写联系电话',
+                industryId: '选择行业'
             }
         }
     },
@@ -71,7 +76,7 @@ export default {
             if (this.loading) return
             for (let key in this.keysNeccesary) {
                 if (!this.store[key]) {
-                    this.$message.error('请填写' + this.keysNeccesary[key])
+                    this.$message.error('请' + this.keysNeccesary[key])
                     return
                 }
             }
@@ -115,7 +120,7 @@ export default {
             this.getLocationRequestTimes++
             let { getLocationRequestHash: hash } = this
             this.$axios(
-                this.$axios.baseURL.replace(/\/api$/, '') +
+                this.$axios.localURL +
                     '/client/my/homepage/create/location-hash-get',
                 { params: { hash } }
             )
@@ -132,6 +137,7 @@ export default {
                     this.store.longitude = longitude
                     this.store.latitude = latitude
                     this.store.address = address
+                    console.log(this.store)
                 })
                 .catch(({ message }) => {
                     this.$toast.close()
@@ -141,7 +147,7 @@ export default {
         getLocation() {
             if (!window.wx) return
             let hash = this.$random.string(32)
-            this.$toast('获取地址')
+            // this.$toast('获取地址')
             window.wx.miniProgram.navigateTo({
                 url: `/pages/webview/location-choose?hash=${hash}`
             })
@@ -160,6 +166,15 @@ export default {
             // }, 3500)
         },
         storeInfoGet() {
+            let { _myHomepageIndustryTreeSelectedIndustryId } = window
+            if (window._myHomePageStoreInfo) {
+                this.store = window._myHomePageStoreInfo
+                if (_myHomepageIndustryTreeSelectedIndustryId) {
+                    delete window._myHomepageIndustryTreeSelectedIndustryId
+                    this.store.industryId = _myHomepageIndustryTreeSelectedIndustryId
+                }
+                return
+            }
             this.$axios('/store/getStoreInfo')
                 .then(({ data: { success, message, result: store } }) => {
                     if (!success) throw Error(message)
@@ -168,22 +183,29 @@ export default {
                         // this.storeInit()
                     } else {
                         this.store = store
+                        if (_myHomepageIndustryTreeSelectedIndustryId) {
+                            delete window._myHomepageIndustryTreeSelectedIndustryId
+                            this.store.industryId = _myHomepageIndustryTreeSelectedIndustryId
+                        }
+                        window._myHomePageStoreInfo = store
                         if (!store.storeName) {
                             this.$axios('/icard/getDefaultCard').then(
                                 ({
                                     data: {
                                         result: {
-                                            cardId,
+                                            latitude,
+                                            longitude,
                                             company,
                                             address,
                                             telephone
                                         }
                                     }
                                 }) => {
-                                    debugger
                                     this.store.storeName = company
                                     this.store.address = address
                                     this.store.phone = telephone
+                                    this.store.longitude = longitude
+                                    this.store.latitude = latitude
                                 }
                             )
                         }
@@ -205,9 +227,31 @@ export default {
         //         })
         // },
         industryTreeGet() {
+            if (window._myHomepageIndustryTree) {
+                let result = (this.industryTree.value =
+                    window._myHomepageIndustryTree)
+                for (let i in result) {
+                    let item = result[i]
+                    this.$set(
+                        this.industryTree.kv,
+                        parseInt(item.industryId),
+                        item
+                    )
+                    for (let j in item.children || []) {
+                        let item1 = item.children[j]
+                        this.$set(
+                            this.industryTree.kv,
+                            parseInt(item1.industryId),
+                            item1
+                        )
+                    }
+                }
+                return
+            }
             this.$axios('/icard/getIndustryTree?type=2')
                 .then(({ data: { success, message, result } }) => {
                     if (!success) throw Error(message)
+                    window._myHomepageIndustryTree = result
                     this.industryTree.value = result
                     for (let i in result) {
                         let item = result[i]

@@ -1,7 +1,7 @@
 const path = require('path')
-// const webpack = require('webpack')
 module.exports = {
     srcDir: path.join('./app/nuxt'),
+    env: { APP_ENV: process.env.NODE_ENV },
     head: {
         title: '云柬名片',
         meta: [
@@ -10,10 +10,10 @@ module.exports = {
                 content:
                     'width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no'
             },
-            {
-                name: 'description',
-                content: 'description'
-            },
+            // {
+            //     name: 'description',
+            //     content: 'description'
+            // },
             {
                 name: 'renderer',
                 content: 'webkit'
@@ -25,7 +25,7 @@ module.exports = {
         { src: '~assets/css/global.less', lang: 'less' }
     ],
     router: {
-        // middleware: 'router',
+        middleware: 'router',
         scrollBehavior: function(to, from, savedPosition) {
             if (savedPosition) {
                 return savedPosition

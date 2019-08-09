@@ -55,7 +55,7 @@ export default {
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 20;
+    z-index: 39;
     .topoud-btn {
         display: block;
     }

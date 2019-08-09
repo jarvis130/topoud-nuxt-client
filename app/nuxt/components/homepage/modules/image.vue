@@ -128,6 +128,7 @@ export default {
         },
         imgPreview(current) {
             if (!window.wx) return
+            if (!status.view) return
             let urls = []
             let wx = window.wx
             this.content.map(({ picUrl }) => picUrl && urls.push(picUrl))

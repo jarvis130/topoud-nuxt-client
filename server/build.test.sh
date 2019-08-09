@@ -7,5 +7,5 @@ zip -r .build.test.zip .nuxt
 git add .build.test.zip
 git commit -m build-test
 git push
-ssh root@221.229.196.233
+ssh root@221.229.196.233 "cd topoud-nuxt-client; sh server/start.test.sh;"
 
