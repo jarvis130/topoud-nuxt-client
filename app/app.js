@@ -37,8 +37,8 @@ if (!development) {
         next()
     })
 }
-// app.use(require('./api/routes/location-hash'))
-// app.use(require('./api/routes/location-api'))
+app.use(require('./api/routes/location-hash'))
+app.use(require('./api/routes/location-api'))
 
 // nuxt
 var { Nuxt, Builder } = require('nuxt')
