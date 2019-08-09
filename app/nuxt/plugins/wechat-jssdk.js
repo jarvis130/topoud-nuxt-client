@@ -3,7 +3,9 @@ import Vue from 'vue'
 import { seajs } from 'seajs/dist/sea'
 const signatureUrl = `https://${
     process.env.APP_ENV !== 'production' ? 'test-' : ''
-}icard.yjmp.net/api/wechat/getSignPackage?wechatId=8&url=`
+}icard.yjmp.net/api/wechat/getSignPackage?wechatId=${
+    process.env.APP_ENV === 'production' ? 5 : 8
+}&url=`
 export default _ => {
     let test = true
     if (test || Vue.prototype.$terminal.isWechat) {
