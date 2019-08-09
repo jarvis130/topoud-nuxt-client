@@ -90,7 +90,7 @@ module.exports = {
             'axios',
             // 'element-ui',
             // 'vue2-filters',
-            'vue-currency-filter',
+            // 'vue-currency-filter',
             'vue-lazyload',
             'sticky-sidebar/dist/sticky-sidebar.min.js',
             'resize-sensor'
@@ -135,16 +135,16 @@ module.exports = {
         // 'vue-currency-filter/nuxt',
 
         // Or if you have custom options...
-        [
-            'vue-currency-filter/nuxt',
-            {
-                symbol: '¥',
-                thousandsSeparator: ',',
-                fractionCount: 2,
-                fractionSeparator: '.',
-                symbolPosition: 'front',
-                symbolSpacing: true
-            }
-        ]
+        // [
+        //     'vue-currency-filter/nuxt',
+        //     {
+        //         symbol: '¥',
+        //         thousandsSeparator: ',',
+        //         fractionCount: 2,
+        //         fractionSeparator: '.',
+        //         symbolPosition: 'front',
+        //         symbolSpacing: true
+        //     }
+        // ]
     ]
 }
