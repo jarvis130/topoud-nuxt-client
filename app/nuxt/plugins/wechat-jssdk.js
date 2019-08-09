@@ -3,7 +3,7 @@ import Vue from 'vue'
 import { seajs } from 'seajs/dist/sea'
 const signatureUrl = `https://${
     process.env.APP_ENV !== 'production' ? 'test-' : ''
-}icard.yjmp.net/api/wechat/getSignature?wechatId=8&url=`
+}icard.yjmp.net/api/wechat/getSignPackage?wechatId=8&url=`
 export default _ => {
     let test = true
     if (test || Vue.prototype.$terminal.isWechat) {
@@ -14,11 +14,10 @@ export default _ => {
             axios(signatureUrl + encodeURIComponent(location.href)).then(
                 ({
                     data: {
-                        result: { timestamp, nonceStr, signature }
+                        result: { appId, timestamp, nonceStr, signature }
                         // url
                     }
                 }) => {
-                    let appId = 'wx1f3e345bd2c952b7'
                     let config = {
                         appId,
                         timestamp,
