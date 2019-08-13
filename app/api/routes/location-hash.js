@@ -13,7 +13,7 @@ router.post(
             return res.status(500).send({ message: 'value invalid' })
         }
         return redisClient
-            .setAsync(`client_location_hash_${hash}`, value, 'EX', 10)
+            .setAsync(`client_location_hash_${hash}`, value, 'EX', 60)
             .then(_ => {
                 res.send({ success: true })
             })
@@ -31,7 +31,7 @@ router.get('/client/my/homepage/create/location-hash-get', (req, res, next) => {
     return redisClient
         .getAsync(`client_location_hash_${hash}`)
         .then(result => {
-            console.log({ result })
+            // console.log({ result })
             res.send({ success: true, result })
         })
         .catch(({ message }) => {
