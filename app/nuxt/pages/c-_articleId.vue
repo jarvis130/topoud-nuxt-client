@@ -1,7 +1,7 @@
 <template lang="pug">
 .article 
     //- .test {{article}}
-    .weui-cells
+    .weui-panel
         h1.title {{article.title}}
         .author
             span.source {{article.source}}
@@ -14,7 +14,7 @@
                     span.name {{article.articleCardDTO.name || ''}}
                     span.position {{article.articleCardDTO.position || ''}}
                     .company {{article.articleCardDTO.company || ''}}
-                //- .weui-cell__ft 认识他 >
+                .weui-cell__ft(style='color:#3A4D7A;font-size:14px;weight: 500; cursor:pointer;' @click='showAcode = true') 认识他 >
         .content(v-html='article.content')
         .end - END -
         .weui-flex.data
@@ -22,7 +22,7 @@
                 span.read {{article.clickRateFormat}}
             .weui-flex__item
                 span.praise {{article.praiseRateFormat}}
-    .weui-cells(v-if='article.qrcode')
+    .weui-panel(v-if='article.qrcode')
         .qrcode
             .weui-flex
                 .weui-flex__item
@@ -38,8 +38,65 @@
                 .name {{item.nickname}}
                 .content {{item.content}}
                 .date {{item.dateTime}}
+    transition
+        .weui-mask(v-show='showAcode' @click='showAcode = false')
+    transition
+        //- .weui-skin_android.track-selector
+        .weui-actionsheet.weui-actionsheet_toggle(v-show='showAcode')
+            .acode-actionsheet
+                .close(@click='showAcode = false') +
+                .acode-title 根据相关规定
+                    br
+                    | 你需要登陆后才能进行评论
+                .acode-image
+                    img(:src='`https://`+qrcode')
+                .acode-tips 长按或扫描二维码，登陆小程序继续操作
 </template>
 <style lang="less">
+.acode-title {
+    font-size: 18px;
+    font-family: Source Han Sans CN;
+    text-align: center;
+    font-weight: bold;
+    line-height: 24px;
+    padding-top: 37px;
+    color: rgba(11, 14, 21, 1);
+}
+.acode-image {
+    width: 161px;
+    height: 161px;
+    margin: 15px auto;
+    img {
+        border-radius: 50%;
+        width: 100%;
+        padding: 10px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.17);
+    }
+}
+.acode-tips {
+    font-size: 14px;
+    font-family: Source Han Sans CN;
+    font-weight: 400;
+    line-height: 21px;
+    color: rgba(151, 157, 165, 1);
+    padding-bottom: 50px;
+    text-align: center;
+}
+.acode-actionsheet {
+    position: relative;
+    background: white;
+    .close {
+        position: absolute;
+        right: 15px;
+        color: #aaa;
+        top: 15px;
+        transform: rotate(45deg);
+        font-size: 22px;
+        line-height: 1;
+        font-weight: 300;
+    }
+}
+
 .article .content {
     margin-top: 12px;
     font-size: 15px;
@@ -180,15 +237,17 @@
         color: rgba(151, 157, 165, 1);
     }
 }
-.article .weui-cells {
+.article {
     margin: 0 auto;
     max-width: 600px;
-    padding: 20px 15px;
-    .title {
-        font-size: 22px;
-        font-weight: bold;
-        line-height: 28px;
-        color: rgba(11, 14, 21, 1);
+    .weui-panel {
+        padding: 20px 15px;
+        .title {
+            font-size: 22px;
+            font-weight: bold;
+            line-height: 28px;
+            color: rgba(11, 14, 21, 1);
+        }
     }
 }
 </style>
@@ -211,6 +270,13 @@ export default {
             .then(({ data: { result: comments } }) => {
                 this.comments = comments
             })
+        this.$axios
+            .post(this.$axios.icardURL + '/javaapi/card/article/getQrcode', {
+                data: { sharerId, articleId, type: 1 }
+            })
+            .then(({ data: { result: qrcode } }) => {
+                this.qrcode = qrcode
+            })
         window.__wechatShareImgUrl = this.article.logo
         // let imgUrl, title, desc
         // debugger
@@ -218,7 +284,9 @@ export default {
     },
     data() {
         return {
-            comments: []
+            showAcode: false,
+            comments: [],
+            qrcode: ''
         }
     },
     head() {

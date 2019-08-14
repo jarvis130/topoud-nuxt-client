@@ -8,7 +8,7 @@
  */
 
 module.exports = [
-    '/test',
-    '/payment-code'
+    // '/test',
+    // '/payment-code'
     // '/payment-choose'
 ]
