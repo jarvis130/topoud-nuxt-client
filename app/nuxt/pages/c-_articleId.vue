@@ -320,7 +320,8 @@
         font-family: Source Han Sans CN;
         font-weight: 400;
         line-height: 28px;
-        color: rgba(58, 77, 122, 1);
+        // color: rgba(58, 77, 122, 1);
+        color: rgba(151, 157, 165, 1);
     }
     .date {
         font-size: 14px;
