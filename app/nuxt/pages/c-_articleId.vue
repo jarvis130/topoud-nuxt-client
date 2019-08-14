@@ -22,12 +22,12 @@
         .visitors
             img(v-for='visitor in visitors' :src='visitor.logo')
             img(src='data:image/png;base64,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')
-            .read-count 阅读: {{article.clickRateFormat}}人
+            .read-count 阅读量：{{article.clickRateFormat}}
         .weui-flex.data
             .weui-flex__item
-                span.forward 转发 {{article.forwardRateFormat}}
+                span.forward 转发：{{article.forwardRateFormat}}
             .weui-flex__item
-                span.praise 点赞 {{article.praiseRateFormat}}
+                span.praise 点赞：{{article.praiseRateFormat}}
     .weui-panel(v-if='article.qrcode')
         .qrcode
             .weui-flex
@@ -71,6 +71,27 @@
                     .acode-tips 长按或扫描二维码，登陆小程序继续操作
 </template>
 <style lang="less">
+.article .content {
+    margin-top: 12px;
+    font-size: 15px;
+    font-weight: 400;
+    font-family: Source Han Sans CN;
+    line-height: 23px;
+    color: rgba(11, 14, 21, 1);
+    & > * + * {
+        margin-top: 16px;
+    }
+    img {
+        width: 100%;
+        border-radius: 4px;
+    }
+    video {
+        width: 100%;
+    }
+}
+</style>
+
+<style lang="less" scoped>
 .article-panel-title {
     font-size: 20px;
     font-family: PingFang SC;
@@ -149,24 +170,6 @@
     }
 }
 
-.article .content {
-    margin-top: 12px;
-    font-size: 15px;
-    font-weight: 400;
-    font-family: Source Han Sans CN;
-    line-height: 23px;
-    color: rgba(11, 14, 21, 1);
-    & > * + * {
-        margin-top: 16px;
-    }
-    img {
-        width: 100%;
-        border-radius: 4px;
-    }
-}
-</style>
-
-<style lang="less" scoped>
 .comments {
     margin-top: 10px;
     img {
