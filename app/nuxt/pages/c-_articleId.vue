@@ -85,8 +85,10 @@
         width: 100%;
         border-radius: 4px;
     }
-    video {
+    video,
+    .ql-video {
         width: 100%;
+        height: 300px;
     }
 }
 </style>
