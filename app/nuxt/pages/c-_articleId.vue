@@ -208,7 +208,7 @@
         margin-right: 10px;
     }
     .title {
-        height: 50px;
+        height: 47px;
         font-size: 16px;
         font-family: PingFang SC;
         font-weight: 500;
