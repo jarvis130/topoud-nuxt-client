@@ -86,7 +86,8 @@
         border-radius: 4px;
     }
     video,
-    .ql-video {
+    .ql-video,
+    iframe {
         width: 100%;
         height: 300px;
     }
