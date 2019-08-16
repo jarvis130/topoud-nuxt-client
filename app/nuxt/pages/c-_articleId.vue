@@ -8,7 +8,7 @@
             div
                 span.date {{article.formatDate}}
                 span.visit 阅读量：{{article.clickRateFormat}}
-        .sharer(v-if='article.articleCardDTO')
+        .sharer(v-if='article.articleCardDTO && article.articleCardDTO.name')
             .weui-cell
                 img.headimg(v-if='article.articleCardDTO.logo' :src='article.articleCardDTO.logo')
                 .headimg(v-else)
@@ -57,7 +57,7 @@
                         .weui-flex__item
                             .subtitle {{item.source}}
                         .read {{item.clickRateFormat}}
-    template(v-if='article.articleCardDTO')                            
+    template(v-if='article.articleCardDTO && article.articleCardDTO.name')                            
         transition
             .weui-mask(v-show='showAcode' @click='showAcode = false')
         transition
