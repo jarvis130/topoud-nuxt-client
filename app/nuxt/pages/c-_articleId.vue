@@ -114,6 +114,7 @@
     right: 54px;
 }
 .ground-float {
+    z-index: 20;
     position: fixed;
     border-radius: 50%;
     bottom: 14px;
