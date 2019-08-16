@@ -12,54 +12,18 @@ div
         accept='image/*'
         :full='true'
         )
-        div
-            slot
-            .copper-container(v-if='cropperActive')
-                vueCropper(
-                    ref="cropper"
-                    :img="option.img"
-                    :outputSize="option.outputSize"
-                    :outputType="option.outputType"
-                    :info="option.info"
-                    :canScale="option.canScale"
-                    :autoCrop="option.autoCrop"
-                    :autoCropWidth="option.autoCropWidth"
-                    :autoCropHeight="option.autoCropHeight"
-                    :fixed="option.fixed"
-                    :fixedNumber="option.fixedNumber"
-                    :centerBox='true'
-                )
-                .btn-area
-                    .left(@click.stop='cropperCancel')
-                        .topoud-btn.plain 取消
-                    .right(@click.stop='cropperComfirm')
-                        .topoud-btn 上传
+        slot
 </template>
 <script>
-import Vue from 'vue'
-if (process.browser) {
-    let vueCropper = require('vue-cropper')
-    Vue.use(vueCropper.default)
-}
 export default {
     props: { size: { default: [375, 375] } },
     data() {
         return {
             cropperActive: false,
-            option: {
-                img: '', // 裁剪图片的地址
-                info: true, // 裁剪框的大小信息
-                outputSize: 1, // 裁剪生成图片的质量
-                outputType: 'jpeg', // 裁剪生成图片的格式
-                canScale: false, // 图片是否允许滚轮缩放
-                autoCrop: true, // 是否默认生成截图框
-                autoCropWidth: this.size[0], // 默认生成截图框宽度
-                autoCropHeight: this.size[1], // 默认生成截图框高度
-                fixed: true, // 是否开启截图框宽高固定比例
-                fixedNumber: this.size // 截图框的宽高比例
-            },
+            fileBlob: false,
             headers: {},
-            file: false
+            file: false,
+            hash: false
         }
     },
     mounted() {
@@ -67,53 +31,54 @@ export default {
     },
     methods: {
         uploadChange(file, fileList) {
-            this.option.img = file.url
+            this.fileBlob = file.url
         },
-        uploadBefore(file, e2) {
+        uploadBefore(file) {
             if (!/^image/.test(file.type)) {
                 this.$toast.error('类型必须为图片')
                 return false
             }
-            this.cropperActive = true
+            this.imageUpload(file)
             return false
         },
-        cropperComfirm() {
-            this.$refs.cropper.getCropData(file => {
-                let hash = Math.random()
-                this.$emit(`upload`, { type: 'preview', value: file, hash })
-                this.$toast('上传中')
-                this.cropperCancel()
-                this.$axios
-                    .post('/common/uploadCompressImage', { file })
-                    .then(
-                        ({
-                            data: {
-                                success,
-                                result: { image_uri: url },
-                                message
-                            }
-                        }) => {
-                            if (!success) throw Error(message)
-                            this.$toast.close()
-                            this.$emit(`upload`, {
-                                type: 'uploaded',
-                                value: url,
-                                hash
-                            })
+        imageUpload(file) {
+            // let file = this.fileBlob
+            this.$toast('上传中')
+            let data = new FormData()
+            data.append('file', file)
+            this.$axios
+                .post('/common/imageUpload', data, {
+                    onUploadProgress: progressEvent => {
+                        var complete =
+                            (((progressEvent.loaded / progressEvent.total) *
+                                100) |
+                                0) +
+                            '%'
+                        this.$toast(`上传中(${complete})`)
+                    }
+                })
+                .then(
+                    ({
+                        data: {
+                            success,
+                            result: { image_uri: url },
+                            message
                         }
-                    )
-                    .catch(({ message }) => {
-                        this.$toast.close()
-                        this.$message.error(message)
-                    })
-                    .then(_ => {
-                        this.cropperActive = false
-                    })
-            })
-        },
-        cropperCancel() {
-            this.cropperActive = false
-            this.option.img = false
+                    }) => {
+                        if (!success) throw Error(message)
+                        let hash = Math.random()
+                        this.$toast.success('上传完成')
+                        this.$emit(`upload`, {
+                            type: 'uploaded',
+                            value: url,
+                            hash
+                        })
+                    }
+                )
+                .catch(({ message }) => {
+                    this.$toast.close()
+                    this.$message.error(message)
+                })
         }
     }
 }

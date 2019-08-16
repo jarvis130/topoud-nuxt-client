@@ -227,6 +227,7 @@ export default {
     img {
         width: 100%;
         // height: 165px;
+        height: 100%;
         background: #efefef;
     }
     &-loading {
