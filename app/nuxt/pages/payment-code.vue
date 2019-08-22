@@ -68,14 +68,14 @@ export default {
             this.$axios
                 .post('/wechat/nativePay', params)
                 .then(res => {
-                    if (res.data.success) {
+                    if (res.success) {
                         this.show = false
-                        this.payUrl = res.data.result.codeUrl
+                        this.payUrl = res.result.codeUrl
                         this.qrCode(this.payUrl)
                     } else {
                         this.show = true
                         this.payUrl = ''
-                        this.text = res.data.message
+                        this.text = res.message
                         this.refresh = true
                     }
                 })
@@ -142,7 +142,6 @@ export default {
 img {
     width: 100%;
     height: 100%;
-    border: 1px dashed #cfcfcf;
 }
 .pay-btn {
     width: 100%;
