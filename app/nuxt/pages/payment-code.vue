@@ -13,11 +13,11 @@
             <div class="pay-btn" @click="paymentF">微信支付 （￥{{howMuch}}）</div>
             <div class="payment-page" v-if="payment">
                 <div class="payment-code">
-                    <div class="code" v-if="showCode">
-                        <div v-if="show">{{text}}</div>
-                        <div id="qrcode" ref="qrcode" class="code-img" v-if="!show"></div>
-                        <div v-if="!show">长按或扫描二维码进行支付</div>
-                        <div @click="refreshF" v-if="refresh" class="refresh">重 试</div>
+                    <div class="code" v-show="showCode">
+                        <div v-show="show">{{text}}</div>
+                        <div id="qrcode" ref="qrcode" class="code-img" v-show="!show"></div>
+                        <div v-show="!show">长按或扫描二维码进行支付</div>
+                        <div @click="refreshF" v-show="refresh" class="refresh">重 试</div>
                     </div>
                     <div class="close" @click="close">X</div>
                 </div>
