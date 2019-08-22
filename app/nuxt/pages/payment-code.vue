@@ -68,14 +68,14 @@ export default {
             this.$axios
                 .post('/wechat/nativePay', params)
                 .then(res => {
-                    if (res.success) {
+                    if (res.data.success) {
                         this.show = false
-                        this.payUrl = res.result.codeUrl
+                        this.payUrl = res.data.result.codeUrl
                         this.qrCode(this.payUrl)
                     } else {
                         this.show = true
                         this.payUrl = ''
-                        this.text = res.message
+                        this.text = res.data.message
                         this.refresh = true
                     }
                 })
