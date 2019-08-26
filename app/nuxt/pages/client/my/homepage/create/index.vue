@@ -147,7 +147,7 @@ export default {
         getLocation() {
             // debugger
             // if (!window.wx) {
-            if (!window.wx_old) {
+            if (!window.wx || !window.wx.miniProgram) {
                 let KEY = '7ZEBZ-OVWRU-VCMVQ-25I4R-6SD3T-7ZBXT'
                 let url = `https://apis.map.qq.com/tools/locpicker?search=1&type=0&backurl=${encodeURIComponent(
                     location.href.split('?')[0]
