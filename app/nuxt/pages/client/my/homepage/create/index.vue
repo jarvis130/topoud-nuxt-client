@@ -145,7 +145,16 @@ export default {
                 })
         },
         getLocation() {
-            if (!window.wx) return
+            // debugger
+            // if (!window.wx) {
+            if (!window.wx_old) {
+                let KEY = '7ZEBZ-OVWRU-VCMVQ-25I4R-6SD3T-7ZBXT'
+                let url = `https://apis.map.qq.com/tools/locpicker?search=1&type=0&backurl=${encodeURIComponent(
+                    location.href.split('?')[0]
+                )}&key=${KEY}&referer=myapp`
+                location.href = url
+                return
+            }
             let hash = this.$random.string(32)
             // this.$toast('获取地址')
             window.wx.miniProgram.navigateTo({
@@ -187,7 +196,6 @@ export default {
                             delete window._myHomepageIndustryTreeSelectedIndustryId
                             this.store.industryId = _myHomepageIndustryTreeSelectedIndustryId
                         }
-                        window._myHomePageStoreInfo = store
                         if (!store.storeName) {
                             this.$axios('/icard/getDefaultCard').then(
                                 ({
@@ -201,14 +209,16 @@ export default {
                                         }
                                     }
                                 }) => {
-                                    this.store.storeName = company
-                                    this.store.address = address
-                                    this.store.phone = telephone
                                     this.store.longitude = longitude
+                                    this.store.address = address
                                     this.store.latitude = latitude
+                                    this.store.storeName = company
+                                    this.store.phone = telephone
                                 }
                             )
                         }
+                        this.locationFromQueryGet()
+                        window._myHomePageStoreInfo = this.store
                     }
                 })
                 .catch(({ message }) => {
@@ -273,6 +283,15 @@ export default {
                 .catch(({ message }) => {
                     this.$nuxt.error(message)
                 })
+        },
+        locationFromQueryGet() {
+            let { name, latng, addr, city } = this.$route.query
+            if (name && latng && addr && city) {
+                let [latitude, longitude] = (latng || '').split(',')
+                this.store.longitude = longitude
+                this.store.latitude = latitude
+                this.store.address = `${city} ${name}`
+            }
         }
     },
     mounted() {
