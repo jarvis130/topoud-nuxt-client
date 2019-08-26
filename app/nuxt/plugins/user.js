@@ -15,10 +15,15 @@ Vue.prototype.$userAsync = function({ token, userId }, callback) {
     return this.$store.dispatch('userAsync', { token, userId })
 }
 Vue.prototype.$userCheck = function(callback) {
+    if (this.$route.query.topoudToken) {
+        let { query } = this.$route
+        window.localStorage.topoudToken = query.topoudToken
+        let url = location.href.replace('topoudToken=' + query.topoudToken, '')
+        location.replace(url)
+        return
+    }
     if (!this.$axios.$topoudToken) {
-        if (this.$route.query.topoudToken) {
-            this.$axios.$topoudToken = window.localStorage.topoudToken = this.$route.query.topoudToken
-        } else if (window.localStorage.topoudToken) {
+        if (window.localStorage.topoudToken) {
             this.$axios.$topoudToken = window.localStorage.topoudToken
         }
     }
