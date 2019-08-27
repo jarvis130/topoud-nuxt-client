@@ -145,9 +145,19 @@ export default {
                 })
         },
         getLocation() {
-            // debugger
             // if (!window.wx) {
-            if (!window.wx || !window.wx.miniProgram) {
+            let notInMiniprograme =
+                !/MicroMessenger/i.test(
+                    window.navigator.userAgent.toLowerCase()
+                ) ||
+                !window.wx ||
+                !window.wx.miniProgram
+            if (!notInMiniprograme) {
+                window.wx.miniProgram.getEnv(({ miniprogram }) => {
+                    notInMiniprograme = !miniprogram
+                })
+            }
+            if (notInMiniprograme) {
                 let KEY = '7ZEBZ-OVWRU-VCMVQ-25I4R-6SD3T-7ZBXT'
                 let url = `https://apis.map.qq.com/tools/locpicker?search=1&type=0&backurl=${encodeURIComponent(
                     location.href.split('?')[0]
