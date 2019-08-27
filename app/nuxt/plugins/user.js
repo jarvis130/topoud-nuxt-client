@@ -18,18 +18,23 @@ Vue.prototype.$userCheck = function(callback) {
     if (this.$route.query.topoudToken) {
         let { query } = this.$route
         window.localStorage.topoudToken = query.topoudToken
-        let url = location.href.replace('topoudToken=' + query.topoudToken, '')
-        if (!/MicroMessenger/i.test(window.navigator.userAgent.toLowerCase())) {
+        let notInMiniprogram =
+            !/MicroMessenger/i.test(window.navigator.userAgent.toLowerCase()) ||
+            !window.wx ||
+            !window.wx.miniProgram
+        if (!notInMiniprogram) {
+            window.wx.miniProgram.getEnv(({ miniprogram }) => {
+                notInMiniprogram = !miniprogram
+            })
+        }
+        if (notInMiniprogram) {
+            let url = location.href.replace(
+                'topoudToken=' + query.topoudToken,
+                ''
+            )
             location.replace(url)
             return
         }
-        window.wx &&
-            window.wx.miniProgram.getEnv(res => {
-                if (!res.miniprogram) {
-                    location.replace(url)
-                    return
-                }
-            })
     }
     if (!this.$axios.$topoudToken) {
         if (window.localStorage.topoudToken) {
