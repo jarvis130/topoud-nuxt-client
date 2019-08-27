@@ -19,8 +19,17 @@ Vue.prototype.$userCheck = function(callback) {
         let { query } = this.$route
         window.localStorage.topoudToken = query.topoudToken
         let url = location.href.replace('topoudToken=' + query.topoudToken, '')
-        location.replace(url)
-        return
+        if (!/MicroMessenger/i.test(window.navigator.userAgent.toLowerCase())) {
+            location.replace(url)
+            return
+        }
+        window.wx &&
+            window.wx.miniProgram.getEnv(res => {
+                if (!res.miniprogram) {
+                    location.replace(url)
+                    return
+                }
+            })
     }
     if (!this.$axios.$topoudToken) {
         if (window.localStorage.topoudToken) {
