@@ -28,7 +28,7 @@ Vue.prototype.$userCheck = function(callback) {
             })
         }
         if (notInMiniprogram) {
-            let url = location.href.replace('topoudToken=', '')
+            let url = location.href.replace(/topoudToken=.+/g, '')
             location.replace(url)
             return
         }
