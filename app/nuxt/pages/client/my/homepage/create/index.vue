@@ -224,10 +224,12 @@ export default {
                                     this.store.latitude = latitude
                                     this.store.storeName = company
                                     this.store.phone = telephone
+                                    this.locationFromQueryGet()
                                 }
                             )
+                        } else {
+                            this.locationFromQueryGet()
                         }
-                        this.locationFromQueryGet()
                         window._myHomePageStoreInfo = this.store
                     }
                 })
