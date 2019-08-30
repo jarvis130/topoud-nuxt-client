@@ -77,7 +77,7 @@ export default {
             return (
                 axios
                     // .get('/user/info/settings')
-                    .get('/member/checkLogin')
+                    .get('/member/checkLogin?wechatId=9')
                     .then(({ data: { success, result, msg: message } }) => {
                         if (!success) {
                             throw new Error(message)
