@@ -374,7 +374,19 @@ export default {
                                     )
                                 }
                                 if (notInMiniprogram) {
-                                    this.$router.go(-1)
+                                    this.$axios('/store/getStoreInfo').then(
+                                        ({
+                                            data: {
+                                                success,
+                                                message,
+                                                result: { storeId }
+                                            }
+                                        }) => {
+                                            this.$router.replace(
+                                                `/h-${storeId}`
+                                            )
+                                        }
+                                    )
                                 } else {
                                     window.wx.miniProgram.switchTab({
                                         url: '/pages/card/home/index'
