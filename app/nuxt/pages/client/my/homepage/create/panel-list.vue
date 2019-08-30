@@ -374,7 +374,7 @@ export default {
                                     )
                                 }
                                 if (notInMiniprogram) {
-                                    this.$router.replace(`h-${storeId}`)
+                                    this.$router.go(-2)
                                 } else {
                                     window.wx.miniProgram.switchTab({
                                         url: '/pages/card/home/index'
