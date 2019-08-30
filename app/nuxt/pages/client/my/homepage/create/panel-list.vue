@@ -360,11 +360,27 @@ export default {
                         // window.wx && window.wx.miniProgram.navigateBack()
                         setTimeout(_ => {
                             try {
-                                window.wx &&
+                                let notInMiniprogram =
+                                    !/MicroMessenger/i.test(
+                                        window.navigator.userAgent.toLowerCase()
+                                    ) ||
+                                    !window.wx ||
+                                    !window.wx.miniProgram
+                                if (!notInMiniprogram) {
+                                    window.wx.miniProgram.getEnv(
+                                        ({ miniprogram }) => {
+                                            notInMiniprogram = !miniprogram
+                                        }
+                                    )
+                                }
+                                if (notInMiniprogram) {
+                                    this.$router.replace(`h-${storeId}`)
+                                } else {
                                     window.wx.miniProgram.switchTab({
                                         url: '/pages/card/home/index'
                                         // url: '/pages/card/officialWeb/index'
                                     })
+                                }
                             } catch (e) {
                                 alert(JSON.stringify(e))
                             }
@@ -374,7 +390,10 @@ export default {
                     } else {
                         console.log(errorList)
                         this.$message.error(
-                            '部分接口出错' + `(${errorList[0]})(${errorList.length}/${p.length})`
+                            '部分接口出错' +
+                                `(${errorList[0]})(${errorList.length}/${
+                                    p.length
+                                })`
                         )
                     }
                 })
