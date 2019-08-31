@@ -15,8 +15,10 @@ export default {
             userChecked: false
         }
     },
-    mounted() {
+    activated() {
         this.userChecked = true
+    },
+    mounted() {
         // let { token, userId } = this.$route.query
         // this.$userAsync({ token, userId }).then(_ => {
         //     // if (!_) return
