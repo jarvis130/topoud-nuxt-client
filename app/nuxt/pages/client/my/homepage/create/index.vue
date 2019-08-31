@@ -302,7 +302,7 @@ export default {
                 let [latitude, longitude] = (latng || '').split(',')
                 this.store.longitude = longitude
                 this.store.latitude = latitude
-                this.store.address = addr //`${city} ${name}`
+                this.store.address = addr // `${city} ${name}`
             }
         }
     },
