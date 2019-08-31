@@ -87,7 +87,8 @@
 </template>
 <script>
 import titleModule from './_title'
-import uploaderModule from '~/components/uploader/homepage-image'
+// import uploaderModule from '~/components/uploader/homepage-image'
+import uploaderModule from '~/components/uploader/homepage-image-with-cropper'
 export default {
     props: ['item', 'status', 'templateId'],
     components: { uploaderModule, titleModule },
