@@ -102,8 +102,9 @@ export default {
     },
     mounted() {
         // productId 点击后通过地址传参获取 10477(名片)  10478（商城）
+        let test = process.env.APP_ENV !== 'production'
         this.params = {
-            wechatId: 5,
+            wechatId: test ? 9 : 5,
             productId: this.$route.query.productId
         }
         if (this.$route.query.productId === '10477') {
@@ -136,7 +137,7 @@ export default {
     height: 90%;
     box-sizing: border-box;
     padding: 20px;
-    background-color: #47485A;
+    background-color: #47485a;
     text-align: center;
 }
 img {
@@ -146,7 +147,7 @@ img {
 .pay-btn {
     width: 100%;
     height: 60px;
-    background-color: #05C160;
+    background-color: #05c160;
     color: #fff;
     line-height: 60px;
     text-align: center;
@@ -200,8 +201,6 @@ img {
     margin-top: 10px;
     border-radius: 15px;
     font-size: 16px;
-    border: 1px solid #FFCD42;
+    border: 1px solid #ffcd42;
 }
-
-
 </style>
