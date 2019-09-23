@@ -12,7 +12,7 @@
                 imageModule(  v-else-if='item.type === 10' :item='item' :status='status')
                 videoModule(  v-else-if='item.type === 9' :item='item' :status='status')
         .contact-us
-            .title 联系我们
+            .title 联系我们吧
                 br
                 small #[img(:src='meaninglessItem' style='height: 8px;margin-bottom: 3px;')] CONTACT US #[img(:src='meaninglessItem' style='height: 8px;margin-bottom: 3px;')]
                 div(style='line-height: 1;margin-bottom: 15px;')

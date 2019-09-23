@@ -4,7 +4,7 @@ import { seajs } from 'seajs/dist/sea'
 const signatureUrl = `https://${
     process.env.APP_ENV !== 'production' ? 'test-' : ''
 }icard.yjmp.net/api/wechat/getSignPackage?wechatId=${
-    process.env.APP_ENV === 'production' ? 5 : 8
+    process.env.APP_ENV === 'production' ? 5 : 9
 }&url=`
 export default _ => {
     let test = true
