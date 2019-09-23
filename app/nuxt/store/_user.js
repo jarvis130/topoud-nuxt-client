@@ -77,7 +77,7 @@ export default {
             return (
                 axios
                     // .get('/user/info/settings')
-                    .get('/member/checkLogin?wechatId=9&storeId=1')
+                    .get('/icard/member/checkLogin?wechatId=9&storeId=1')
                     .then(({ data: { success, result, msg: message } }) => {
                         if (!success) {
                             throw new Error(message)
