@@ -1,32 +1,72 @@
 
-<template lang="pug">
-.container
-    .loading-fullscreen(v-if='!template.list')
-        .weui-loading
-        small  模版加载中
-    .homepage-editor-create(v-else)
-        .sotable-items
-            .sotable-item(v-for='(item, index) in template.list')
-                swiperModule( v-if='item.type === 6' :item='item' :status='status')
-                textModule(   v-else-if='item.type === 11' :item='item' :status='status')
-                imageModule(  v-else-if='item.type === 10' :item='item' :status='status')
-                videoModule(  v-else-if='item.type === 9' :item='item' :status='status')
-        .contact-us
-            .title 联系我们吧
-                br
-                small #[img(:src='meaninglessItem' style='height: 8px;margin-bottom: 3px;')] CONTACT US #[img(:src='meaninglessItem' style='height: 8px;margin-bottom: 3px;')]
-                div(style='line-height: 1;margin-bottom: 15px;')
-                    img(:src='meaninglessItem2' style='height: 9px;')
-            a.some-btn(:href='`tel:${storeInfo.phone}`') #[img(:src='meaninglessItem3')] {{storeInfo.phone}}
-            .map(@click='openLocation')
-                img(:src='storeInfo.mapUrl' v-if='storeInfo.mapUrl')
-            .address
-                .icon.i-locationfill
-                | 详细地址:{{storeInfo.address}}
-    template(v-if='$route.params.storeId == $store.getters.userInfo.userStoreId.officialId')
-        br
-        nuxt-link(to='/client/my/homepage/create' replace).btn-area
-            .topoud-btn 编辑我的官网
+<template>
+	<div class="container">
+		<div
+            class="loading-fullscreen"
+            v-if="!template.list">
+			<div class="weui-loading"></div>
+			<small> 模版加载中</small>
+		</div>
+		<div class="homepage-editor-create">
+			<div class="sotable-items">
+				<div
+                    class="sotable-item"
+                    v-for="(item, index) in template.list"
+                    :key="index">
+					<swiperModule
+                        v-if="item.type === 6"
+                        :item="item"
+                        :status="status"
+                    ></swiperModule>
+					<textModule
+                        v-else-if="item.type === 11"
+                        :item="item"
+                        :status="status"
+                    ></textModule>
+					<imageModule
+                        v-else-if="item.type === 10"
+                        :item="item"
+                        :status="status"
+                    ></imageModule>
+					<videoModule
+                        v-else-if="item.type === 9"
+                        :item="item"
+                        :status="status"
+                    ></videoModule>
+				</div>
+			</div>
+			<div class="contact-us">
+				<div class="title">
+					联系我们吧<br />
+					<small>
+						<img :src="meaninglessItem" style="height: 8px;margin-bottom: 3px;" />
+						CONTACT US
+						<img :src="meaninglessItem" style="height: 8px;margin-bottom: 3px;" />
+					</small>
+					<div style="line-height: 1;margin-bottom: 15px;">
+						<img :src="meaninglessItem2" style="height: 9px;" />
+					</div>
+				</div>
+				<a class="some-btn" :href="`tel:${storeInfo.phone}`">
+					<img :src="meaninglessItem3" />
+					{{storeInfo.phone}}
+				</a>
+				<div class="map" @click="openLocation">
+					<img :src="storeInfo.mapUrl" v-if="storeInfo.mapUrl" />
+				</div>
+				<div class="address">
+					<div class="icon i-locationfill"></div>
+					详细地址:{{storeInfo.address}}
+				</div>
+			</div>
+		</div>
+		<template v-if="pd">
+			<br />
+			<nuxt-link class="btn-area" to="/client/my/homepage/create" replace="replace">
+				<div class="topoud-btn">编辑我的官网</div>
+			</nuxt-link>
+		</template>
+	</div>
 </template>
 <script>
 import swiperModule from '~/components/homepage/modules/swiper'
@@ -40,6 +80,23 @@ export default {
         textModule,
         imageModule,
         videoModule
+    },
+    computed: {
+        pd: function() {
+            if (this.$store.getters.userInfo.channelInfo) {
+                if (this.$store.getters.userInfo.channelInfo[0].roleType > 0) {
+                    return true
+                } else {
+                    return false
+                }
+            } else {
+                if (this.$store.getters.userInfo.userStoreId && this.$route.params.storeId === this.$store.getters.userInfo.userStoreId.officialId) {
+                    return true
+                } else {
+                    return false
+                }
+            }
+        }
     },
     head() {
         let {
@@ -56,7 +113,7 @@ export default {
                     item.panelContents &&
                     item.panelContents.length
                 ) {
-                    description = item.panelContents[0].productName
+                    description = item.panelContents[0].productName || ''
                     break
                 }
             }

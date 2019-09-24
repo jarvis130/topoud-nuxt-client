@@ -54,7 +54,7 @@ export default {
     },
     mounted() {
         if (this.item._content || this.item.panelContents) {
-            this.content = this.item._content[0] || this.item.panelContents[0]
+            this.content = this.item._content[0] || this.item.panelContents[0] || ''
         } else {
             this.contentGet()
         }
