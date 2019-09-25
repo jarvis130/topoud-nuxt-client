@@ -248,6 +248,10 @@ export default {
     //             : false
     //     this.storeInfo.mapUrl = mapUrl
     // },
+    mounted: function() {
+        localStorage.removeItem('storeId')
+        localStorage.setItem('storeId', this.$route.params.storeId)
+    },
     data() {
         return {
             template: {

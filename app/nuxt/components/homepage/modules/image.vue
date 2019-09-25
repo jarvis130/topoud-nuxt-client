@@ -142,8 +142,9 @@ export default {
             this.errormsg = false
             let panelId = this.item.panelId
             let templateId = this.templateId
+            let storeId = localStorage.getItem('storeId')
             this.$axios('/template/getPanelContentList', {
-                params: { panelId, terminal: 1, templateId }
+                params: { panelId, terminal: 1, templateId, storeId }
             })
                 .then(({ data: { success, result: content, message } }) => {
                     if (!success) throw Error(message)
@@ -166,12 +167,14 @@ export default {
             let { panelId } = this.item
             let { templateId } = this
             let remark = this.item.remark && (parseInt(this.item.remark) || 2)
+            let storeId = localStorage.getItem('storeId')
             let p = [
                 this.$axios.post('/template/savePanelContent', {
                     panelId,
                     type: 8,
                     terminal: 1,
-                    templateId
+                    templateId,
+                    storeId
                 })
             ]
             if (remark && remark > 0 && remark < 5) {
@@ -180,7 +183,8 @@ export default {
                         panelId,
                         templateId,
                         type: 8,
-                        terminal: 1
+                        terminal: 1,
+                        storeId
                     })
                 )
             }

@@ -106,7 +106,7 @@ export default {
         },
         templateGet() {
             this.$axios('/template/getTemplateListByPage', {
-                params: { type: 4 }
+                params: { type: 4, storeId: localStorage.getItem('storeId') }
             })
                 .then(({ data: { success, message, msg, result } }) => {
                     if (!success) throw Error(message || msg)
@@ -132,7 +132,7 @@ export default {
             }
             this.template.inited = true
             this.$axios
-                .post('/template/saveTemplate', { type: 4 })
+                .post('/template/saveTemplate', { type: 4, storeId: localStorage.getItem('storeId') })
                 .then(({ data: { success, message, result } }) => {
                     if (!success) throw Error(message)
                     this.templateGet()
@@ -148,7 +148,7 @@ export default {
             }
             this.$axios
                 .get('/template/getPanelList', {
-                    params: { templateId, terminal: 1 }
+                    params: { templateId, terminal: 1, storeId: localStorage.getItem('storeId') }
                 })
                 .then(({ data: { success, message, result: list } }) => {
                     if (!success) throw Error(message)
@@ -214,6 +214,7 @@ export default {
                 body.templateId = templateId
                 body.terminal = 1
                 body.status = 1
+                body.storeId = localStorage.getItem('storeId')
                 p.push(
                     this.$axios
                         .post('/template/savePanel', body)
@@ -248,6 +249,7 @@ export default {
                         body.panelId = item.panelId
                         body.templateId = templateId
                         body.terminal = 1
+                        body.storeId = localStorage.getItem('storeId')
                         p.push(
                             this.$axios
                                 .post('/template/savePanelContent', body)
@@ -267,7 +269,7 @@ export default {
                 if (!panelId) continue
                 p.push(
                     this.$axios
-                        .post('/template/deletePanel', { panelId })
+                        .post('/template/deletePanel', { panelId, storeId: localStorage.getItem('storeId') })
                         .then(({ data: { success, message } }) => {
                             if (!success) throw Error(message)
                             return { success }
@@ -283,7 +285,7 @@ export default {
                 p.push(
                     this.$axios
                         .get('/template/deletePanelContent', {
-                            params: { id }
+                            params: { id, storeId: localStorage.getItem('storeId') }
                         })
                         .then(({ data: { success, message } }) => {
                             if (!success) throw Error(message)
@@ -318,6 +320,7 @@ export default {
                             body.panelId = item.panelId
                             body.templateId = templateId
                             body.terminal = 1
+                            body.storeId = localStorage.getItem('storeId')
                             p.push(1)
                             unSavePanel.push(
                                 this.$axios
@@ -345,12 +348,14 @@ export default {
                 })
                 .then(_ => {
                     let { id } = this.template
+                    let storeId = localStorage.getItem('storeId')
                     return this.$axios.post('/template/saveTemplate', {
                         templateId,
                         id,
                         type: 4,
                         isPub: true,
-                        isDefault: true
+                        isDefault: true,
+                        storeId
                     })
                 })
                 .then(_ => {
@@ -374,7 +379,7 @@ export default {
                                     )
                                 }
                                 if (notInMiniprogram) {
-                                    this.$axios('/store/getStoreInfo').then(
+                                    this.$axios(`/store/getStoreInfo?storeId=${localStorage.getItem('storeId')}`).then(
                                         ({
                                             data: {
                                                 success,
