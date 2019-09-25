@@ -90,7 +90,7 @@ export default {
                     return false
                 }
             } else {
-                if (this.$store.getters.userInfo.userStoreId && this.$route.params.storeId === this.$store.getters.userInfo.userStoreId.officialId) {
+                if (this.$store.getters.userInfo.userStoreId && parseInt(this.$route.params.storeId) === parseInt(this.$store.getters.userInfo.userStoreId.officialId)) {
                     return true
                 } else {
                     return false
