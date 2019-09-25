@@ -97,7 +97,7 @@ export default {
                 this.item._content = this.content = []
                 return
             }
-            let storeId = localStorage.getItem('storeId')
+            let storeId = window.localStorage.getItem('storeId')
             this.$axios('/template/getPanelContentList', {
                 params: { panelId, terminal: 1, templateId, storeId }
             })

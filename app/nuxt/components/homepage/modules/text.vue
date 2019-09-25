@@ -94,7 +94,7 @@ export default {
             this.errormsg = false
             let panelId = this.item.panelId
             let { templateId } = this
-            let storeId = localStorage.getItem('storeId')
+            let storeId = window.localStorage.getItem('storeId')
             this.$axios('/template/getPanelContentList', {
                 params: { panelId, terminal: 1, templateId, storeId }
             })
@@ -120,7 +120,7 @@ export default {
             this.inited = true
             let { panelId } = this.item
             let { templateId } = this
-            let storeId = localStorage.getItem('storeId')
+            let storeId = window.localStorage.getItem('storeId')
             this.$axios
                 .post('/template/savePanelContent', {
                     panelId,

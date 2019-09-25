@@ -249,8 +249,8 @@ export default {
     //     this.storeInfo.mapUrl = mapUrl
     // },
     mounted: function() {
-        localStorage.removeItem('storeId')
-        localStorage.setItem('storeId', this.$route.params.storeId)
+        window.localStorage.removeItem('storeId')
+        window.localStorage.setItem('storeId', this.$route.params.storeId)
     },
     data() {
         return {
