@@ -84,8 +84,12 @@ export default {
     computed: {
         pd: function() {
             if (this.$store.getters.userInfo.channelInfo) {
-                if (this.$store.getters.userInfo.channelInfo[0].roleType > 0) {
-                    return true
+                if (this.$store.getters.userInfo.userStoreId && parseInt(this.$route.params.storeId) === parseInt(this.$store.getters.userInfo.userStoreId.officialId)) {
+                    if (this.$store.getters.userInfo.channelInfo[0].roleType > 0) {
+                        return true
+                    } else {
+                        return false
+                    }
                 } else {
                     return false
                 }
