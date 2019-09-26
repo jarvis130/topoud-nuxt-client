@@ -1,55 +1,69 @@
-<template lang="pug">
-.homepage-create
-    .loading-fullscreen(v-if='!store')
-        .weui-loading
-        | 获取店铺信息中
-    template(v-else)
-        .weui-panel
-        .weui-panel
-            .weui-cell.top
-                .weui-label 企业名称
-                .weui-cell__bd
-                    input.weui-input(placeholder='一个月只能修改一次' maxlength='15' v-model='store.storeName')
-                //- .weui-cell__ft
-                    .topoud-btn.plain.small 认证
-            .weui-cell.top
-                .weui-label 企业地址
-                .weui-cell__bd
-                    //- {{store.address}}
-                    input.weui-input(placeholder='默认读取名片的地址' v-model='store.address')
-                    //- .weui-input {{store.address}}
-                    //- :{{store.longitude}},{{store.latitude}}
-                    small(v-if='store.longitude && store.latitude') 已选择地图
-                    small(v-else) 还未选择地图
-                .weui-cell__ft(@click='getLocation' style='width: 50px;')
-                    //- .topoud-btn.plain.small 获取地址
-                    .icon.i-locationfill(style='color: rgb(55,67,107); font-size: 20px;')
-            .weui-cell.top
-                .weui-label 联系电话
-                .weui-cell__bd
-                    input.weui-input(placeholder='' v-model='store.phone')
-        nuxt-link.weui-panel(to='./industries' append)
-            //- (@click='industryTree.list=industryTree.value')
-            .weui-cell.weui-cell_access
-                .weui-label 行业
-                .weui-cell__bd
-                    .input-selector {{(industryTree.kv[store.industryId] && industryTree.kv[store.industryId].industryName) || '点击选择'}}
-                .weui-cell__ft
-        transition
-            .weui-mask(v-if='industryTree.list' @click='industryTree.list=false')
-        transition
-            .weui-actionsheet.weui-actionsheet_toggle(v-if='industryTree.list')
-                //- .weui-actionsheet__title
-                    .weui-actionsheet__title-text title
-                .weui-actionsheet__menu(style='max-height: 310px; overflow: auto;')
-                    .weui-actionsheet__cell(v-for='(item, index) in industryTree.list' @click='industrySelect(index)') {{item.industryName}}
-                //- .weui-actionsheet__action
-                    .weui-actionsheet__cell(@click='industrySelecting=false') action
-        .btn-area(@click.stop.capture='nextStep')
-            //- nuxt-link(to='./create/template-select')
-            //- nuxt-link(to='./create/panel-list')
-            .topoud-btn(:class='{disabled: loading}') 下一步
-                .weui-loading(v-if='loading')
+<template>
+	<div class="homepage-create">
+		<div
+            class="loading-fullscreen"
+            v-if="!store">
+			<div class="weui-loading"></div>
+            获取店铺信息中
+		</div>
+        <template v-else>
+			<div class="weui-panel"></div>
+			<div class="weui-panel">
+				<div class="weui-cell top">
+					<div class="weui-label">企业名称</div>
+					<div class="weui-cell__bd">
+                        <input class="weui-input" placeholder="一个月只能修改一次" maxlength="15" v-model="store.storeName" />
+                    </div>
+				</div>
+				<div class="weui-cell top">
+					<div class="weui-label">企业地址</div>
+					<div class="weui-cell__bd">
+                        <input class="weui-input" placeholder="默认读取名片的地址" v-model="store.address" />
+                        <small v-if="store.longitude &amp;&amp; store.latitude">已选择地图</small>
+                        <small v-else>还未选择地图</small>
+                    </div>
+					<div class="weui-cell__ft" @click="getLocation" style="width: 50px;">
+						<div class="icon i-locationfill" style="color: rgb(55,67,107); font-size: 20px;"></div>
+					</div>
+				</div>
+				<div class="weui-cell top">
+					<div class="weui-label">联系电话</div>
+					<div class="weui-cell__bd">
+                        <input class="weui-input" placeholder="" v-model="store.phone" />
+                    </div>
+				</div>
+			</div>
+			<nuxt-link class="weui-panel" to="./industries" append="append">
+				<div class="weui-cell weui-cell_access">
+					<div class="weui-label">行业</div>
+					<div class="weui-cell__bd">
+						<div class="input-selector">
+                            {{(industryTree.kv[store.industryId] && industryTree.kv[store.industryId].industryName) || '点击选择'}}
+                        </div>
+					</div>
+					<div class="weui-cell__ft"></div>
+				</div>
+			</nuxt-link>
+			<transition>
+				<div class="weui-mask" v-if="industryTree.list" @click="industryTree.list=false"></div>
+			</transition>
+			<transition>
+				<div class="weui-actionsheet weui-actionsheet_toggle" v-if="industryTree.list">
+					<div class="weui-actionsheet__menu" style="max-height: 310px; overflow: auto;">
+						<div class="weui-actionsheet__cell" v-for="(item, index) in industryTree.list" :key="index" @click="industrySelect(index)">
+                            {{item.industryName}}
+                        </div>
+					</div>
+				</div>
+			</transition>
+			<div class="btn-area" @click.stop.capture="nextStep">
+				<div class="topoud-btn" :class="{disabled: loading}">
+                    下一步
+                    <div class="weui-loading" v-if="loading"></div>
+				</div>
+			</div>
+		</template>
+	</div>
 </template>
 <script>
 import reg from '~/assets/js/reg'
@@ -87,7 +101,7 @@ export default {
             }
             this.loading = true
             this.$axios
-                .post('/store/saveStore', this.store)
+                .post(`/store/saveStore?storeId=${window.localStorage.getItem('storeId')}`, this.store)
                 .then(({ data: { success, message, result } }) => {
                     if (!success) throw Error(message)
                     this.$router.push('./create/panel-list')
@@ -222,7 +236,7 @@ export default {
                                     this.store.longitude = longitude
                                     this.store.address = address
                                     this.store.latitude = latitude
-                                    this.store.storeName = company
+                                    this.store.storeName = company || '填写企业名称'
                                     this.store.phone = telephone
                                     this.locationFromQueryGet()
                                 }
