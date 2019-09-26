@@ -51,8 +51,8 @@
 					<img :src="meaninglessItem3" />
 					{{storeInfo.phone}}
 				</a>
-				<div class="map" @click="openLocation">
-					<img :src="storeInfo.mapUrl" v-if="storeInfo.mapUrl" />
+				<div class="map" @click="openLocation" v-if="storeInfo.mapUrl">
+					<img :src="storeInfo.mapUrl" />
 				</div>
 				<div class="address">
 					<div class="icon i-locationfill"></div>
@@ -141,14 +141,17 @@ export default {
     },
     methods: {
         openLocation() {
-            if (!this.storeInfo) return
-            if (!window.wx) return
             let {
                 storeName: name,
                 address,
                 longitude,
                 latitude
             } = this.storeInfo
+            if (!this.storeInfo) return
+            if (!window.wx) {
+                location.href = `${window.location.protocol}//:${window.location.host}/pages/webview/location-open?name=${name}&address=${address}&longitude=${longitude}&latitude=${latitude}`
+                return
+            }
             window.wx.miniProgram.navigateTo({
                 url: `/pages/webview/location-open?name=${name}&address=${address}&longitude=${longitude}&latitude=${latitude}`
             })
@@ -217,7 +220,7 @@ export default {
                 }
                 let xy = `${latitude},${longitude}`
                 let mapUrl =
-                    longitude && latitude
+                    Number(longitude) > 0 && Number(latitude) > 0
                         ? `https://apis.map.qq.com/ws/staticmap/v2/?key=${qqMapKey}&center=${xy}&zoom=16&labels=anchor:3|border:0|${storeName.substr(
                               0,
                               12
@@ -424,7 +427,7 @@ export default {
     }
     .map {
         background: #dfdfdf;
-        margin: 15px 0;
+        margin: 15px 0 0 0;
         min-height: 50px;
         border-radius: 4px;
         img {
@@ -432,6 +435,7 @@ export default {
         }
     }
     .address {
+        margin-top: 15px;
         color: #979da5;
         font-size: 14px;
         font-weight: 300;
