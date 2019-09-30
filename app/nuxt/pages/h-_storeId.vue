@@ -149,7 +149,8 @@ export default {
             } = this.storeInfo
             if (!this.storeInfo) return
             if (!window.wx) {
-                location.href = `${window.location.protocol}//:${window.location.host}/pages/webview/location-open?name=${name}&address=${address}&longitude=${longitude}&latitude=${latitude}`
+                location.href =
+					`http://apis.map.qq.com/uri/v1/marker?marker=coord:${latitude},${longitude};title:${name};address:${address}`
                 return
             }
             window.wx.miniProgram.navigateTo({
