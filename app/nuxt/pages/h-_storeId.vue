@@ -148,14 +148,14 @@ export default {
                 latitude
             } = this.storeInfo
             if (!this.storeInfo) return
-            if (!window.wx) {
-                console.log(latitude + longitude + name + address)
-                location.href = `http://apis.map.qq.com/uri/v1/marker?marker=coord:${latitude},${longitude};title:${name};address:${address}`
-                return
-            }
-            window.wx.miniProgram.navigateTo({
-                url: `/pages/webview/location-open?name=${name}&address=${address}&longitude=${longitude}&latitude=${latitude}`
-            })
+            // if (!window.wx) {
+            console.log(latitude + longitude + name + address)
+            location.href = `http://apis.map.qq.com/uri/v1/marker?marker=coord:${latitude},${longitude};title:${name};address:${address}`
+            // return
+            // }
+            // window.wx.miniProgram.navigateTo({
+            //     url: `/pages/webview/location-open?name=${name}&address=${address}&longitude=${longitude}&latitude=${latitude}`
+            // })
         }
     },
     asyncData({ params: { storeId }, app: { $axios }, error }) {
