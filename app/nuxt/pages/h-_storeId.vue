@@ -149,6 +149,7 @@ export default {
             } = this.storeInfo
             if (!this.storeInfo) return
             if (!window.wx) {
+                console.log(latitude + longitude + name + address)
                 location.href =
 					`http://apis.map.qq.com/uri/v1/marker?marker=coord:${latitude},${longitude};title:${name};address:${address}`
                 return
