@@ -111,16 +111,16 @@ export default {
                 .then(({ data: { success, message, msg, result } }) => {
                     if (!success) throw Error(message || msg)
                     let { data } = result
-                    if (!data || !data.length) {
-                        this.templateInit()
-                        // return
-                    } else {
+                    // if (!data || !data.length) {
+                    //     this.templateInit()
+                    //     // return
+                    // } else {
                         let templateId = (this.template.templateId =
                             data[0].templateId)
                         let id = (this.template.id = data[0].id)
                         window.__templateTerminalMobileId = { templateId, id }
                         this.templateListGet()
-                    }
+                    // }
                 })
                 .catch(({ message }) => {
                     this.$nuxt.error({ message })
@@ -152,11 +152,11 @@ export default {
                 })
                 .then(({ data: { success, message, result: list } }) => {
                     if (!success) throw Error(message)
-                    if (!list || !list.length) {
-                        this.templateListInit()
-                    } else {
+                    // if (!list || !list.length) {
+                    //     this.templateListInit()
+                    // } else {
                         window.__homepageCreatePanelList = this.template.list = list
-                    }
+                    // }
                 })
                 .catch(({ message }) => {
                     this.$nuxt.error({ message })
