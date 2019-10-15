@@ -148,7 +148,7 @@ export default {
                 latitude
             } = this.storeInfo
             if (!this.storeInfo) return
-            if (!window.wx) {
+            if (this.h5 == "true") {
                 console.log(latitude + longitude + name + address)
                 location.href = `https://apis.map.qq.com/uri/v1/marker?marker=coord:${latitude},${longitude};title:${name};address:${address}`
                 return
@@ -259,9 +259,11 @@ export default {
     mounted: function() {
         window.localStorage.removeItem('storeId')
         window.localStorage.setItem('storeId', this.$route.params.storeId)
+        this.h5 = this.$route.params.isH5
     },
     data() {
         return {
+            h5: "false",
             template: {
                 list: false
             },
