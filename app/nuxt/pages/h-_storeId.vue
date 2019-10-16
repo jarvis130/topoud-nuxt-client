@@ -152,10 +152,11 @@ export default {
                 console.log(latitude + longitude + name + address)
                 location.href = `https://apis.map.qq.com/uri/v1/marker?marker=coord:${latitude},${longitude};title:${name};address:${address}`
                 return
+            } else {
+                window.wx.miniProgram.navigateTo({
+                    url: `/pages/webview/location-open?name=${name}&address=${address}&longitude=${longitude}&latitude=${latitude}`
+                })
             }
-            window.wx.miniProgram.navigateTo({
-                url: `/pages/webview/location-open?name=${name}&address=${address}&longitude=${longitude}&latitude=${latitude}`
-            })
         }
     },
     asyncData({ params: { storeId }, app: { $axios }, error }) {
@@ -259,7 +260,7 @@ export default {
     mounted: function() {
         window.localStorage.removeItem('storeId')
         window.localStorage.setItem('storeId', this.$route.params.storeId)
-        this.h5 = this.$route.params.isH5
+        this.h5 = this.$route.params.isH5 || "false"
     },
     data() {
         return {
