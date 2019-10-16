@@ -1,72 +1,55 @@
 
 <template>
-	<div class="container">
-		<div
-            class="loading-fullscreen"
-            v-if="!template.list">
-			<div class="weui-loading"></div>
-			<small> 模版加载中</small>
-		</div>
-		<div class="homepage-editor-create">
-			<div class="sotable-items">
-				<div
-                    class="sotable-item"
-                    v-for="(item, index) in template.list"
-                    :key="index">
-					<swiperModule
-                        v-if="item.type === 6"
-                        :item="item"
-                        :status="status"
-                    ></swiperModule>
-					<textModule
-                        v-else-if="item.type === 11"
-                        :item="item"
-                        :status="status"
-                    ></textModule>
-					<imageModule
-                        v-else-if="item.type === 10"
-                        :item="item"
-                        :status="status"
-                    ></imageModule>
-					<videoModule
-                        v-else-if="item.type === 9"
-                        :item="item"
-                        :status="status"
-                    ></videoModule>
-				</div>
-			</div>
-			<div class="contact-us">
-				<div class="title">
-					联系我们吧<br />
-					<small>
-						<img :src="meaninglessItem" style="height: 8px;margin-bottom: 3px;" />
-						CONTACT US
-						<img :src="meaninglessItem" style="height: 8px;margin-bottom: 3px;" />
-					</small>
-					<div style="line-height: 1;margin-bottom: 15px;">
-						<img :src="meaninglessItem2" style="height: 9px;" />
-					</div>
-				</div>
-				<a class="some-btn" :href="`tel:${storeInfo.phone}`">
-					<img :src="meaninglessItem3" />
-					{{storeInfo.phone}}
-				</a>
-				<div class="map" @click="openLocation" v-if="storeInfo.mapUrl">
-					<img :src="storeInfo.mapUrl" />
-				</div>
-				<div class="address">
-					<div class="icon i-locationfill"></div>
-					详细地址:{{storeInfo.address}}
-				</div>
-			</div>
-		</div>
-		<template v-if="pd">
-			<br />
-			<nuxt-link class="btn-area" to="/client/my/homepage/create" replace="replace">
-				<div class="topoud-btn">编辑我的官网</div>
-			</nuxt-link>
-		</template>
-	</div>
+    <div class="container">
+        <div class="loading-fullscreen" v-if="!template.list">
+            <div class="weui-loading"></div>
+            <small>模版加载中</small>
+        </div>
+        <div class="homepage-editor-create">
+            <div class="sotable-items">
+                <div class="sotable-item" v-for="(item, index) in template.list" :key="index">
+                    <swiperModule v-if="item.type === 6" :item="item" :status="status"></swiperModule>
+                    <textModule v-else-if="item.type === 11" :item="item" :status="status"></textModule>
+                    <imageModule v-else-if="item.type === 10" :item="item" :status="status"></imageModule>
+                    <videoModule v-else-if="item.type === 9" :item="item" :status="status"></videoModule>
+                </div>
+            </div>
+            <div class="contact-us">
+                <div class="title">
+                    联系我们吧
+                    <br />
+                    <small>
+                        <img :src="meaninglessItem" style="height: 8px;margin-bottom: 3px;" />
+                        CONTACT US
+                        <img
+                            :src="meaninglessItem"
+                            style="height: 8px;margin-bottom: 3px;"
+                        />
+                    </small>
+                    <div style="line-height: 1;margin-bottom: 15px;">
+                        <img :src="meaninglessItem2" style="height: 9px;" />
+                    </div>
+                </div>
+                <a class="some-btn" :href="`tel:${storeInfo.phone}`">
+                    <img :src="meaninglessItem3" />
+                    {{storeInfo.phone}}
+                </a>
+                <div class="map" @click="openLocation" v-if="storeInfo.mapUrl">
+                    <img :src="storeInfo.mapUrl" />
+                </div>
+                <div class="address">
+                    <div class="icon i-locationfill"></div>
+                    详细地址:{{storeInfo.address}}
+                </div>
+            </div>
+        </div>
+        <template v-if="pd">
+            <br />
+            <nuxt-link class="btn-area" to="/client/my/homepage/create" replace="replace">
+                <div class="topoud-btn">编辑我的官网</div>
+            </nuxt-link>
+        </template>
+    </div>
 </template>
 <script>
 import swiperModule from '~/components/homepage/modules/swiper'
@@ -84,8 +67,16 @@ export default {
     computed: {
         pd: function() {
             if (this.$store.getters.userInfo.channelInfo) {
-                if (this.$store.getters.userInfo.userStoreId && parseInt(this.$route.params.storeId) === parseInt(this.$store.getters.userInfo.userStoreId.officialId)) {
-                    if (this.$store.getters.userInfo.channelInfo[0].roleType > 0) {
+                if (
+                    this.$store.getters.userInfo.userStoreId &&
+                    parseInt(this.$route.params.storeId) ===
+                        parseInt(
+                            this.$store.getters.userInfo.userStoreId.officialId
+                        )
+                ) {
+                    if (
+                        this.$store.getters.userInfo.channelInfo[0].roleType > 0
+                    ) {
                         return true
                     } else {
                         return false
@@ -94,7 +85,13 @@ export default {
                     return false
                 }
             } else {
-                if (this.$store.getters.userInfo.userStoreId && parseInt(this.$route.params.storeId) === parseInt(this.$store.getters.userInfo.userStoreId.officialId)) {
+                if (
+                    this.$store.getters.userInfo.userStoreId &&
+                    parseInt(this.$route.params.storeId) ===
+                        parseInt(
+                            this.$store.getters.userInfo.userStoreId.officialId
+                        )
+                ) {
                     return true
                 } else {
                     return false
@@ -148,11 +145,11 @@ export default {
                 latitude
             } = this.storeInfo
             if (!this.storeInfo) return
-            if (this.h5 == "true") {
+            if (this.h5 === 'true') {
                 console.log(latitude + longitude + name + address)
                 location.href = `https://apis.map.qq.com/uri/v1/marker?marker=coord:${latitude},${longitude};title:${name};address:${address}`
-                return
             } else {
+                console.log('小程序跳转')
                 window.wx.miniProgram.navigateTo({
                     url: `/pages/webview/location-open?name=${name}&address=${address}&longitude=${longitude}&latitude=${latitude}`
                 })
@@ -260,11 +257,11 @@ export default {
     mounted: function() {
         window.localStorage.removeItem('storeId')
         window.localStorage.setItem('storeId', this.$route.params.storeId)
-        this.h5 = this.$route.params.isH5 || "false"
+        this.h5 = this.$route.params.isH5 || 'false'
     },
     data() {
         return {
-            h5: "false",
+            h5: 'false',
             template: {
                 list: false
             },
