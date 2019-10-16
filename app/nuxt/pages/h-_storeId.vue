@@ -257,7 +257,7 @@ export default {
     mounted: function() {
         window.localStorage.removeItem('storeId')
         window.localStorage.setItem('storeId', this.$route.params.storeId)
-        this.h5 = this.$route.params.isH5 || 'false'
+        this.h5 = window.localStorage.getItem('isH5') || 'false'
     },
     data() {
         return {
