@@ -18,6 +18,11 @@ Vue.prototype.$userCheck = function(callback) {
     if (this.$route.query.topoudToken) {
         let { query } = this.$route
         window.localStorage.topoudToken = query.topoudToken
+        window.localStorage.removeItem('isH5')
+        let name = 'isH5'
+        var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i')
+        var r = window.location.search.substr(1).match(reg)
+        window.localStorage.setItem('isH5', r[2])
         let notInMiniprogram =
             !/MicroMessenger/i.test(window.navigator.userAgent.toLowerCase()) ||
             !window.wx ||
@@ -28,11 +33,6 @@ Vue.prototype.$userCheck = function(callback) {
             })
         }
         if (notInMiniprogram) {
-            window.localStorage.removeItem('isH5')
-            let name = 'isH5'
-            var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i')
-            var r = window.location.search.substr(1).match(reg)
-            window.localStorage.setItem('isH5', r[2])
             let url = location.href.replace(/\??topoudToken=.+/g, '')
             location.replace(url)
             return
