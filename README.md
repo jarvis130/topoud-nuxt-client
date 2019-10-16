@@ -30,3 +30,19 @@
 -   npm run build 生产环境打包
 
 -   npm run buildtest 测试环境打包
+
+###  启动失败504 502
+杀进程
+ps -ef|grep node
+kill -9 id
+
+ps -ef|grep nuxt
+kill -9 id
+
+ps -ef|grep pm2
+kill -9 id
+启动
+sh server/start.prod.sh
+检查端口
+netstat -tunlp|grep 3200
+业务验证
