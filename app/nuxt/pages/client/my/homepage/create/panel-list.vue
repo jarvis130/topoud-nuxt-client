@@ -379,7 +379,7 @@ export default {
                                     )
                                 }
                                 if (notInMiniprogram) {
-                                    this.$axios(`/store/getStoreInfoOld?storeId=${window.localStorage.getItem('storeId')}`).then(
+                                    this.$axios(`/store/getStoreInfo?storeId=${window.localStorage.getItem('storeId')}`).then(
                                         ({
                                             data: {
                                                 success,

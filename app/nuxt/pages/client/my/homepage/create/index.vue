@@ -208,7 +208,7 @@ export default {
                 }
                 return
             }
-            this.$axios(`/store/getStoreInfoOld?storeId=${window.localStorage.getItem('storeId')}`)
+            this.$axios(`/store/getStoreInfo?storeId=${window.localStorage.getItem('storeId')}`)
                 .then(({ data: { success, message, result: store } }) => {
                     if (!success) throw Error(message)
                     if (!store) {
