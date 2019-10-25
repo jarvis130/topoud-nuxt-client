@@ -16,7 +16,7 @@
         "chordy-svg": "^1.0.1",
         "connect-redis": "^3.4.0",
         "cookie-parser": "^1.4.3",
-        "cross-env": "^5.2.0",
+        "cross-env": "^5.2.1",
         "debug": "^2.6.9",
         "draggable": "^4.2.0",
         "element-ui": "2.4.4",
