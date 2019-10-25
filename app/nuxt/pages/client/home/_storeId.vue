@@ -81,7 +81,7 @@ export default {
             .catch(({ message }) => {
                 this.$nuxt.error({ message })
             })
-        this.$axios('/storeWeb/getStoreInfo', { params: { storeId } })
+        this.$axios('/storeWeb/getStoreInfoOld', { params: { storeId } })
             .then(
                 ({
                     data: {

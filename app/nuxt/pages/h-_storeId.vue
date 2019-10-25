@@ -159,7 +159,7 @@ export default {
     asyncData({ params: { storeId }, app: { $axios }, error }) {
         return Promise.all([
             $axios(`/storeWeb/wapHome?storeId=${storeId}&wechatId=1`),
-            $axios('/storeWeb/getStoreInfo', { params: { storeId } }),
+            $axios('/storeWeb/getStoreInfoOld', { params: { storeId } }),
             $axios('/icard/getIndustryTree?type=2')
         ])
             .then(([resTemplates, resInfo, resIndustry]) => {
